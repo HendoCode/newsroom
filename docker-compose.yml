@@ -1,0 +1,173 @@
+# content-machine-webapp — local full-stack orchestration (docs/design.md §6).
+#
+# `docker compose up` brings up the whole stack: web (Next.js UI+BFF) → agents (FastAPI) → mongo.
+#
+# This base file alone still describes `web` published directly in plain HTTP on `WEB_PORT` —
+# unchanged, since `docker-compose.prod.yml` layers directly on top of exactly this file and
+# must keep working untouched (docs/deploy.md). Local dev's actual, supported entrypoint is
+# HTTPS-only: `docker-compose.override.yml` sits alongside this file and is auto-merged by Compose
+# whenever no `-f`/`--file` flag is given (the standard `compose.yaml`+`compose.override.yaml`
+# convention) — that's what a bare `docker compose up` and `scripts/instance.sh` both get, and
+# it's what removes `web`'s direct publish and fronts it with a Caddy TLS edge instead. Passing
+# an explicit `-f docker-compose.yml` (as the prod overlay's documented invocation does) skips
+# that auto-merge, which is exactly how this file stays inert for that path. See
+# docker-compose.override.yml's own header for the HTTPS design and its rationale.
+#
+# PARALLEL ISOLATED INSTANCES (first-class v1 requirement, §6): every collision point is
+# parameterized so multiple worktrees/agents can run concurrently:
+#   - COMPOSE_PROJECT_NAME  → distinct container/network/image namespaces (default below).
+#   - WEB_PORT / AGENTS_PORT / MONGO_PORT → parameterized HOST ports (internal ports are fixed,
+#     so inter-service URLs never change between instances).
+#   - mongo uses a tmpfs datastore → per-instance + ephemeral (no shared named volume).
+# Launch an isolated instance with `scripts/instance.sh` (see README / docs/local-dev.md).
+
+name: ${COMPOSE_PROJECT_NAME:-content-machine}
+
+services:
+  web:
+    build:
+      context: ./web
+    environment:
+      # Server-side-only address of the agents service. Uses the internal compose network +
+      # fixed internal port, so it is identical across all isolated instances.
+      AGENTS_URL: http://agents:8000
+      NODE_ENV: production
+      # Auth (§6, docs/auth.md). Server-side only. Google is active only when BOTH creds below
+      # are set; left blank (the default), web/auth.ts falls back to the local-dev
+      # identity-declaration login, so this needs no setup to boot.
+      GOOGLE_CLIENT_ID: ${GOOGLE_CLIENT_ID:-}
+      GOOGLE_CLIENT_SECRET: ${GOOGLE_CLIENT_SECRET:-}
+      AUTH_ALLOWED_EMAIL_DOMAIN: ${AUTH_ALLOWED_EMAIL_DOMAIN:-}
+      # The public base URL NextAuth builds OAuth callback/redirect URLs from — MUST be pinned,
+      # never inferred from the incoming request. `trustHost: true` alone is not enough: on a bare
+      # Next.js standalone server (no platform like Vercel auto-detecting the public host), the
+      # request's own inferred origin can resolve to the container's bind address
+      # (`0.0.0.0`, matching the "Network:" line Next.js prints on boot) even though the raw `Host`
+      # header is read correctly elsewhere — Google then refuses the mismatched redirect_uri at
+      # the token-exchange step (observed while diagnosing exactly this failure). Defaults to
+      # this instance's own `WEB_PORT` so every isolated `scripts/instance.sh` instance gets a
+      # correct value with no manual per-instance step; the real-domain deployment overrides this
+      # to the edge domain instead (see infra/aws-poc/templates/docker-compose.prod.yml.tpl).
+      # NOTE: docker-compose.override.yml overrides this default to an HTTPS origin for the real
+      # local-dev entrypoint — this base-file default only governs the inert bypass path above.
+      AUTH_URL: ${AUTH_URL:-http://localhost:${WEB_PORT:-3000}}
+      # Session-cookie signing secret. Optional: web/auth.ts falls back to a fixed POC secret
+      # when unset, orthogonal to which sign-in provider above is active.
+      NEXTAUTH_SECRET: ${NEXTAUTH_SECRET:-}
+      # Secrets shim (web/lib/secrets/, agents/app/secrets/README.md) — same config convention on
+      # both services. Defaults below MUST match the code's own defaults (never blank for a
+      # non-string field): "env" needs zero cloud setup, so this is what `docker compose up` uses
+      # unless a real deployment overrides SECRETS_BACKEND to aws/azure.
+      SECRETS_BACKEND: ${SECRETS_BACKEND:-env}
+      SECRETS_CACHE_TTL_SECONDS: ${SECRETS_CACHE_TTL_SECONDS:-300}
+      SECRETS_AWS_SSM_PREFIX: ${SECRETS_AWS_SSM_PREFIX:-/content-machine/}
+      SECRETS_AZURE_VAULT_URL: ${SECRETS_AZURE_VAULT_URL:-}
+    ports:
+      - "${WEB_PORT:-3000}:3000"
+    depends_on:
+      agents:
+        condition: service_healthy
+    healthcheck:
+      # Use 127.0.0.1 (not localhost): the standalone server listens on IPv4, while
+      # `localhost` can resolve to IPv6 ::1 inside the container and be refused.
+      test: ["CMD", "wget", "--spider", "-q", "http://127.0.0.1:3000/api/health"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 25s
+    restart: unless-stopped
+
+  agents:
+    build:
+      context: ./agents
+    environment:
+      ENVIRONMENT: ${ENVIRONMENT:-development}
+      # Provider keys are injected here SERVER-SIDE ONLY (never client-exposed). Empty by
+      # default; supply real values via a git-ignored .env (see .env.example).
+      ANTHROPIC_API_KEY: ${ANTHROPIC_API_KEY:-}
+      OPENAI_API_KEY: ${OPENAI_API_KEY:-}
+      # LLM backend selection (agents/app/config.py): bedrock (default) | openai | openrouter |
+      # anthropic. "openrouter" is the OpenAI-compatible path pointed at OpenRouter — set
+      # OPENAI_API_KEY to an OpenRouter key; OPENAI_BASE_URL is optional and defaults to
+      # https://openrouter.ai/api/v1 (never blank it to "override to the SDK default" for the
+      # openrouter backend — leaving it unset is what applies that default).
+      LLM_BACKEND: ${LLM_BACKEND:-bedrock}
+      OPENAI_BASE_URL: ${OPENAI_BASE_URL:-}
+      OPENROUTER_DEFAULT_MODEL_ID: ${OPENROUTER_DEFAULT_MODEL_ID:-z-ai/glm-5}  # must match Settings' own default
+      # Google Docs/Drive OAuth grant (agents/app/config.py, review/finalize/publish/drive) —
+      # a separate credential from web/'s own Google sign-in grant above. Prod resolves these via
+      # SSM (infra/aws-poc); local dev needs them forwarded here to exercise those features against
+      # real credentials.
+      GOOGLE_OAUTH_CLIENT_ID: ${GOOGLE_OAUTH_CLIENT_ID:-}
+      GOOGLE_OAUTH_CLIENT_SECRET: ${GOOGLE_OAUTH_CLIENT_SECRET:-}
+      GOOGLE_OAUTH_REFRESH_TOKEN: ${GOOGLE_OAUTH_REFRESH_TOKEN:-}
+      # Slack connector bot token (agents/app/connectors/slack.py) — unwired end-to-end elsewhere;
+      # only the local passthrough is added here.
+      SLACK_BOT_TOKEN: ${SLACK_BOT_TOKEN:-}
+      # Publish (agents/app/publish/) — public-read S3 bucket for published HTML/PDF renders.
+      PUBLISHED_ASSETS_BUCKET: ${PUBLISHED_ASSETS_BUCKET:-}
+      # Named root folder in the app account's own My Drive (agents/app/drive/) — the app
+      # creates/finds it itself under the drive.file scope; NOT a secret.
+      GOOGLE_DRIVE_ROOT_FOLDER_NAME: ${GOOGLE_DRIVE_ROOT_FOLDER_NAME:-}
+      # Points at this instance's own mongo over the internal network (fixed internal port).
+      MONGO_URL: mongodb://mongo:27017/content_machine
+      # Git brain (HendoCode/content-machine-brain), bind-mounted below at a fixed in-container
+      # path — set BRAIN_REPO_URL (+ BRAIN_DEPLOY_KEY if the mount is empty and needs an
+      # authenticated SSH clone) in a git-ignored .env to populate it on first boot. Left unset,
+      # this degrades exactly like a missing content-machine-agent/ did before this split: no
+      # brain, git-dependent routes report 503. Both are resolved through the secrets shim below
+      # (app/config.py's brain_repo_url/brain_deploy_key properties) rather than read raw.
+      BRAIN_ROOT: /brain
+      BRAIN_REPO_URL: ${BRAIN_REPO_URL:-}
+      BRAIN_DEPLOY_KEY: ${BRAIN_DEPLOY_KEY:-}
+      GIT_AUTHOR_NAME: ${GIT_AUTHOR_NAME:-content-machine-agent}
+      GIT_AUTHOR_EMAIL: ${GIT_AUTHOR_EMAIL:-agent@content-machine.local}
+      # Secrets shim (app/secrets/README.md) — same config convention as web/ above. Defaults
+      # below MUST match Settings' own defaults (never blank for a non-string field): "env" needs
+      # zero cloud setup, so this is what `docker compose up` uses unless a real deployment
+      # overrides SECRETS_BACKEND to aws/azure.
+      SECRETS_BACKEND: ${SECRETS_BACKEND:-env}
+      SECRETS_CACHE_TTL_SECONDS: ${SECRETS_CACHE_TTL_SECONDS:-300}
+      SECRETS_AWS_SSM_PREFIX: ${SECRETS_AWS_SSM_PREFIX:-/content-machine/}
+      SECRETS_AZURE_VAULT_URL: ${SECRETS_AZURE_VAULT_URL:-}
+    volumes:
+      # A bind mount, not a named volume: the brain clone should be the SAME clone a developer can
+      # `cd` into and inspect/commit/push with their own git, on the host — not container-private
+      # state. Defaults to a sibling of this repo (see content-machine-agent/README.md's re-point
+      # instructions); override BRAIN_HOST_PATH if yours lives elsewhere. If the host path is
+      # empty, BRAIN_REPO_URL above clones straight into it on first boot, so the mount becomes a
+      # real host-side clone the developer can keep using directly afterward.
+      - ${BRAIN_HOST_PATH:-../content-machine-brain}:/brain
+    ports:
+      - "${AGENTS_PORT:-8000}:8000"
+    depends_on:
+      mongo:
+        condition: service_healthy
+    healthcheck:
+      test:
+        - CMD
+        - python
+        - -c
+        - "import urllib.request,sys; sys.exit(0 if urllib.request.urlopen('http://127.0.0.1:8000/health').status==200 else 1)"
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 10s
+    restart: unless-stopped
+
+  mongo:
+    image: mongo:7
+    ports:
+      - "${MONGO_PORT:-27017}:27017"
+    # Ephemeral, per-instance datastore: tmpfs keeps DB files in memory for the container's
+    # lifetime only — no named volume shared across instances, clean slate every run. The
+    # persistent MongoDB (Atlas) data layer is a downstream ticket (D3, D9); this is the local seam.
+    tmpfs:
+      - /data/db
+    healthcheck:
+      test: ["CMD", "mongosh", "--quiet", "--eval", "db.adminCommand('ping').ok"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 15s
+    restart: unless-stopped

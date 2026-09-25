@@ -1,0 +1,9 @@
+.DS_Store
+
+# Root docker-compose env (may hold real provider keys) — never commit
+/.env
+
+# A brain clone landing inside this repo's tree instead of alongside it (see
+# content-machine-agent/README.md) — never its content, which lives in
+# HendoCode/content-machine-brain.
+/content-machine-brain/

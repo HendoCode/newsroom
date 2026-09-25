@@ -1,0 +1,26 @@
+# Remote state now lives in S3 (see versions.tf backend "s3" block + README "State"). Kept
+# gitignored regardless: the retired local terraform.tfstate/.backup are left on disk here
+# deliberately as a fallback until the remote backend is proven out, and either way this state
+# holds generated secret values in plaintext and must never be committed.
+*.tfstate
+*.tfstate.*
+.terraform.tfstate.lock.info
+
+# Provider plugin cache — reproducible from .terraform.lock.hcl (which IS committed).
+.terraform/
+
+# Plan files and real variable overrides — terraform.tfvars.example is the committed template.
+# Saved plans contain resource attribute values (including random_password secrets) in plaintext and must never be committed.
+tfplan
+tfplan.*
+*.tfplan
+terraform.tfvars
+*.auto.tfvars
+*.auto.tfvars.json
+
+crash.log
+crash.*.log
+override.tf
+override.tf.json
+*_override.tf
+*_override.tf.json

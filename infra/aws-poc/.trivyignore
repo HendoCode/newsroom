@@ -1,0 +1,17 @@
+# infra/aws-poc — accepted misconfiguration residuals (cmw-sec-deploy-scan-gate, 2026-08-12)
+#
+# Used by deploy/security-gate.sh's `trivy config --severity CRITICAL` step. Every entry below is
+# a deliberate, justified accept — not a blanket suppression. Re-evaluate whenever this security
+# group changes.
+
+# AWS-0104 — "security group rule should not allow unrestricted egress to any IP address."
+# aws_security_group.app's egress block (security.tf) is a deliberate all-outbound-any-destination
+# rule: the instance needs unrestricted outbound to pull from ECR, reach SSM, install OS packages,
+# and let the SSM agent phone home — none of those destinations are fixed/listable CIDRs. Ingress
+# is the side that's actually locked down (see security.tf's description: CloudFront's
+# origin-facing prefix list only, no public SSH — SSM Session Manager instead). Open egress from a
+# single-purpose instance is the conventional accepted risk here, same posture as most managed
+# compute; tightening it to specific destination CIDRs would need to track AWS's own
+# service-endpoint IP ranges by hand and re-verify on every AWS-side change, for marginal benefit
+# on a POC-scale instance with no direct inbound path.
+AVD-AWS-0104

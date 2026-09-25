@@ -1,0 +1,8 @@
+.DS_Store
+
+# Sensitive/internal source inputs for the aws-gsi-faq piece — keep local, never commit
+drafts/aws-gsi-faq/assets/*.pdf
+
+# Disposable finalize-render output (D13, Item 5): branded.html/branded.pdf/google-doc.json are
+# regenerable from the semantic draft.html + template, never a system of record — never commit.
+drafts/*/finalized/
