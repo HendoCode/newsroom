@@ -1,0 +1,36 @@
+# Copy to terraform.tfvars (gitignored) and edit. Every value has a working default (see
+# variables.tf) — you only need this file to override something.
+
+# region              = "us-east-1"
+# instance_type       = "t3.medium"
+
+# allowed_cidr_blocks and acme_email are vestigial (superseded by the CloudFront edge lock — see
+# variables.tf and README "Edge: CloudFront + AWS WAF"); leave them alone.
+# edge_port       = 80   # NOT opened publicly anymore — CloudFront-origin-facing-prefix-list only
+# edge_https_port = 443  # unused (Caddy no longer serves public TLS); kept for the CloudFront
+#                         # origin config's required https_port schema field only
+
+# Domain (see README "Edge: CloudFront + AWS WAF"). edge_domain is the FULL hostname of ONE
+# environment (prod = the apex "example.com"; a future environment is a subdomain, e.g.
+# "beta.example.com", as a separate instance of this stack). dns.tf automatically writes edge_domain's
+# ALIAS record to the CloudFront distribution, its ACM DNS-validation record(s), and the separate
+# origin-facing A record ("origin.<edge_domain>") to the instance's own public IP (no Elastic IP —
+# see README "EIP removed") — into the account's example.com zone (owned by vpo-aws-account-baseline,
+# looked up via a data source). No manual DNS step.
+# edge_domain = "example.com"
+
+# CloudFront + WAF edge tuning (see README "Edge: CloudFront + AWS WAF") — working defaults, only
+# override if you have a specific reason to.
+# waf_rate_limit_per_5min = 2000
+# cloudfront_price_class  = "PriceClass_100"
+
+# Must match agents/app/secrets + web/lib/secrets defaults unless you also override
+# SECRETS_AWS_SSM_PREFIX on both containers.
+# ssm_prefix = "/content-machine/"
+
+# Bump these after pushing a new image build (see README "Apply sequence").
+# web_image_tag    = "latest"
+# agents_image_tag = "latest"
+
+# Leave the *_placeholder variables alone — populate the real values directly in SSM after apply,
+# never here (see README "Populating the real secrets").

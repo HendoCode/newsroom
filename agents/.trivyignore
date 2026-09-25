@@ -1,0 +1,37 @@
+# agents/ image — accepted vulnerability residuals (P0 security review, cmw-security-p0, 2026-08-12)
+#
+# Every CVE below is a Debian 12 (bookworm) base-OS package with NO fix available upstream. They
+# cannot be cleared in place: the base is pinned to python:3.12-slim-bookworm because Playwright
+# 1.49.0 does not support Debian 13 "trixie" (see agents/Dockerfile's header comment). A build-time
+# `apt-get -y upgrade` is in the Dockerfile and will pull each fix automatically once Debian ships
+# it; until then these are acknowledged, not ignored.
+#
+# Reachability: the agents container publishes NO host port — it is reachable only over the internal
+# compose network, behind the `web` service. None of these packages parses untrusted, internet-origin
+# input in this app's data flow. Classes are DoS / local / crafted-input, not remote pre-auth RCE.
+#
+# Re-evaluate on: any Playwright bump that unblocks a Debian-13 base, or when `trivy image` shows a
+# FixedVersion for one of these (drop it from this file and rebuild).
+
+# glib — integer underflow in gio/gdbusintrospection.c (DBus introspection XML). No DBus use here.
+CVE-2026-58016
+
+# perl — regex/compile + Archive::Tar/Storable issues. Perl is present only as system tooling; the
+# app never runs perl on untrusted input.
+CVE-2026-13221
+CVE-2026-42496
+CVE-2026-57433
+CVE-2026-8376
+
+# sqlite3 — integer overflow via crafted DB. App uses Mongo, not local SQLite on untrusted files.
+CVE-2025-7458
+
+# libxml2 — DoS via crafted XML. No untrusted-XML parsing path in agents.
+CVE-2026-6653
+
+# openssh-client — use-after-free during host-key re-exchange. `ssh` is used only to push to a
+# trusted, pinned GitHub host for the brain repo; not exposed to untrusted SSH servers.
+CVE-2026-60002
+
+# zlib — MiniZip heap overflow (CVE-2023-45853). Debian won't-fix for bookworm; not reached here.
+CVE-2023-45853

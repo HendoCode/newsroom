@@ -1,0 +1,245 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/*
+ * Design tokens — the single source of truth for the app UI chrome (docs/design.md
+ * DESIGN FOUNDATION). Light AND dark sets are defined from day one. Values are SEEDED from
+ * the Hendo Code slate/amber/cream identity (hendocode.com; visual-identity.md) but are
+ * swappable tokens: re-skin the app by editing these variables — never by hard-coding brand
+ * values in components.
+ *
+ * Colors are stored as bare HSL channels ("H S% L%") so Tailwind can wrap them as
+ * hsl(var(--token) / <alpha>) and opacity modifiers keep working.
+ */
+@layer base {
+  :root {
+    /* Light — slate for structure, amber for emphasis, cream for the page. */
+    --background: 44 35% 94%; /* warm cream — never white/gray */
+    --foreground: 209 39% 19%; /* slate-dark ink — never pure #000 */
+
+    --card: 45 36% 96%; /* light cream panel */
+    --card-foreground: 209 39% 19%;
+    --popover: 45 36% 96%;
+    --popover-foreground: 209 39% 19%;
+
+    --primary: 206 35% 28%; /* #2E4A5F slate */
+    --primary-foreground: 55 52% 88%; /* cream text on slate */
+
+    --secondary: 207 20% 90%;
+    --secondary-foreground: 209 39% 19%;
+
+    --muted: 207 20% 90%;
+    --muted-foreground: 207 32% 43%; /* slate-light */
+
+    --accent: 35 65% 47%; /* #c4852a amber */
+    --accent-foreground: 55 52% 88%; /* cream text on amber */
+
+    --destructive: 0 84% 41%;
+    --destructive-foreground: 55 52% 88%;
+
+    /* Semantic status (status only). */
+    --success: 142 71% 26%;
+    --warning: 38 92% 28%;
+    --info: 217 91% 45%;
+
+    --border: 45 20% 83%; /* soft warm border */
+    --input: 207 20% 48%;
+    --ring: 206 35% 28%;
+
+    --radius: 0.75rem; /* 12px */
+  }
+
+  .dark {
+    /* Dark — the same identity inverted: deep slate surfaces, cream ink, amber-forward
+       primary so CTAs keep contrast on dark. */
+    --background: 207 35% 13%;
+    --foreground: 51 31% 87%;
+
+    --card: 209 39% 19%;
+    --card-foreground: 51 31% 87%;
+    --popover: 209 39% 19%;
+    --popover-foreground: 51 31% 87%;
+
+    --primary: 34 77% 60%; /* amber-forward */
+    --primary-foreground: 207 41% 11%;
+
+    --secondary: 207 25% 22%;
+    --secondary-foreground: 51 31% 87%;
+
+    --muted: 207 20% 20%;
+    --muted-foreground: 202 34% 63%;
+
+    --accent: 34 77% 60%;
+    --accent-foreground: 207 41% 11%;
+
+    --destructive: 0 72% 66%;
+    --destructive-foreground: 207 41% 11%;
+
+    --success: 142 60% 45%;
+    --warning: 38 85% 55%;
+    --info: 217 85% 65%;
+
+    --border: 207 20% 24%;
+    --input: 207 25% 44%;
+    --ring: 34 77% 60%;
+
+    --radius: 0.75rem;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+  body {
+    @apply bg-background text-foreground font-sans antialiased;
+  }
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
+    @apply font-serif tracking-tight;
+  }
+}
+
+/*
+ * FROZEN BRAND PREVIEW (cmw-app-chrome-reskin-fix) — deliberately NOT a swappable design token.
+ *
+ * `.piece-content-preview` (components/piece-detail/draft-view.tsx) is the one place the app
+ * shows a piece's raw draft.html ahead of the real branded render (agents/app/render/, driven by
+ * the Git brain's visual-identity.md, which never reads anything from this file). Every value
+ * below is a frozen snapshot of that same identity, referencing NOTHING above this comment —
+ * re-skinning the tokens in :root/.dark above must not move a single pixel of this block, or the
+ * preview would silently drift from what a reader actually sees. --preview-font-serif/-sans are
+ * defined by their own next/font loaders in draft-view.tsx (never --font-serif/--font-sans —
+ * those belong to the chrome and are exactly what must stay decoupled here). If the real brand
+ * identity in visual-identity.md ever changes, update these literals by hand to match — there is
+ * no live web/-side read of that file today.
+ */
+.piece-content-preview {
+  background-color: #f5f2ea;
+  color: #1e3245;
+  font-family: var(--preview-font-sans), Georgia, serif;
+}
+.piece-content-preview h1,
+.piece-content-preview h2 {
+  font-family: var(--preview-font-serif), Georgia, serif;
+  font-weight: 600;
+}
+.piece-content-preview h1 {
+  margin-bottom: 0.75rem;
+  font-size: 1.5rem;
+}
+.piece-content-preview h2 {
+  margin-top: 1.25rem;
+  margin-bottom: 0.5rem;
+  font-size: 1.125rem;
+}
+.piece-content-preview p,
+.piece-content-preview ul {
+  margin: 0.75rem 0;
+}
+.piece-content-preview ul {
+  list-style: disc;
+  padding-left: 1.25rem;
+}
+.piece-content-preview figure {
+  margin: 1rem 0;
+}
+.piece-content-preview svg {
+  height: auto;
+  max-width: 100%;
+}
+.piece-content-preview a {
+  color: #c4852a;
+  text-decoration: underline;
+}
+
+/* Markdown constructs produced by app.piece_md.markdown_to_html for brain-authored direct-
+ * content briefs (cmw-drafts-view). These are part of the frozen reader-facing face, so they
+ * reference only the literals above, never app tokens. */
+.piece-content-preview h3,
+.piece-content-preview h4,
+.piece-content-preview h5,
+.piece-content-preview h6 {
+  font-family: var(--preview-font-serif), Georgia, serif;
+  font-weight: 600;
+  margin-top: 1rem;
+  margin-bottom: 0.5rem;
+  font-size: 1rem;
+}
+.piece-content-preview ol {
+  margin: 0.75rem 0;
+  list-style: decimal;
+  padding-left: 1.25rem;
+}
+.piece-content-preview li {
+  margin: 0.25rem 0;
+}
+.piece-content-preview table {
+  margin: 1rem 0;
+  width: 100%;
+  border-collapse: collapse;
+}
+.piece-content-preview th,
+.piece-content-preview td {
+  border: 1px solid #ddd9cc;
+  padding: 0.5rem;
+  text-align: left;
+}
+.piece-content-preview th {
+  background-color: #f8f6f0;
+}
+.piece-content-preview blockquote {
+  margin: 1rem 0;
+  border-left: 3px solid #e8a44a;
+  padding-left: 1rem;
+  font-style: italic;
+}
+.piece-content-preview hr {
+  margin: 1.25rem 0;
+  border: 0;
+  border-top: 1px solid #ddd9cc;
+}
+.piece-content-preview strong {
+  font-weight: 700;
+}
+.piece-content-preview em {
+  font-style: italic;
+}
+/*
+ * CITATION CHIPS — app chrome over the frozen preview, NOT part of the brand face above.
+ *
+ * The draft's claim-level citation chips (`<sup class="fn"><a href="#srcN">N</a></sup>`)
+ * render as small, clickable pills by default; clicking one opens the piece's expandable
+ * Sources & retrieval drawer (components/piece-detail/sources-drawer.tsx, wired in
+ * draft-view.tsx via event delegation). The amber literals deliberately harmonize with
+ * the frozen brand face above but this block is chrome, so a re-skin may re-touch it without
+ * violating the "frozen preview" rule — the rule protects the content face, never this overlay.
+ */
+.piece-content-preview sup.fn {
+  line-height: 0;
+}
+.piece-content-preview sup.fn a {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 1.25em;
+  padding: 0.05em 0.35em;
+  margin: 0 0.1em;
+  border: 1px solid #c4852a;
+  border-radius: 999px;
+  background: rgba(196, 133, 42, 0.09);
+  color: #c4852a;
+  font-size: 0.72em;
+  line-height: 1.5;
+  text-decoration: none;
+  vertical-align: super;
+  cursor: pointer;
+}
+.piece-content-preview sup.fn a:hover {
+  background: rgba(196, 133, 42, 0.18);
+}

@@ -1,0 +1,5 @@
+{
+  "repo": "https://github.com/HendoCode/content-machine-brain.git",
+  "ref": "3c289ddb42f7b47446ece090a4275b65881374b3",
+  "note": "Known-good content-machine-brain commit that agents/ is built and tested against (BRAIN_REF). Runtime still tracks the live branch and is unaffected by this pin. See agents/app/git/README.md for the pin/bump workflow."
+}

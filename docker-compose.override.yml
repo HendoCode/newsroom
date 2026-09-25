@@ -1,0 +1,78 @@
+# content-machine-webapp — local-dev HTTPS override, auto-merged onto docker-compose.yml.
+#
+# Docker Compose auto-loads `docker-compose.override.yml` alongside `docker-compose.yml`
+# whenever a command is run with NO explicit `-f`/`--file` flag — this is standard Compose
+# behavior, not a project-specific trick. That's exactly what a bare `docker compose up` and
+# `scripts/instance.sh` both do (see that script's `exec docker compose -f ... -f ...` — it
+# passes both files explicitly to get the same effect from a different working directory).
+# Anything using an explicit `-f docker-compose.yml [...]` — most importantly
+# docker-compose.prod.yml's documented invocation (docs/deploy.md) — never loads this file,
+# so it is completely inert there by construction. That property is *why* this lives in a
+# separate override file instead of directly in docker-compose.yml: this project also has a
+# `docker-compose.prod.yml` overlay with its OWN `edge` (Caddy) service and its own reasons to
+# leave `web` unpublished — folding this file's `edge` service into the shared base file would
+# have merged with (or leaked alongside) that unrelated production service under the same name.
+# Keeping this override separate means the production overlay's Caddy config and topology are
+# untouched by any of this, without needing to edit that file at all.
+#
+# This turns `web`'s plain-HTTP publish OFF and replaces it with a Caddy edge terminating HTTPS
+# via Caddy's own internal CA (`tls internal`, deploy/Caddyfile.dev-tls — no domain, no public
+# ACME). This is the ONLY local-dev entrypoint, not an opt-in extra: an earlier version of this
+# setup kept plain HTTP as the default with HTTPS as a separate opt-in overlay, and the two
+# drifted out of sync (AUTH_URL stayed pinned to the HTTP origin, so real Google sign-in over the
+# HTTPS overlay silently sent the wrong redirect_uri) — see docs/local-dev.md "Local HTTPS" for
+# the full reasoning behind collapsing to one path. `https://localhost` (this file's default
+# WEB_PORT, 443 — deliberately HTTPS's default port, so no port suffix is needed in the URL) is
+# one of the three redirect URIs already registered on the Google OAuth client (docs/auth.md).
+
+services:
+  edge:
+    image: caddy:2-alpine
+    volumes:
+      - ./deploy/Caddyfile.dev-tls:/etc/caddy/Caddyfile:ro
+      # Persists the generated internal CA + issued cert across container recreation, so the
+      # one-time OS/browser trust step (docs/local-dev.md) doesn't need repeating on every
+      # `docker compose up`.
+      - caddy_dev_data:/data
+    ports:
+      - "${WEB_PORT:-443}:443"
+    depends_on:
+      web:
+        condition: service_healthy
+    restart: unless-stopped
+
+  web:
+    # Cancels the base file's plain-HTTP publish outright (`!reset` replaces rather than merges
+    # the list) — `web` is reached only through `edge` above, over the internal compose network.
+    # This is what "removing the plain-HTTP path" means concretely for local dev.
+    ports: !reset []
+    environment:
+      # Overrides the base file's HTTP-origin default with the HTTPS one `edge` above actually
+      # serves — see the long AUTH_URL comment on `web` in docker-compose.yml for the mechanism
+      # and why a mismatch here breaks OAuth redirect construction silently, not loudly. MUST
+      # track WEB_PORT exactly: override both together, or set AUTH_URL explicitly yourself.
+      # `scripts/instance.sh` does this per isolated instance since none of them use port 443.
+      AUTH_URL: ${AUTH_URL:-https://localhost}
+
+  agents:
+    # AWS Bedrock credential passthrough for local dev (see docs/local-dev.md "Bedrock / AWS SSO").
+    # Host `aws login` (SSO) must be active before `docker compose up`. Mount is READ-WRITE,
+    # deliberately (not `:ro`): boto3's credential chain refreshes the cached `aws login` token
+    # mid-session and writes the refreshed token back to this same file — a read-only mount makes
+    # that write-back fail (`OSError: [Errno 30] Read-only file system`), crashing the in-flight
+    # request with a raw 500, and can burn the underlying refresh grant in the process (see
+    # docs/local-dev.md "Bedrock / AWS SSO" for the full failure mode). This intentionally lets
+    # the container write to the host's own `~/.aws` credential cache — an accepted tradeoff for a
+    # local-dev-only convenience mount (container and host share this exact file by design).
+    volumes:
+      - ~/.aws:/root/.aws
+    environment:
+      - AWS_PROFILE=${AWS_PROFILE:-default}
+      - AWS_SDK_LOAD_CONFIG=1
+      - AWS_DEFAULT_REGION=${AWS_DEFAULT_REGION:-us-east-1}
+
+volumes:
+  # `edge`'s generated internal CA + issued cert — named per compose project, so isolated
+  # `scripts/instance.sh` instances each get their own and never share/clobber another
+  # instance's CA.
+  caddy_dev_data:

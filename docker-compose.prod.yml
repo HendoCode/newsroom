@@ -1,0 +1,30 @@
+# content-machine-webapp — production overlay: edge reverse proxy (POC exposure decision).
+#
+# Layers a Caddy reverse proxy (deploy/Caddyfile) in front of `web`. `web` is no longer directly
+# published in this overlay — only `edge` is. The app's own sign-in (docs/auth.md) is the access
+# gate; this proxy no longer adds a basic-auth layer on top of it (removed 2026-08-08).
+#
+# Local dev is unaffected: this file only applies when explicitly layered on top of the base
+# file. Plain `docker compose up` (base file alone) still serves `web` directly. See
+# docs/deploy.md for the full runbook.
+#
+# Usage:
+#   docker compose -f docker-compose.yml -f docker-compose.prod.yml up --build -d
+
+services:
+  edge:
+    image: caddy:2-alpine
+    volumes:
+      - ./deploy/Caddyfile:/etc/caddy/Caddyfile:ro
+    ports:
+      - "${EDGE_PORT:-80}:80"
+    depends_on:
+      web:
+        condition: service_healthy
+    restart: unless-stopped
+
+  web:
+    # No longer directly published in this overlay — `edge` is the only public entrypoint;
+    # every request routes through it first. `!reset` fully clears the base file's `ports` list
+    # rather than appending to it (Compose merges list fields by concatenation by default).
+    ports: !reset []

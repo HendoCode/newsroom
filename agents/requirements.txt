@@ -1,0 +1,40 @@
+# agents/ service runtime + test dependencies (pinned for reproducible local dev / Docker builds).
+# The LLM provider layer (D14) calls direct first-party Anthropic via the official SDK below
+# (open-decisions Item 1). The content-lake hybrid index (D9) ships with a dependency-free local
+# fallback (a deterministic hashing embedder + in-Python cosine), so it adds no new runtime deps;
+# production Atlas Vector Search / Atlas Search wiring (+ a real embedding provider) is a config
+# flip (see app/lake/).
+fastapi==0.118.0
+uvicorn[standard]==0.34.0
+pydantic==2.11.7
+pydantic-settings==2.7.1
+httpx==0.28.1
+
+# LLM provider layer: direct first-party Anthropic behind a swappable interface (D14, Item 1).
+# One server-side ANTHROPIC_API_KEY, per-call model tiering, streaming, prompt caching, usage.
+anthropic==0.116.0
+openai==1.99.9  # GPT-5.6 Terra OpenAI provider (D14)
+
+# Mongo work-state datastore (D3, §7). motor = the async MongoDB driver FastAPI talks to.
+motor==3.6.0
+
+# Finalize render (D13, Item 5): headless-Chromium PDF-from-branded-HTML. The import in
+# app/render/pdf.py is guarded (ImportError -> a clear PdfRenderError), so a service/test
+# environment without the downloaded browser binary still boots; HTML/Doc formats are unaffected.
+# One-time provisioning step (like the Slack-app/Drive-OAuth admin actions in Item 6):
+#   playwright install chromium
+playwright==1.49.0
+
+# Secrets shim (app/secrets/): SECRETS_BACKEND=aws|azure SDKs. Both imports are guarded/lazy
+# (app/secrets/{aws,azure}_provider.py), so the default SECRETS_BACKEND=env needs neither
+# installed to boot — pinned here only so aws/azure backends and their mocked-SDK tests work.
+boto3[crt]==1.43.61
+azure-identity==1.25.3
+azure-keyvault-secrets==4.11.0
+
+# Tests
+pytest==8.3.4
+pytest-asyncio==0.24.0
+# In-memory async Mongo so the repository suite runs green with no server (falls back to a
+# real MONGO_URL for the opt-in integration test).
+mongomock-motor==0.0.35
