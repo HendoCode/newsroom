@@ -3,12 +3,12 @@ import { describe, expect, it } from "vitest";
 import { HUB_APPS } from "@/lib/hub/apps";
 
 describe("HUB_APPS", () => {
-  it("lists Content Machine as a real, enabled entry routing into the existing app", () => {
+  it("lists Newsroom as a real, enabled entry routing into the existing app", () => {
     const contentMachine = HUB_APPS.find((app) => app.id === "content-machine");
     expect(contentMachine).toBeDefined();
     expect(contentMachine?.enabled).toBe(true);
     expect(contentMachine?.href).toBe("/content-machine");
-    expect(contentMachine?.name).toBe("Content Machine");
+    expect(contentMachine?.name).toBe("Newsroom");
     expect(contentMachine?.blurb.length).toBeGreaterThan(0);
   });
 

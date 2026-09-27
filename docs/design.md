@@ -1,7 +1,7 @@
-# Content Machine Webapp — Design & Requirements Specification (v1)
+# Newsroom Webapp — Design & Requirements Specification (v1)
 
 This is the authoritative design and requirements reference for **v1** of the
-content-machine-webapp. It describes *what* the system does and *why* the key
+newsroom-webapp. It describes *what* the system does and *why* the key
 decisions were made. It is deliberately not an implementation plan: there are no
 tasks, sprints, or code-level designs here. Where a topic is deferred or not yet
 decided, this document says so plainly rather than filling the gap.
@@ -14,7 +14,7 @@ decided, this document says so plainly rather than filling the gap.
 with clean hand-offs between teammates and with expert knowledge pulled in through
 short interviews (CTO, execs, subject-matter experts).
 
-The content-machine-webapp is a **harness around an existing content-creation
+The newsroom is a **harness around an existing content-creation
 agent**. That agent already exists, in its own repo,
 [`HendoCode/content-machine-brain`](https://github.com/HendoCode/content-machine-brain)
 (cloned read-write by `agents/` — see `BRAIN_ROOT`/`BRAIN_REPO_URL` in

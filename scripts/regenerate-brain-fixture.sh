@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 # Regenerate the checked-in Git test fixture (agents/tests/fixtures/brain/) from the pinned
-# content-machine-brain ref recorded in agents/brain.lock — see agents/app/git/README.md for the
+# Masthead (content-machine-brain repo) ref recorded in agents/brain.lock — see agents/app/git/README.md for the
 # full pin/bump story.
 #
 # Usage:

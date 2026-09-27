@@ -30,11 +30,11 @@ export function InterviewShell({
     <div className="flex min-h-screen flex-col">
       <header className="sticky top-0 z-10 border-b bg-background/80 backdrop-blur">
         <div className="mx-auto flex w-full max-w-2xl items-center justify-between gap-4 px-4 py-3 sm:px-6">
-          <span aria-label="Content Machine" className="flex items-center gap-2">
+          <span aria-label="Newsroom" className="flex items-center gap-2">
             <span className="flex h-8 w-8 items-center justify-center rounded-md bg-primary text-primary-foreground">
               <Sparkles className="h-4 w-4" aria-hidden />
             </span>
-            <span className="font-serif text-base font-semibold">Content Machine</span>
+            <span className="font-serif text-base font-semibold">Newsroom</span>
           </span>
           <div className="flex items-center gap-3">
             <ThemeToggle />

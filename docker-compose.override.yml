@@ -1,4 +1,4 @@
-# content-machine-webapp — local-dev HTTPS override, auto-merged onto docker-compose.yml.
+# Newsroom — local-dev HTTPS override, auto-merged onto docker-compose.yml.
 #
 # Docker Compose auto-loads `docker-compose.override.yml` alongside `docker-compose.yml`
 # whenever a command is run with NO explicit `-f`/`--file` flag — this is standard Compose

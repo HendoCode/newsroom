@@ -1,6 +1,6 @@
 # Local development
 
-How to run the content-machine-webapp stack locally, run the test suites, and spin up
+How to run the Newsroom stack locally, run the test suites, and spin up
 parallel isolated instances. The stack and constraints are defined in
 [`design.md` §6](design.md).
 

@@ -19,8 +19,8 @@ const jetbrainsMono = JetBrains_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Content Machine",
-  description: "Team harness around the content-machine agent (v1 skeleton).",
+  title: "Newsroom",
+  description: "Team harness around the newsroom agent (v1 skeleton).",
 };
 
 export default function RootLayout({

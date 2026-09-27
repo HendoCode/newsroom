@@ -1,4 +1,4 @@
-# Content Machine
+# Newsroom
 
 A personal content-creation pipeline that takes a rough idea and drives it through a
 deterministic, six-stage workflow — from an initial idea, through structured interviews,

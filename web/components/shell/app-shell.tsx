@@ -8,11 +8,11 @@ import type { AppUser } from "@/lib/session";
 import { cn } from "@/lib/utils";
 
 /**
- * The Content Machine app shell — the top-level frame every Content Machine screen mounts into
+ * The Newsroom app shell — the top-level frame every Newsroom screen mounts into
  * (behind the auth gate; `requireUser()` yields the signed-in user, middleware already protected
  * the route). It owns the brand bar, the light/dark toggle (wired to the skeleton's token theme
  * via `ThemeToggle`), the sign-in/out control (`UserMenu`), the app-section nav, and a small
- * app-hub link back to the platform-level app picker (`app/page.tsx`) now that Content Machine is
+ * app-hub link back to the platform-level app picker (`app/page.tsx`) now that Newsroom is
  * one app among (eventually) several rather than the root landing page itself.
  *
  * Only the Dashboard section is built in this ticket; the other sections are rendered as visible
@@ -58,7 +58,7 @@ export function AppShell({
                 <Sparkles className="h-5 w-5" aria-hidden />
               </span>
               <span className="flex flex-col leading-tight">
-                <span className="font-serif text-lg font-semibold">Content Machine</span>
+                <span className="font-serif text-lg font-semibold">Newsroom</span>
                 <span className="text-xs text-muted-foreground">Hendo Code</span>
               </span>
             </Link>

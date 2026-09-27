@@ -250,7 +250,7 @@ class FinalizeStep(BatchStep):
                 warnings.append("doc skipped: no GoogleDocsClient configured")
             else:
                 description = (
-                    f"content-machine finalize · revision {source_revision} · "
+                    f"newsroom finalize · revision {source_revision} · "
                     f"template {template_version} · rendered {rendered_at}"
                 )
                 try:
