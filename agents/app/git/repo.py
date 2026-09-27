@@ -267,7 +267,7 @@ def discover_repo(path: str | Path, *, ssh_deploy_key: str | None = None) -> tup
 
     ``prefix`` is the POSIX path from the repo root to ``path`` (``""`` when they are the same).
     This lets the brain/content stores work identically whether the brain clone is its own git
-    repo (prefix ``""`` — the normal case now that it's cloned from ``content-machine-brain``) or
+    repo (prefix ``""`` — the normal case now that it's cloned from Masthead) or
     nested inside another repo (a nonzero prefix); all rel paths are joined onto the prefix so
     commits land at the right place either way.
     """

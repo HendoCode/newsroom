@@ -66,7 +66,7 @@ incorporate.
 `incorporating` → success advances to `council`, which is not wired here either (a separate
 downstream ticket). `PieceMachine._run_batch_chain` stops the chain in place when the next stage's
 step isn't registered, the same way it stops at a genuine interactive stage — it does not enqueue a
-job nothing can service. This guard used to be missing (see `content-machine-webapp` CLAUDE.md's
+job nothing can service. This guard used to be missing (see `newsroom` CLAUDE.md's
 orchestration entry / `test_orchestration.py`'s
 `test_chain_stops_cleanly_when_a_later_stage_step_is_unregistered`): registering *any* step whose
 `_ON_SUCCESS` target lacked its own registered step used to raise `StepNotRegistered` out of

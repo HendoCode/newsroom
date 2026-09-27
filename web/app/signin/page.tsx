@@ -41,7 +41,7 @@ export default async function SignInPage({
         <span className="flex h-11 w-11 items-center justify-center rounded-md bg-primary text-primary-foreground">
           <Sparkles className="h-6 w-6" aria-hidden />
         </span>
-        <span className="font-serif text-xl font-semibold">Content Machine</span>
+        <span className="font-serif text-xl font-semibold">Newsroom</span>
       </div>
 
       <Card className="w-full">

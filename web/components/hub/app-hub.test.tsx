@@ -4,11 +4,11 @@ import { describe, expect, it } from "vitest";
 import { AppHub } from "@/components/hub/app-hub";
 
 describe("AppHub", () => {
-  it("shows a Content Machine card that links into the existing app", () => {
+  it("shows a Newsroom card that links into the existing app", () => {
     render(<AppHub />);
 
-    expect(screen.getByText("Content Machine")).toBeInTheDocument();
-    const cta = screen.getByRole("link", { name: /open content machine/i });
+    expect(screen.getByText("Newsroom")).toBeInTheDocument();
+    const cta = screen.getByRole("link", { name: /open newsroom/i });
     expect(cta).toHaveAttribute("href", "/content-machine");
   });
 

@@ -5,10 +5,10 @@ import type { DashboardResponse } from "@/lib/dashboard/types";
 import { requireUser } from "@/lib/session";
 
 /**
- * Content Machine home: the redesigned desk (Inbox + Machine strip + Library).
+ * Newsroom home: the redesigned desk (Inbox + Machine strip + Library).
  *
  * Lives at `/content-machine` — the post-login hub (`app/page.tsx`) is the platform landing
- * destination; this route is what its "Content Machine" card opens into. The PR #120 Operator
+ * destination; this route is what its "Newsroom" card opens into. The PR #120 Operator
  * Desk tracer is no longer the home screen (it leaked internal enum names into copy and only
  * listed ~6 recent pieces). Middleware gates this route; `requireUser()` yields the typed
  * signed-in user and redirects to /signin as defense-in-depth.

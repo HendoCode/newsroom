@@ -300,9 +300,9 @@ async def lifespan(app: FastAPI):
 
 
 app = FastAPI(
-    title="content-machine agents",
+    title="newsroom agents",
     version=__version__,
-    summary="Orchestration + LLM service for the content-machine webapp (v1 skeleton).",
+    summary="Orchestration + LLM service for the newsroom webapp (v1 skeleton).",
     lifespan=lifespan,
 )
 

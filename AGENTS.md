@@ -1,4 +1,4 @@
-# Content Machine webapp — agent notes
+# Newsroom webapp — agent notes
 
 Durable project-intrinsic knowledge for the webapp repo. Prefer pointers to authoritative files over repeating what the code already shows.
 
