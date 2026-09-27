@@ -203,7 +203,7 @@ class PublishService:
                 warnings.append(f"pdf skipped: {exc}")
 
         description = (
-            f"content-machine publish · piece {piece.slug} · revision {piece.latest_revision} · "
+            f"newsroom publish · piece {piece.slug} · revision {piece.latest_revision} · "
             f"release {release}"
         )
         # cmw-drive-piece-folders: publish's own re-rendered copies go in the piece folder's

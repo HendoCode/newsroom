@@ -37,7 +37,7 @@ when something *sets the env var*, on purpose, for a build/test invocation.
 }
 ```
 
-This is the lockfile: the exact `content-machine-brain` commit that `agents/` is known to build
+This is the lockfile: the exact Masthead commit that `agents/` is known to build
 and test correctly against — the same discipline as a `package-lock.json`/`poetry.lock`, just for
 a brain that lives in its own repo instead of a package registry. `ref` is a full commit SHA (not
 a branch), so the pin never silently drifts.
@@ -55,7 +55,7 @@ already does this for you.
 
 ## The test fixture is a snapshot of the pin
 
-`agents/tests/fixtures/brain/` is a frozen snapshot of `content-machine-brain` at
+`agents/tests/fixtures/brain/` is a frozen snapshot of Masthead at
 `brain.lock`'s pinned `ref` — not an arbitrary capture. The regeneration helper also writes
 `.fixture-source.json` into that directory, recording the `repo`/`ref` it used so
 `tests/test_brain_fixture.py` can catch a lockfile bump without a matching fixture refresh
@@ -76,7 +76,7 @@ same as any other clone of it).
 
 ## Bump workflow (like `npm update` + committing the lockfile)
 
-1. Pick the newer `content-machine-brain` commit/tag you want to move to.
+1. Pick the newer Masthead commit/tag you want to move to.
 2. Regenerate the fixture against it and look at the diff:
    ```bash
    scripts/regenerate-brain-fixture.sh <new-sha>

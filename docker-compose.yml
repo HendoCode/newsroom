@@ -1,4 +1,4 @@
-# content-machine-webapp — local full-stack orchestration (docs/design.md §6).
+# Newsroom — local full-stack orchestration (docs/design.md §6).
 #
 # `docker compose up` brings up the whole stack: web (Next.js UI+BFF) → agents (FastAPI) → mongo.
 #

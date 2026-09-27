@@ -1,4 +1,4 @@
-"""content-machine agents service.
+"""Newsroom agents service.
 
 FastAPI app that (per docs/design.md D5, §6) will host the deterministic orchestration
 state machine and the LLM-facing work. This v1 skeleton wires only /health and one stub

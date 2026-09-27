@@ -1,7 +1,7 @@
 """Regression guard for cmw-phantom-edits-from-doc-roundtrip, built from REAL Google Docs.
 
 A green test suite never caught any of the three prior defects in this exact area (see
-`content-machine-webapp` CLAUDE.md's draft-step/heading-bold/banner sharp-edge entries) — each was
+'newsroom' CLAUDE.md's draft-step/heading-bold/banner sharp-edge entries) — each was
 invisible until someone actually round-tripped a real Doc. So this file's fixtures are not
 hand-written assumptions about what Google's export looks like; they are byte-for-byte captures
 from a real throwaway mint against a real Google account, done once while diagnosing/fixing this

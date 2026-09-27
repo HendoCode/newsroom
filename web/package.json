@@ -2,7 +2,7 @@
   "name": "content-machine-web",
   "version": "0.1.0",
   "private": true,
-  "description": "Next.js (App Router) UI + BFF for the content-machine webapp (docs/design.md §6).",
+  "description": "Next.js (App Router) UI + BFF for the newsroom webapp (docs/design.md §6).",
   "scripts": {
     "dev": "next dev",
     "build": "next build",
