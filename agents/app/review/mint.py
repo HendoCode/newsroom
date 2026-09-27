@@ -148,7 +148,7 @@ class ReviewMintService:
         else:
             title = piece.title or piece.slug
             description = (
-                f"content-machine review round · piece {piece.slug} · revision {piece.latest_revision}"
+                f"newsroom review round · piece {piece.slug} · revision {piece.latest_revision}"
             )
             doc = await self.docs_client.create_doc_from_html(
                 title, ensure_doc_html(html), description=description, parent_id=folder.file_id if folder else None

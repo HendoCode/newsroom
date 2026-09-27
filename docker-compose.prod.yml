@@ -1,4 +1,4 @@
-# content-machine-webapp — production overlay: edge reverse proxy (POC exposure decision).
+# Newsroom — production overlay: edge reverse proxy (POC exposure decision).
 #
 # Layers a Caddy reverse proxy (deploy/Caddyfile) in front of `web`. `web` is no longer directly
 # published in this overlay — only `edge` is. The app's own sign-in (docs/auth.md) is the access

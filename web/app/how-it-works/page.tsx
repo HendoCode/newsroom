@@ -58,7 +58,7 @@ export default async function HowItWorksPage() {
             <Step n={1} title="The Git brain (voices, personas, interviews, lessons)">
               The single most common gap: without a clone of{" "}
               <RepoLink href="https://github.com/HendoCode/content-machine-brain">
-                content-machine-brain
+                Masthead
               </RepoLink>{" "}
               mounted into the stack, the voice kits, the kickoff voice/persona selectors, the
               Radar&rsquo;s voice pick, and the interview engine all report{" "}

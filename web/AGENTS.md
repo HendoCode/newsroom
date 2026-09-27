@@ -163,14 +163,14 @@ This file is the project's committed home for project-intrinsic agent knowledge:
 ## App hub (post-login landing page)
 
 - Route `/` (`app/page.tsx`) is the platform-level app hub — the post-login landing destination —
-  not the Content Machine dashboard. The dashboard moved to `/content-machine`
-  (`app/content-machine/page.tsx`, otherwise unchanged); every other Content Machine route
+  not the Newsroom dashboard. The dashboard moved to `/content-machine`
+  (`app/content-machine/page.tsx`, otherwise unchanged); every other Newsroom route
   (`/spikes`, `/sources`, `/voice-kit`, `/pieces/*`, `/interviews/*`) is unmoved. This needed no
   redirect-callback change: [`lib/auth-actions.ts`](lib/auth-actions.ts)'s sign-in action already
   defaults `redirectTo` to `/` when there's no deep-link `callbackUrl`, so moving the hub onto `/`
   is what makes login (and revisiting while signed in) land there.
 - The hub's own frame is [`components/hub/hub-shell.tsx`](components/hub/hub-shell.tsx) —
-  deliberately NOT `AppShell`: `AppShell`'s nav row is Content Machine's internal sections, which
+  deliberately NOT `AppShell`: `AppShell`'s nav row is Newsroom's internal sections, which
   don't belong one level up on the app picker. It reuses the same token-driven header chrome plus
   the shared `ThemeToggle`/`UserMenu` controls so it still feels like one system.
 - The app catalog is DATA, not layout: [`lib/hub/apps.ts`](lib/hub/apps.ts)'s `HUB_APPS` array
@@ -180,8 +180,8 @@ This file is the project's committed home for project-intrinsic agent knowledge:
   that's being built but not ready (renders a disabled, non-navigable card); the static "more apps
   coming" tile is separate and never represents a real app.
 - `AppShell` gained a small `LayoutGrid` icon link back to `/` next to its brand lockup, since
-  Content Machine is no longer the root — its own brand/nav links point at `/content-machine` now,
-  not `/`. Keep any new top-level Content Machine "back to home" link pointed at `/content-machine`
+  Newsroom is no longer the root — its own brand/nav links point at `/content-machine` now,
+  not `/`. Keep any new top-level Newsroom "back to home" link pointed at `/content-machine`
   (see `components/interview/interview-surface-view.tsx` and
   `components/piece-detail/piece-detail-view.tsx` for the existing pattern), not `/`.
 
@@ -213,7 +213,7 @@ This file is the project's committed home for project-intrinsic agent knowledge:
   no-loss test in `desk.test.ts` (every predicate hit lands in exactly one of inbox ∪ strip) is
   the tripwire.
 - **Mounting**: `/content-machine` (`app/content-machine/page.tsx`) is the redesigned Dashboard
-  — Inbox + Machine strip + Library — as the Content Machine home screen. The PR #120 Operator
+  — Inbox + Machine strip + Library — as the Newsroom home screen. The PR #120 Operator
   Desk tracer is no longer the home (it leaked internal enum names into copy and only listed ~6
   recent pieces). Library is the complete all-pieces queue (every stage, published/finalized
   included), also reachable from the `Library` nav item (`/content-machine#library`). The tracer

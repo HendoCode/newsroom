@@ -6,7 +6,7 @@ import type { AppUser } from "@/lib/session";
 
 /**
  * The platform-level frame for the post-login app hub (`app/page.tsx`) — deliberately its OWN
- * small header rather than a reuse of `AppShell`: `AppShell`'s nav is Content Machine's internal
+ * small header rather than a reuse of `AppShell`: `AppShell`'s nav is Newsroom's internal
  * sections (Dashboard/Spikes/Sources/Voice kits), which don't belong one level up on the app
  * picker itself. Reuses the same token-driven header chrome and the shared `ThemeToggle`/
  * `UserMenu` controls so it still feels like one system.

@@ -43,7 +43,7 @@ _THINKING_DISABLED: dict[str, object] = {"type": "disabled"}
 # surfacing a token-ceiling hit to a human as an opaque parse failure.
 _MAX_TOKENS_RETRY_MULTIPLIER = 2
 
-_RUBRIC = """You are the review-feedback classifier for a content-machine review round \
+_RUBRIC = """You are the review-feedback classifier for a newsroom review round \
 (engine/feedback-intake.md). Classify EACH numbered review item into exactly one of four buckets:
 
 - "editorial-fix": wording, structure, or tone the machine can apply directly to the draft.

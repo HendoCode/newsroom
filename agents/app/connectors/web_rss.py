@@ -170,6 +170,6 @@ class HttpFeedFetcher:
         import httpx  # local import keeps httpx off the import path for pure-parser tests
 
         async with httpx.AsyncClient(timeout=self.timeout, follow_redirects=True) as client:
-            resp = await client.get(url, headers={"User-Agent": "content-machine-connector/1.0"})
+            resp = await client.get(url, headers={"User-Agent": "newsroom-connector/1.0"})
             resp.raise_for_status()
             return resp.text

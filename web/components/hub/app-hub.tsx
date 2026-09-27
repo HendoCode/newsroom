@@ -6,7 +6,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { HUB_APPS, type HubApp } from "@/lib/hub/apps";
 
 /**
- * The post-login app hub grid. Renders `HUB_APPS` (`lib/hub/apps.ts`) as cards — Content Machine
+ * The post-login app hub grid. Renders `HUB_APPS` (`lib/hub/apps.ts`) as cards — Newsroom
  * is the only enabled entry today, but the grid itself has no per-app knowledge, so a future
  * second app is a data addition there, not a change here. A disabled `enabled: false` entry
  * renders as a non-interactive card rather than a link; the trailing "more apps coming" tile is a
