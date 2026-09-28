@@ -14,6 +14,13 @@ traceable to an exact commit).
 
 Injection is plain ``{{SLOT}}`` substitution — no templating-engine dependency for one template
 with a handful of slots (Item 5: "the template is then a thin render layer").
+
+**A brain without branding degrades, it does not fail.** The brain repo (``HendoCode/masthead``) is
+the neutral demo suite: it deliberately ships no personal brand assets, so
+``templates/branded/demo-dana-v1.html`` is absent there. Rather than hard-failing every finalize on
+that, :meth:`TemplateStore.read_or_plain` falls back to the built-in :func:`plain_template` below and
+reports a warning — the same never-raises degradation :mod:`app.render.brand` already applies when
+``visual-identity.md`` is missing. An *unknown version label* is still a bug and still raises.
 """
 
 from __future__ import annotations
@@ -39,6 +46,60 @@ class BrandedTemplate:
     path: str  # git-relative path, for provenance
     html: str  # the raw `{{SLOT}}`-templated skeleton
     sha: str | None  # commit sha that last touched the file (None only if the repo has no history)
+
+
+# The built-in fallback skeleton: no brand fonts, no colors of its own, no logo — just the article
+# plus the D13 provenance footer. Brand tokens are still injected when the brain carries them, so a
+# brain that has a visual identity but no branded template still gets its palette applied.
+PLAIN_TEMPLATE_VERSION = "plain-v1"
+
+_PLAIN_TEMPLATE_HTML = """<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>{{TITLE}}</title>
+{{FONT_IMPORT}}
+<style>
+  :root {
+{{TOKENS_CSS}}
+  }
+  * { box-sizing: border-box; }
+  body { font: 16px/1.7 system-ui, sans-serif; margin: 0; padding: 0; color: #111; background: #fff; }
+  .plain-page { max-width: 720px; margin: 0 auto; padding: 2rem 1.5rem 4rem; }
+  .plain-footer {
+    margin-top: 3rem;
+    padding-top: 1.25rem;
+    border-top: 1px solid #ddd;
+    font-size: 0.78rem;
+    color: #555;
+  }
+  @media print { .plain-page { max-width: none; padding: 0 0.5in; } .plain-footer { break-inside: avoid; } }
+</style>
+</head>
+<body>
+<div class="plain-page">
+  <main>
+{{ARTICLE_HTML}}
+  </main>
+  <footer class="plain-footer">
+    <p>Rendered {{RENDERED_AT}} &middot; source revision {{SOURCE_REVISION}} &middot; template {{TEMPLATE_VERSION}}</p>
+    <p>Unbranded output: the brain carries no branded template.</p>
+  </footer>
+</div>
+</body>
+</html>
+"""
+
+
+def plain_template() -> BrandedTemplate:
+    """The built-in unbranded template, used when the brain ships no branded one."""
+    return BrandedTemplate(
+        version=PLAIN_TEMPLATE_VERSION,
+        path="<builtin:render/template.py:plain-v1>",
+        html=_PLAIN_TEMPLATE_HTML,
+        sha=None,
+    )
 
 
 class TemplateStore:
@@ -67,6 +128,19 @@ class TemplateStore:
         history = self.repo.log(rel, max_count=1)
         sha = history[0].sha if history else None
         return BrandedTemplate(version=version, path=rel, html=html, sha=sha)
+
+    def read_or_plain(
+        self, version: str = TEAM_VOICE_TEMPLATE_VERSION
+    ) -> tuple[BrandedTemplate, list[str]]:
+        """:meth:`read`, degraded: a branded template the brain does not ship yields the built-in
+        plain template plus a warning (never an exception). Passes an unknown ``version`` straight
+        through to :meth:`read` — that is a caller bug, not a missing asset."""
+        try:
+            return self.read(version), []
+        except TemplateNotFound as exc:
+            if version != TEAM_VOICE_TEMPLATE_VERSION:
+                raise
+            return plain_template(), [f"{exc}; rendering with the built-in plain template"]
 
 
 def render_branded_html(
