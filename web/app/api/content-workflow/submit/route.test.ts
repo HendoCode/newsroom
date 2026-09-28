@@ -25,7 +25,7 @@ const BACKEND_COMMAND_KIND_VALUES: readonly string[] = Object.values(BACKEND_COM
 
 /**
  * Verbatim JSON body `OperatorDesk.handleCommitIdea` currently constructs and POSTs
- * (`web/app/content-machine/operator-desk.tsx`). Field names, nesting, and the
+ * (`web/app/newsroom/operator-desk.tsx`). Field names, nesting, and the
  * `command_type` string are copied from the component, not guessed.
  */
 function operatorDeskSubmitBody(email: string) {

@@ -163,8 +163,8 @@ This file is the project's committed home for project-intrinsic agent knowledge:
 ## App hub (post-login landing page)
 
 - Route `/` (`app/page.tsx`) is the platform-level app hub — the post-login landing destination —
-  not the Newsroom dashboard. The dashboard moved to `/content-machine`
-  (`app/content-machine/page.tsx`, otherwise unchanged); every other Newsroom route
+  not the Newsroom dashboard. The dashboard moved to `/newsroom`
+  (`app/newsroom/page.tsx`, otherwise unchanged); every other Newsroom route
   (`/spikes`, `/sources`, `/voice-kit`, `/pieces/*`, `/interviews/*`) is unmoved. This needed no
   redirect-callback change: [`lib/auth-actions.ts`](lib/auth-actions.ts)'s sign-in action already
   defaults `redirectTo` to `/` when there's no deep-link `callbackUrl`, so moving the hub onto `/`
@@ -180,8 +180,8 @@ This file is the project's committed home for project-intrinsic agent knowledge:
   that's being built but not ready (renders a disabled, non-navigable card); the static "more apps
   coming" tile is separate and never represents a real app.
 - `AppShell` gained a small `LayoutGrid` icon link back to `/` next to its brand lockup, since
-  Newsroom is no longer the root — its own brand/nav links point at `/content-machine` now,
-  not `/`. Keep any new top-level Newsroom "back to home" link pointed at `/content-machine`
+  Newsroom is no longer the root — its own brand/nav links point at `/newsroom` now,
+  not `/`. Keep any new top-level Newsroom "back to home" link pointed at `/newsroom`
   (see `components/interview/interview-surface-view.tsx` and
   `components/piece-detail/piece-detail-view.tsx` for the existing pattern), not `/`.
 
@@ -212,12 +212,12 @@ This file is the project's committed home for project-intrinsic agent knowledge:
   structure 1:1 — if the predicate ever grows a branch, extend `desk.ts` in the SAME commit; the
   no-loss test in `desk.test.ts` (every predicate hit lands in exactly one of inbox ∪ strip) is
   the tripwire.
-- **Mounting**: `/content-machine` (`app/content-machine/page.tsx`) is the redesigned Dashboard
+- **Mounting**: `/newsroom` (`app/newsroom/page.tsx`) is the redesigned Dashboard
   — Inbox + Machine strip + Library — as the Newsroom home screen. The PR #120 Operator
   Desk tracer is no longer the home (it leaked internal enum names into copy and only listed ~6
   recent pieces). Library is the complete all-pieces queue (every stage, published/finalized
-  included), also reachable from the `Library` nav item (`/content-machine#library`). The tracer
-  form still lives in `app/content-machine/operator-desk.tsx` (unmounted; content-workflow first-mile
+  included), also reachable from the `Library` nav item (`/newsroom#library`). The tracer
+  form still lives in `app/newsroom/operator-desk.tsx` (unmounted; content-workflow first-mile
   tests keep it) and `/content-projects` remains the project list.
 - Work-state is read through the data layer via the BFF: `web/` calls the agents read-model at
   `GET /api/dashboard` (see [`lib/agents-client.ts`](lib/agents-client.ts) `fetchDashboard` and the
