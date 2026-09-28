@@ -1,7 +1,7 @@
 """Git brain reader + voice-pack writer (domain model §1.1, §1.2 — Voices & Personas; §7 Git-brain
 store).
 
-Reads the agent-native brain layout under the ``content-machine-agent/`` tree:
+Reads the agent-native brain layout under the ``newsroom-agent/`` tree:
 
     voice/<slug>/{voice-guide,style-guide,content-lessons}.md
     voice/demo-dana/{visual-identity,brand-guidelines}.md   (demo-dana only)
@@ -65,8 +65,8 @@ class GitBrain:
         repo: GitRepo | None = None,
         prefix: str = "",
         *,
-        author_name: str = "content-machine-agent",
-        author_email: str = "agent@content-machine.local",
+        author_name: str = "newsroom-agent",
+        author_email: str = "agent@newsroom.local",
         ssh_deploy_key: str | None = None,
     ) -> None:
         if repo is None:

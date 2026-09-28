@@ -4,6 +4,6 @@
 /.env
 
 # A brain clone landing inside this repo's tree instead of alongside it (see
-# content-machine-agent/README.md) — never its content, which lives in
+# newsroom-agent/README.md) — never its content, which lives in
 # HendoCode/content-machine-brain.
 /content-machine-brain/

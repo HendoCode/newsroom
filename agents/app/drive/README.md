@@ -23,7 +23,7 @@ went through it before the folder work existed.
 
 ```
 <My Drive>/
-  <GOOGLE_DRIVE_ROOT_FOLDER_NAME>/   # the named root the app finds-or-creates itself (e.g. "content-machine")
+  <GOOGLE_DRIVE_ROOT_FOLDER_NAME>/   # the named root the app finds-or-creates itself (e.g. "newsroom")
     <piece-slug>/                    # one per piece, named after its Git slug (drafts/<slug>/...)
       <review round Docs>            # each round's mint, in creation order
       <finalized Doc>                # the current clean Doc (re-created, not versioned, per finalize run)
@@ -50,7 +50,7 @@ folder in its own My Drive under the `drive.file` scope — which already confin
 files this app itself created, so scoping to "one folder this app made" is naturally the tightest
 `drive.file`-compatible arrangement.
 
-1. Pick a folder name (e.g. `content-machine`) and set it as `GOOGLE_DRIVE_ROOT_FOLDER_NAME` — a
+1. Pick a folder name (e.g. `newsroom`) and set it as `GOOGLE_DRIVE_ROOT_FOLDER_NAME` — a
    plain folder **name**, **not a secret**, following the exact same settings pattern as
    `PUBLISHED_ASSETS_BUCKET` (`app/config.py`, `app/publish/README.md`). Env key the agents service
    reads: `GOOGLE_DRIVE_ROOT_FOLDER_NAME` (docker-compose/.env wiring is in the root

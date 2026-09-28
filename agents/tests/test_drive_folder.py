@@ -14,7 +14,7 @@ from app.drive.folder import DriveFileRef, PieceDriveFolders
 from app.models import Piece
 from app.repositories import WorkStateStore
 
-ROOT_NAME = "content-machine"
+ROOT_NAME = "newsroom"
 
 
 class FakeDriveClient:

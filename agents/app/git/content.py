@@ -52,8 +52,8 @@ class GitContentStore:
         *,
         repo: GitRepo | None = None,
         prefix: str = "",
-        author_name: str = "content-machine-agent",
-        author_email: str = "agent@content-machine.local",
+        author_name: str = "newsroom-agent",
+        author_email: str = "agent@newsroom.local",
         ssh_deploy_key: str | None = None,
     ) -> None:
         if repo is None:

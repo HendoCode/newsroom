@@ -223,14 +223,14 @@ async def test_mint_with_a_named_root_configured_puts_the_doc_in_the_piece_folde
     docs = FakeDocsClient()
     drive_client = FakeDriveClient()
     service = ReviewMintService(
-        store, content_store, docs, drive_client=drive_client, root_folder_name="content-machine"
+        store, content_store, docs, drive_client=drive_client, root_folder_name="newsroom"
     )
 
     await service.mint(piece.id)
 
     # Root folder first, then the piece folder parented under it.
     assert drive_client.folders_created == [
-        ("content-machine", "root"),
+        ("newsroom", "root"),
         (piece.slug, "folder-root"),
     ]
     assert docs.parent_ids == ["folder-1"]
@@ -241,7 +241,7 @@ async def test_mint_with_a_named_root_configured_puts_the_doc_in_the_piece_folde
     # re-created, but the piece folder is reused by persisted pointer).
     await service.mint(piece.id)
     assert drive_client.folders_created == [
-        ("content-machine", "root"),
+        ("newsroom", "root"),
         (piece.slug, "folder-root"),
     ]
     assert docs.parent_ids == ["folder-1", "folder-1"]
