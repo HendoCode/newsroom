@@ -57,7 +57,7 @@ export default async function HowItWorksPage() {
           <CardContent className="flex flex-col gap-4 text-sm">
             <Step n={1} title="The Git brain (voices, personas, interviews, lessons)">
               The single most common gap: without a clone of{" "}
-              <RepoLink href="https://github.com/HendoCode/content-machine-brain">
+              <RepoLink href="https://github.com/HendoCode/masthead">
                 Masthead
               </RepoLink>{" "}
               mounted into the stack, the voice kits, the kickoff voice/persona selectors, the

@@ -111,7 +111,7 @@ services:
       GOOGLE_DRIVE_ROOT_FOLDER_NAME: ${GOOGLE_DRIVE_ROOT_FOLDER_NAME:-}
       # Points at this instance's own mongo over the internal network (fixed internal port).
       MONGO_URL: mongodb://mongo:27017/content_machine
-      # Git brain (HendoCode/content-machine-brain), bind-mounted below at a fixed in-container
+      # Git brain (HendoCode/masthead), bind-mounted below at a fixed in-container
       # path — set BRAIN_REPO_URL (+ BRAIN_DEPLOY_KEY if the mount is empty and needs an
       # authenticated SSH clone) in a git-ignored .env to populate it on first boot. Left unset,
       # this degrades exactly like a missing newsroom-agent/ did before this split: no
@@ -137,7 +137,7 @@ services:
       # instructions); override BRAIN_HOST_PATH if yours lives elsewhere. If the host path is
       # empty, BRAIN_REPO_URL above clones straight into it on first boot, so the mount becomes a
       # real host-side clone the developer can keep using directly afterward.
-      - ${BRAIN_HOST_PATH:-../content-machine-brain}:/brain
+      - ${BRAIN_HOST_PATH:-../masthead}:/brain
     ports:
       - "${AGENTS_PORT:-8000}:8000"
     depends_on:

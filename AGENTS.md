@@ -26,7 +26,7 @@ The webapp is published as a single clean init commit into a fresh public repo; 
 
 - The **brain** is a Git clone, not a subdirectory; `agents/app/git/` handles discover, clone, commit and push. Runtime wiring is in `agents/app/main.py` lifespan.
 - The checked-in test fixture (`agents/tests/fixtures/brain/`) is the neutral demo suite: voices `demo-dana` and `demo-mira`, no real person names. Its `.fixture-source.json` and `agents/brain.lock` record the brain repo + commit it was snapshotted from — must stay in sync (enforced by `agents/tests/test_brain_fixture.py`).
-- **Runtime brain stays private.** The runtime clone target is the private `HendoCode/content-machine-brain` (see `.gitignore`'s `/content-machine-brain/`); it is *not* re-pointed at the public demo brain. Publication-order re-pointing is separate work.
+- **Runtime brain is `HendoCode/masthead`.** The runtime clone target is the masthead repo (see `.gitignore`'s `/masthead/` for a clone that lands inside this repo's tree instead of alongside it), the same repo the test fixture is snapshotted from.
 
 ## Sharp edges (shortlist)
 

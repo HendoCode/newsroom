@@ -2,7 +2,7 @@
 ``BRAIN_REF`` handling (agents/brain.lock, agents/app/git/README.md).
 
 Everything here runs against a local bare repo standing in for the real
-``content-machine-brain`` remote (no network), the same style as ``test_git.py``'s clone/pull/push
+``masthead`` remote (no network), the same style as ``test_git.py``'s clone/pull/push
 suite. The point being proven: a pinned ref always wins over "whatever the live branch tip is
 now" — the mechanism build/test reproducibility depends on — while leaving ``BRAIN_REF`` unset
 reproduces the pre-pin runtime behavior exactly (clone once, then fast-forward pull).

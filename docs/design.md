@@ -16,7 +16,7 @@ short interviews (CTO, execs, subject-matter experts).
 
 The newsroom is a **harness around an existing content-creation
 agent**. That agent already exists, in its own repo,
-[`HendoCode/content-machine-brain`](https://github.com/HendoCode/content-machine-brain)
+[`HendoCode/masthead`](https://github.com/HendoCode/masthead)
 (cloned read-write by `agents/` — see `BRAIN_ROOT`/`BRAIN_REPO_URL` in
 `agents/app/config.py`), as a set of markdown files — voice kits, interviewer and
 editor personas, and per-step prompts. Today those files are pasted into a Claude
@@ -39,7 +39,7 @@ durable public *links* to the piece's outputs; it does not push the piece to any
 
 These terms carry the meanings the agent already gives them (see `PANEL.md` and
 `PROJECT-INSTRUCTIONS.md` in
-[`HendoCode/content-machine-brain`](https://github.com/HendoCode/content-machine-brain)).
+[`HendoCode/masthead`](https://github.com/HendoCode/masthead)).
 A reader new to the project should read this section first.
 
 - **Voice** — one identity the machine writes *for* (e.g. a specific person, or the

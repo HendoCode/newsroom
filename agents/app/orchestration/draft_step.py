@@ -42,7 +42,7 @@ different error). The block carries its own explicit framing — the transcript 
 evidence gathered *in service of* this purpose, not the purpose itself; select/organize it
 accordingly rather than transcribing it wholesale — because engine/2-draft.md itself says nothing
 about this relationship and cannot be edited from this repo (it lives in
-``HendoCode/content-machine-brain`` — see this fix's PR description for the recommended
+``HendoCode/masthead`` — see this fix's PR description for the recommended
 brain-side addition). Best-effort like the example-piece/sources.md enrichment below: a piece
 with no linked Spike, or a Spike with nothing to say, contributes no block rather than failing
 the draft.
