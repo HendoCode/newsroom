@@ -191,7 +191,7 @@ export function InterviewSurfaceView({
   return (
     <div className="flex flex-col gap-6">
       <Button asChild variant="ghost" size="sm" className="-ml-2 w-fit">
-        <Link href="/content-machine">&larr; Back to dashboard</Link>
+        <Link href="/newsroom">&larr; Back to dashboard</Link>
       </Button>
 
       <AssignmentBanner piece={piece} interview={interview} />
