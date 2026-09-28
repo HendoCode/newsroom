@@ -26,7 +26,7 @@ def test_seed_covers_every_predicate_signal() -> None:
     items = build_queue(seed_work_state(VIEWER))
 
     # review + owner=viewer, with the round & council aggregate joined in.
-    token = _by_title(items, "Tokens vs. storage: where the money actually goes")
+    token = _by_title(items, "The board on the wall")
     assert token.kind == "piece" and token.stage == "review"
     assert token.owner == VIEWER
     assert token.council_aggregate == 9.2
@@ -34,7 +34,7 @@ def test_seed_covers_every_predicate_signal() -> None:
     assert token.open_gaps == 2
 
     # interviewing + an open interview assigned to the viewer.
-    aws = _by_title(items, "AWS GSI technical eval FAQ")
+    aws = _by_title(items, "Rehearse the rollback")
     assert aws.stage == "interviewing"
     assert VIEWER in aws.assigned_experts
     assert any(oi.expert == VIEWER for oi in aws.open_interviews)

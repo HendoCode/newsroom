@@ -31,7 +31,7 @@ from app.llm.tiering import MODEL_GLM5, PipelineStep
 from app.models import Lesson, LessonStatus, Piece, PieceStage
 from app.repositories import WorkStateStore
 
-SLUG = "token-vs-storage"
+SLUG = "the-board-on-the-wall"
 
 
 class FakeLessonsProvider(LLMProvider):

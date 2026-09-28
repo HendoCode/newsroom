@@ -18,7 +18,7 @@ from app.orchestration import JobRunner, PieceMachine, StepRegistry
 from app.render.docs_export import DocRef
 from app.repositories import WorkStateStore
 
-SLUG = "token-vs-storage"
+SLUG = "the-board-on-the-wall"
 
 
 class _FakeStorage:

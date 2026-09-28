@@ -29,7 +29,7 @@ async def test_list_interviewer_personas(git_brain: GitBrain) -> None:
     assert resp.status_code == 200
     body = resp.json()
     assert body["kind"] == "interviewer"
-    assert "ferriss" in body["personas"]
+    assert "tactician" in body["personas"]
     assert "skeptic" in body["personas"]
 
 

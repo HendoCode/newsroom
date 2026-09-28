@@ -25,6 +25,7 @@ from mongomock_motor import AsyncMongoMockClient
 from app.git import GitBrain, GitContentStore
 from app.lake import ContentLake, build_content_lake
 from app.repositories import WorkStateStore
+from tests.synthetic_brand import seed_synth_brand
 
 # agents/tests/fixtures/brain — a frozen snapshot of HendoCode/masthead's content.
 FIXTURE_BRAIN = Path(__file__).resolve().parent / "fixtures" / "brain"
@@ -83,3 +84,18 @@ def git_brain(brain_repo: Path) -> GitBrain:
 @pytest.fixture
 def content_store(brain_repo: Path) -> GitContentStore:
     return GitContentStore(str(brain_repo))
+
+
+@pytest.fixture
+def branded_brain_repo(brain_repo: Path) -> Path:
+    """The fixture brain **plus** the synthetic brand assets (tests/synthetic_brand.py).
+
+    The brain repo is the neutral demo suite and ships no personal branding, so this is what the
+    branded render path is tested against — the plain fallback is covered by the bare
+    ``brain_repo``."""
+    return seed_synth_brand(brain_repo)
+
+
+@pytest.fixture
+def branded_git_brain(branded_brain_repo: Path) -> GitBrain:
+    return GitBrain(str(branded_brain_repo))

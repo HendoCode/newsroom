@@ -20,7 +20,7 @@ from app.main import app
 from app.models import Lesson, LessonStatus, Piece, PieceStage
 from app.repositories import WorkStateStore
 
-SLUG = "token-vs-storage"
+SLUG = "the-board-on-the-wall"
 
 
 class _FakeProvider(LLMProvider):

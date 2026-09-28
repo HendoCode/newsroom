@@ -28,6 +28,7 @@ from app.publish.service import PublishService
 from app.render.docs_export import DocRef
 from app.render.pdf import PdfRenderError
 from app.render.template import TemplateStore
+from tests.synthetic_brand import SYNTH_BRAND_MARKER
 from app.repositories import WorkStateStore
 
 
@@ -78,6 +79,11 @@ def template_store(brain_repo: Path) -> TemplateStore:
     return TemplateStore(str(brain_repo))
 
 
+@pytest.fixture
+def branded_template_store(branded_brain_repo: Path) -> TemplateStore:
+    return TemplateStore(str(branded_brain_repo))
+
+
 def _machine(store: WorkStateStore) -> PieceMachine:
     return PieceMachine(store, JobRunner(store, StepRegistry()))
 
@@ -86,7 +92,7 @@ async def _piece(
     store: WorkStateStore,
     content: GitContentStore,
     *,
-    slug: str = "token-vs-storage",
+    slug: str = "the-board-on-the-wall",
     voice: str = "demo-mira",
     stage: PieceStage = PieceStage.finalized,
     with_revision: bool = True,
@@ -146,12 +152,21 @@ async def test_publish_happy_path_mints_immutable_release_1_and_flips_stage(
 
     assert PieceStage(result.piece.stage) == PieceStage.released
     assert result.piece.published_release == 1
-    assert result.warnings == []
+    # The neutral demo brain ships no visual identity and no branded template: publish still mints
+    # every output, degraded to plain, and says so rather than failing (D13 Item 5).
+    assert result.warnings == [
+        "visual identity unavailable; rendering with plain fallback",
+        (
+            "branded template not found at 'templates/branded/demo-dana-v1.html'; "
+            "rendering with the built-in plain template"
+        ),
+    ]
 
     html_key, html_body, html_ct = storage.puts[0]
     assert html_key == f"published/{piece.slug}/1/branded.html"
     assert html_ct == "text/html; charset=utf-8"
-    assert "demo-dana-v1" in html_body.decode("utf-8")
+    assert "plain-v1" in html_body.decode("utf-8")
+    assert SYNTH_BRAND_MARKER not in html_body.decode("utf-8")
 
     pdf_key, pdf_body, pdf_ct = storage.puts[1]
     assert pdf_key == f"published/{piece.slug}/1/branded.pdf"
@@ -181,6 +196,40 @@ async def test_publish_happy_path_mints_immutable_release_1_and_flips_stage(
     assert updated.published_doc.doc_id == "doc-1"
     assert ShareMode(updated.published_doc.share_mode) == ShareMode.external
     assert updated.published_at is not None
+
+
+@pytest.mark.asyncio
+async def test_publish_with_a_branded_brain_uses_the_versioned_template(
+    store: WorkStateStore,
+    branded_git_brain: GitBrain,
+    content_store: GitContentStore,
+    branded_template_store: TemplateStore,
+) -> None:
+    """Branded-path coverage against a brain that carries branding (the synthetic stand-in — the
+    real Hendo Code assets never land in the demo brain or in this repo)."""
+    piece = await _piece(store, content_store)
+    storage = FakeStorage()
+    service = _service(
+        store,
+        branded_git_brain,
+        content_store,
+        branded_template_store,
+        storage=storage,
+        docs_client=FakeDocsClient(),
+        pdf_renderer=FakePdfRenderer(),
+    )
+
+    result = await service.publish(piece.id)
+
+    html_body = storage.puts[0][1].decode("utf-8")
+    assert SYNTH_BRAND_MARKER in html_body
+    assert "demo-dana-v1" in html_body
+    # Derived tokens came from the visual identity, and no template degradation was reported.
+    assert "--primary:" in html_body
+    assert not any("branded template not found" in w for w in result.warnings)
+    # The synthetic logo host is unreachable by design, so the logo warns-and-carries-on rather
+    # than blocking the publish (§5 "warns, does not block").
+    assert any("logo inline failed" in w for w in result.warnings)
 
 
 @pytest.mark.asyncio
@@ -493,10 +542,10 @@ async def _derivative_piece(
     *,
     target: str = "linkedin-post",
 ) -> Piece:
-    history = content.revision_history("token-vs-storage", max_count=1)
+    history = content.revision_history("the-board-on-the-wall", max_count=1)
     return await store.pieces.insert(
         Piece(
-            slug="token-vs-storage",
+            slug="the-board-on-the-wall",
             voice="demo-mira",
             stage=PieceStage.finalized,
             latest_revision=history[0].sha,

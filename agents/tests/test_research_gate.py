@@ -130,7 +130,7 @@ async def _project_piece(store, project_id: str, *, slug: str) -> Piece:
 async def _open(client, piece_id: str, *, is_gap_interview: bool = False):
     return await client.post(
         f"/api/pieces/{piece_id}/interviews",
-        json={"interviewer_personas": ["ferriss"], "is_gap_interview": is_gap_interview},
+        json={"interviewer_personas": ["tactician"], "is_gap_interview": is_gap_interview},
     )
 
 

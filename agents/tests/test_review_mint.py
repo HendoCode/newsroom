@@ -10,6 +10,7 @@ from __future__ import annotations
 import pytest
 
 from app.models import Piece, PieceStage, ShareMode
+from app.render.editorial import has_editorial_block
 from app.review.docs_client import DocRef
 from app.review.errors import NoRevisionToMint, NotInReviewStage, UnsafeExternalShareError
 from app.review.mint import ReviewMintService
@@ -37,7 +38,7 @@ async def _piece(
     store,
     content,
     *,
-    slug: str = "token-vs-storage",
+    slug: str = "the-board-on-the-wall",
     voice: str = "demo-mira",
     open_gaps: int = 0,
     open_clearances: int = 0,
@@ -102,7 +103,11 @@ async def test_mint_external_with_open_gaps_only_warns(store, content_store):
     assert "3 open GAP" in result.warnings[0]
     assert "clearance" not in result.warnings[0]
     html_sent = docs.created[0][1]
-    assert 'class="editorial"' not in html_sent
+    # The editorial BLOCK is gone. What still reads as `class="editorial"` is the piece's own <head>
+    # comment quoting the convention by name — prose about the rule, not the rule's markup, and the
+    # strip deliberately matches markup only (app/render/editorial).
+    assert not has_editorial_block(html_sent)
+    assert "Editorial annotations" not in html_sent and "[NO OPEN GAPS]" not in html_sent
     assert "DRAFT — not for external distribution" in html_sent
 
 

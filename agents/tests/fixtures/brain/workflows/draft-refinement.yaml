@@ -1,0 +1,89 @@
+name: draft-refinement
+description: >
+  Dedicated workflow for taking an arbitrary external draft through
+  gap diagnosis, targeted interview, and council revision loop.
+  Trigger: "refine this draft", "I have a draft to fix", "run intake",
+  "draft needs work".
+version: 1.0.0
+inputs:
+  - name: voice
+    type: string
+    required: true
+    description: Active voice pack to evaluate against
+  - name: draft_input
+    type: string
+    required: true
+    description: External draft content or path to draft file
+outputs:
+  - name: final_draft_path
+    type: string
+    description: Path to revised draft.html
+  - name: aggregate_score
+    type: string
+    description: Final council aggregate score
+steps:
+  - id: intake
+    action: Diagnose gaps in external draft against active voice
+    skill: draft-intake
+    inputs:
+      voice: ${{ inputs.voice }}
+      draft_input: ${{ inputs.draft_input }}
+    outputs: [gap_list, gap_classification]
+    compliance:
+      audit_level: detailed
+
+  - id: intake_approval
+    action: __approval_gate__ — review gap diagnosis and confirm interview targets
+    depends_on: [intake]
+    skill: draft-intake
+    inputs:
+      gap_list: ${{ steps.intake.outputs.gap_list }}
+    compliance:
+      requires_approval: true
+      audit_level: full
+
+  - id: gap_interview
+    action: Targeted interview to fill information gaps
+    depends_on: [intake_approval]
+    skill: interview
+    inputs:
+      voice: ${{ inputs.voice }}
+      gap_classification: ${{ steps.intake.outputs.gap_classification }}
+    outputs: [transcript_path]
+    compliance:
+      audit_level: detailed
+
+  - id: gap_interview_approval
+    action: __approval_gate__ — confirm gaps are filled, proceed to revision
+    depends_on: [gap_interview]
+    skill: interview
+    inputs:
+      transcript_path: ${{ steps.gap_interview.outputs.transcript_path }}
+    compliance:
+      requires_approval: true
+      audit_level: full
+
+  - id: council_revision
+    action: Council revision loop on updated draft
+    depends_on: [gap_interview_approval]
+    skill: council
+    inputs:
+      voice: ${{ inputs.voice }}
+    outputs: [final_draft_path, aggregate_score]
+    compliance:
+      audit_level: full
+
+  - id: final_approval
+    action: __approval_gate__ — confirm revised draft meets bar
+    depends_on: [council_revision]
+    skill: council
+    inputs:
+      final_draft_path: ${{ steps.council_revision.outputs.final_draft_path }}
+      aggregate_score: ${{ steps.council_revision.outputs.aggregate_score }}
+    compliance:
+      requires_approval: true
+      audit_level: full
+
+error_handling:
+  on_step_failure: pause
+  escalation_target: user

@@ -127,7 +127,7 @@ async def test_next_question_is_opus_reads_persona_and_style_guide_and_transcrip
     provider = FakeInterviewProvider()
     engine = _engine(store, content_store, git_brain, provider)
     piece = await _piece(store, slug="p-serial")
-    interview = await engine.open_interview(piece.id, interviewer_personas=["ferriss", "skeptic"])
+    interview = await engine.open_interview(piece.id, interviewer_personas=["tactician", "skeptic"])
 
     provider.queue(PipelineStep.INTERVIEW_QUESTION, "What's the real storage workload?")
     interview = await engine.next_question(interview.id)
@@ -137,7 +137,7 @@ async def test_next_question_is_opus_reads_persona_and_style_guide_and_transcrip
     assert call["step"] == PipelineStep.INTERVIEW_QUESTION
     assert call["model"] == MODEL_GLM5  # INTERVIEW_QUESTION now routes to GLM5 live default
     system_text = _system_text(call)
-    assert "Ferriss" in system_text  # the interviewer persona rubric (T0)
+    assert "Tactician" in system_text  # the interviewer persona rubric (T0)
 
     # one question per turn — asking again while one is pending is illegal.
     with pytest.raises(PendingQuestionError):
@@ -148,7 +148,7 @@ async def test_next_question_is_opus_reads_persona_and_style_guide_and_transcrip
     provider.queue(PipelineStep.RECAP, "You said the workload is about 10TB at $230/month.")
     result = await engine.respond(interview.id, "About 10TB, roughly $230/month")
     assert isinstance(result, AnsweredTurn)
-    assert result.turn.persona == "ferriss"
+    assert result.turn.persona == "tactician"
     assert result.turn.question == "What's the real storage workload?"
     assert result.turn.answer == "About 10TB, roughly $230/month"
     assert result.recap == "You said the workload is about 10TB at $230/month."
@@ -171,7 +171,7 @@ async def test_next_question_is_opus_reads_persona_and_style_guide_and_transcrip
     interview = await engine.next_question(interview.id)
     call2 = provider.calls[-1]
     assert "About 10TB, roughly $230/month" in _system_text(call2)
-    assert interview.current_persona_index == 0  # still Ferriss — a persona isn't auto-advanced
+    assert interview.current_persona_index == 0  # still Tactician — a persona isn't auto-advanced
 
 
 async def test_second_persona_sees_first_personas_turns_verbatim(store, content_store, git_brain):
@@ -179,15 +179,15 @@ async def test_second_persona_sees_first_personas_turns_verbatim(store, content_
     provider = FakeInterviewProvider()
     engine = _engine(store, content_store, git_brain, provider)
     piece = await _piece(store, slug="p-cross-persona")
-    interview = await engine.open_interview(piece.id, interviewer_personas=["ferriss", "skeptic"])
+    interview = await engine.open_interview(piece.id, interviewer_personas=["tactician", "skeptic"])
 
-    provider.queue(PipelineStep.INTERVIEW_QUESTION, "Ferriss Q1")
+    provider.queue(PipelineStep.INTERVIEW_QUESTION, "Tactician Q1")
     interview = await engine.next_question(interview.id)
     provider.queue(PipelineStep.INTERVIEW_CLASSIFY, _classify("answer"))
     provider.queue(PipelineStep.RECAP, "recap")
-    await engine.respond(interview.id, "Ferriss answer one, a specific number")
+    await engine.respond(interview.id, "Tactician answer one, a specific number")
 
-    provider.queue(PipelineStep.INTERVIEW_QUESTION, "Ferriss Q2")
+    provider.queue(PipelineStep.INTERVIEW_QUESTION, "Tactician Q2")
     interview = await engine.next_question(interview.id)
     provider.queue(PipelineStep.INTERVIEW_CLASSIFY, _classify("meta-command", "skip"))
     skip_result = await engine.respond(interview.id, "let's move to the next interviewer")
@@ -200,7 +200,7 @@ async def test_second_persona_sees_first_personas_turns_verbatim(store, content_
     interview = await engine.next_question(interview.id)
     call = provider.calls[-1]
     assert "Skeptic" in _system_text(call)
-    assert "Ferriss answer one, a specific number" in _system_text(call)  # coverage carries over
+    assert "Tactician answer one, a specific number" in _system_text(call)  # coverage carries over
 
 
 async def test_next_question_roster_exhausted_after_skipping_past_last_persona(
@@ -209,7 +209,7 @@ async def test_next_question_roster_exhausted_after_skipping_past_last_persona(
     provider = FakeInterviewProvider()
     engine = _engine(store, content_store, git_brain, provider)
     piece = await _piece(store, slug="p-roster-exhausted")
-    interview = await engine.open_interview(piece.id, interviewer_personas=["ferriss"])
+    interview = await engine.open_interview(piece.id, interviewer_personas=["tactician"])
 
     provider.queue(PipelineStep.INTERVIEW_QUESTION, "Q1")
     interview = await engine.next_question(interview.id)
@@ -224,9 +224,9 @@ async def test_go_back_returns_to_the_previous_persona(store, content_store, git
     provider = FakeInterviewProvider()
     engine = _engine(store, content_store, git_brain, provider)
     piece = await _piece(store, slug="p-go-back")
-    interview = await engine.open_interview(piece.id, interviewer_personas=["ferriss", "skeptic"])
+    interview = await engine.open_interview(piece.id, interviewer_personas=["tactician", "skeptic"])
 
-    provider.queue(PipelineStep.INTERVIEW_QUESTION, "Ferriss Q1")
+    provider.queue(PipelineStep.INTERVIEW_QUESTION, "Tactician Q1")
     interview = await engine.next_question(interview.id)
     provider.queue(PipelineStep.INTERVIEW_CLASSIFY, _classify("meta-command", "skip"))
     await engine.respond(interview.id, "skip")
@@ -253,7 +253,7 @@ async def test_advance_persona_skip_with_no_pending_question_and_no_classifier_c
     provider = FakeInterviewProvider()
     engine = _engine(store, content_store, git_brain, provider)
     piece = await _piece(store, slug="p-advance-skip-no-question")
-    interview = await engine.open_interview(piece.id, interviewer_personas=["ferriss", "skeptic"])
+    interview = await engine.open_interview(piece.id, interviewer_personas=["tactician", "skeptic"])
     assert interview.current_question is None  # never asked — the exact scenario Hendo hit
 
     result = await engine.advance_persona(interview.id, MetaCommand.skip)
@@ -271,7 +271,7 @@ async def test_advance_persona_go_back_with_no_pending_question(store, content_s
     provider = FakeInterviewProvider()
     engine = _engine(store, content_store, git_brain, provider)
     piece = await _piece(store, slug="p-advance-go-back-no-question")
-    interview = await engine.open_interview(piece.id, interviewer_personas=["ferriss", "skeptic"])
+    interview = await engine.open_interview(piece.id, interviewer_personas=["tactician", "skeptic"])
     await engine.advance_persona(interview.id, MetaCommand.skip)
 
     result = await engine.advance_persona(interview.id, MetaCommand.go_back)
@@ -290,11 +290,11 @@ async def test_advance_persona_discards_a_pending_question_without_calling_the_c
     provider = FakeInterviewProvider()
     engine = _engine(store, content_store, git_brain, provider)
     piece = await _piece(store, slug="p-advance-skip-pending-question")
-    interview = await engine.open_interview(piece.id, interviewer_personas=["ferriss", "skeptic"])
+    interview = await engine.open_interview(piece.id, interviewer_personas=["tactician", "skeptic"])
 
-    provider.queue(PipelineStep.INTERVIEW_QUESTION, "Ferriss Q1")
+    provider.queue(PipelineStep.INTERVIEW_QUESTION, "Tactician Q1")
     interview = await engine.next_question(interview.id)
-    assert interview.current_question == "Ferriss Q1"
+    assert interview.current_question == "Tactician Q1"
     calls_before = len(provider.calls)
 
     await engine.advance_persona(interview.id, MetaCommand.skip)
@@ -308,7 +308,7 @@ async def test_advance_persona_discards_a_pending_question_without_calling_the_c
 async def test_advance_persona_skip_clamps_at_roster_length(store, content_store, git_brain):
     engine = _engine(store, content_store, git_brain, FakeInterviewProvider())
     piece = await _piece(store, slug="p-advance-skip-clamp")
-    interview = await engine.open_interview(piece.id, interviewer_personas=["ferriss"])
+    interview = await engine.open_interview(piece.id, interviewer_personas=["tactician"])
 
     await engine.advance_persona(interview.id, MetaCommand.skip)
     await engine.advance_persona(interview.id, MetaCommand.skip)  # already exhausted — re-skip
@@ -320,7 +320,7 @@ async def test_advance_persona_skip_clamps_at_roster_length(store, content_store
 async def test_advance_persona_go_back_clamps_at_zero(store, content_store, git_brain):
     engine = _engine(store, content_store, git_brain, FakeInterviewProvider())
     piece = await _piece(store, slug="p-advance-go-back-clamp")
-    interview = await engine.open_interview(piece.id, interviewer_personas=["ferriss", "skeptic"])
+    interview = await engine.open_interview(piece.id, interviewer_personas=["tactician", "skeptic"])
 
     await engine.advance_persona(interview.id, MetaCommand.go_back)  # already at 0
 
@@ -331,7 +331,7 @@ async def test_advance_persona_go_back_clamps_at_zero(store, content_store, git_
 async def test_advance_persona_rejects_a_non_navigation_direction(store, content_store, git_brain):
     engine = _engine(store, content_store, git_brain, FakeInterviewProvider())
     piece = await _piece(store, slug="p-advance-bad-direction")
-    interview = await engine.open_interview(piece.id, interviewer_personas=["ferriss"])
+    interview = await engine.open_interview(piece.id, interviewer_personas=["tactician"])
     with pytest.raises(ValueError):
         await engine.advance_persona(interview.id, MetaCommand.restart)
 
@@ -348,7 +348,7 @@ async def test_advance_persona_unknown_interview_raises(store, content_store, gi
 async def test_respond_without_pending_question_raises(store, content_store, git_brain):
     engine = _engine(store, content_store, git_brain, FakeInterviewProvider())
     piece = await _piece(store, slug="p-no-pending")
-    interview = await engine.open_interview(piece.id, interviewer_personas=["ferriss"])
+    interview = await engine.open_interview(piece.id, interviewer_personas=["tactician"])
     with pytest.raises(NoPendingQuestionError):
         await engine.respond(interview.id, "hello")
 
@@ -359,7 +359,7 @@ async def test_respond_research_this_is_sonnet_plus_web_search_and_preserves_pen
     provider = FakeInterviewProvider()
     engine = _engine(store, content_store, git_brain, provider)
     piece = await _piece(store, slug="p-research")
-    interview = await engine.open_interview(piece.id, interviewer_personas=["ferriss"])
+    interview = await engine.open_interview(piece.id, interviewer_personas=["tactician"])
 
     provider.queue(PipelineStep.INTERVIEW_QUESTION, "What's the S3 bill?")
     interview = await engine.next_question(interview.id)
@@ -396,7 +396,7 @@ async def test_research_folds_in_content_lake_candidates(store, content_store, g
     provider = FakeInterviewProvider()
     engine = _engine(store, content_store, git_brain, provider, lake=lake)
     piece = await _piece(store, slug="p-research-lake")
-    interview = await engine.open_interview(piece.id, interviewer_personas=["ferriss"])
+    interview = await engine.open_interview(piece.id, interviewer_personas=["tactician"])
 
     provider.queue(PipelineStep.INTERVIEW_QUESTION, "Q1")
     interview = await engine.next_question(interview.id)
@@ -438,7 +438,7 @@ async def test_meta_command_add_and_drop_interviewer(store, content_store, git_b
     provider = FakeInterviewProvider()
     engine = _engine(store, content_store, git_brain, provider)
     piece = await _piece(store, slug="p-add-drop")
-    interview = await engine.open_interview(piece.id, interviewer_personas=["ferriss"])
+    interview = await engine.open_interview(piece.id, interviewer_personas=["tactician"])
 
     provider.queue(PipelineStep.INTERVIEW_QUESTION, "Q1")
     interview = await engine.next_question(interview.id)
@@ -447,21 +447,21 @@ async def test_meta_command_add_and_drop_interviewer(store, content_store, git_b
     result = await engine.respond(interview.id, "add the skeptic")
     assert isinstance(result, MetaCommandResult) and result.handled and result.note == "skeptic"
     interview = await engine.get(interview.id)
-    assert interview.interviewer_personas == ["ferriss", "skeptic"]
+    assert interview.interviewer_personas == ["tactician", "skeptic"]
     assert interview.current_question == "Q1"  # add doesn't disturb the pending question
 
     provider.queue(PipelineStep.INTERVIEW_CLASSIFY, _classify("meta-command", "drop-interviewer", "skeptic"))
     result2 = await engine.respond(interview.id, "actually drop the skeptic")
     assert result2.handled
     interview = await engine.get(interview.id)
-    assert interview.interviewer_personas == ["ferriss"]
+    assert interview.interviewer_personas == ["tactician"]
 
 
 async def test_meta_command_add_unknown_persona_is_not_silently_dropped(store, content_store, git_brain):
     provider = FakeInterviewProvider()
     engine = _engine(store, content_store, git_brain, provider)
     piece = await _piece(store, slug="p-add-unknown")
-    interview = await engine.open_interview(piece.id, interviewer_personas=["ferriss"])
+    interview = await engine.open_interview(piece.id, interviewer_personas=["tactician"])
     provider.queue(PipelineStep.INTERVIEW_QUESTION, "Q1")
     interview = await engine.next_question(interview.id)
 
@@ -478,18 +478,18 @@ async def test_meta_command_switch_piece_is_recorded_not_enacted(store, content_
     provider = FakeInterviewProvider()
     engine = _engine(store, content_store, git_brain, provider)
     piece = await _piece(store, slug="p-switch-piece")
-    interview = await engine.open_interview(piece.id, interviewer_personas=["ferriss"])
+    interview = await engine.open_interview(piece.id, interviewer_personas=["tactician"])
     provider.queue(PipelineStep.INTERVIEW_QUESTION, "Q1")
     interview = await engine.next_question(interview.id)
 
     provider.queue(
-        PipelineStep.INTERVIEW_CLASSIFY, _classify("meta-command", "switch-piece", "aws-gsi-faq")
+        PipelineStep.INTERVIEW_CLASSIFY, _classify("meta-command", "switch-piece", "rehearse-the-rollback")
     )
     result = await engine.respond(interview.id, "switch to the aws piece")
     assert isinstance(result, MetaCommandResult)
     assert result.command == MetaCommand.switch_piece
     assert result.handled is False
-    assert result.note == "aws-gsi-faq"  # no silent drop — the caller sees exactly what to do
+    assert result.note == "rehearse-the-rollback"  # no silent drop — the caller sees exactly what to do
 
     interview = await engine.get(interview.id)
     assert interview.current_question == "Q1"  # unhandled op never disturbs local state
@@ -499,7 +499,7 @@ async def test_meta_command_novel_move_is_recorded_as_other(store, content_store
     provider = FakeInterviewProvider()
     engine = _engine(store, content_store, git_brain, provider)
     piece = await _piece(store, slug="p-novel-move")
-    interview = await engine.open_interview(piece.id, interviewer_personas=["ferriss"])
+    interview = await engine.open_interview(piece.id, interviewer_personas=["tactician"])
     provider.queue(PipelineStep.INTERVIEW_QUESTION, "Q1")
     interview = await engine.next_question(interview.id)
 
@@ -521,7 +521,7 @@ async def test_meta_command_stop_for_the_day_pauses_the_piece_via_machine(store,
     provider = FakeInterviewProvider()
     engine = _engine(store, content_store, git_brain, provider, machine=machine)
     piece = await _piece(store, slug="p-stop-for-day")
-    interview = await engine.open_interview(piece.id, interviewer_personas=["ferriss"])
+    interview = await engine.open_interview(piece.id, interviewer_personas=["tactician"])
     provider.queue(PipelineStep.INTERVIEW_QUESTION, "Q1")
     interview = await engine.next_question(interview.id)
 
@@ -539,7 +539,7 @@ async def test_meta_command_stop_for_the_day_without_machine_is_recorded_not_ena
     provider = FakeInterviewProvider()
     engine = _engine(store, content_store, git_brain, provider)  # no machine wired
     piece = await _piece(store, slug="p-stop-no-machine")
-    interview = await engine.open_interview(piece.id, interviewer_personas=["ferriss"])
+    interview = await engine.open_interview(piece.id, interviewer_personas=["tactician"])
     provider.queue(PipelineStep.INTERVIEW_QUESTION, "Q1")
     interview = await engine.next_question(interview.id)
 
@@ -554,7 +554,7 @@ async def test_respond_tangent_parks_to_vault_as_spike_never_dropped(store, cont
     engine = _engine(store, content_store, git_brain, provider)
     piece = await _piece(store, slug="p-tangent")
     interview = await engine.open_interview(
-        piece.id, interviewer_personas=["ferriss"], assigned_expert="demo-mira@x"
+        piece.id, interviewer_personas=["tactician"], assigned_expert="demo-mira@x"
     )
     provider.queue(PipelineStep.INTERVIEW_QUESTION, "Q1")
     interview = await engine.next_question(interview.id)
@@ -578,7 +578,7 @@ async def test_classification_parse_error_on_malformed_output(store, content_sto
     provider = FakeInterviewProvider()
     engine = _engine(store, content_store, git_brain, provider)
     piece = await _piece(store, slug="p-parse-error")
-    interview = await engine.open_interview(piece.id, interviewer_personas=["ferriss"])
+    interview = await engine.open_interview(piece.id, interviewer_personas=["tactician"])
     provider.queue(PipelineStep.INTERVIEW_QUESTION, "Q1")
     interview = await engine.next_question(interview.id)
 
@@ -619,7 +619,7 @@ async def test_classify_input_retries_once_after_hitting_the_token_ceiling():
         ]
     )
     result = await classify_input(
-        provider, text="hi", active_piece="p", active_persona="ferriss", current_question="Q?"
+        provider, text="hi", active_piece="p", active_persona="tactician", current_question="Q?"
     )
 
     assert result.op.value == "answer"
@@ -632,7 +632,7 @@ async def test_classify_input_raises_a_distinct_error_when_the_ceiling_is_hit_tw
     provider = _SequencedProvider(responses=[("", "max_tokens"), ("", "max_tokens")])
     with pytest.raises(ClassificationParseError, match="stop_reason=max_tokens"):
         await classify_input(
-            provider, text="hi", active_piece="p", active_persona="ferriss", current_question="Q?"
+            provider, text="hi", active_piece="p", active_persona="tactician", current_question="Q?"
         )
     assert len(provider.calls) == 2
 
@@ -643,7 +643,7 @@ async def test_classify_input_raises_a_distinct_error_when_the_ceiling_is_hit_tw
 async def test_mark_complete_is_a_signal_only(store, content_store, git_brain):
     engine = _engine(store, content_store, git_brain, FakeInterviewProvider())
     piece = await _piece(store, slug="p-mark-complete")
-    interview = await engine.open_interview(piece.id, interviewer_personas=["ferriss"])
+    interview = await engine.open_interview(piece.id, interviewer_personas=["tactician"])
 
     updated = await engine.mark_complete(interview.id)
     assert updated.status == "complete"
@@ -665,7 +665,7 @@ async def test_edit_answer_splices_verbatim_and_recap_can_regenerate(store, cont
     provider = FakeInterviewProvider()
     engine = _engine(store, content_store, git_brain, provider)
     piece = await _piece(store, slug="p-edit-answer")
-    interview = await engine.open_interview(piece.id, interviewer_personas=["ferriss"])
+    interview = await engine.open_interview(piece.id, interviewer_personas=["tactician"])
 
     provider.queue(PipelineStep.INTERVIEW_QUESTION, "How much storage?")
     interview = await engine.next_question(interview.id)
@@ -698,7 +698,7 @@ async def test_edit_answer_refused_once_its_interview_is_complete(store, content
     provider = FakeInterviewProvider()
     engine = _engine(store, content_store, git_brain, provider)
     piece = await _piece(store, slug="p-edit-after-complete")
-    interview = await engine.open_interview(piece.id, interviewer_personas=["ferriss"])
+    interview = await engine.open_interview(piece.id, interviewer_personas=["tactician"])
 
     provider.queue(PipelineStep.INTERVIEW_QUESTION, "How much storage?")
     interview = await engine.next_question(interview.id)
@@ -732,7 +732,7 @@ async def test_edit_answer_on_a_sibling_open_interview_does_not_reopen_a_complet
     provider = FakeInterviewProvider()
     engine = _engine(store, content_store, git_brain, provider)
     piece = await _piece(store, slug="p-edit-sibling")
-    complete_interview = await engine.open_interview(piece.id, interviewer_personas=["ferriss"])
+    complete_interview = await engine.open_interview(piece.id, interviewer_personas=["tactician"])
     open_interview = await engine.open_interview(piece.id, interviewer_personas=["skeptic"])
 
     provider.queue(PipelineStep.INTERVIEW_QUESTION, "Q1")
@@ -762,7 +762,7 @@ async def test_edit_answer_rejects_an_interview_id_from_a_different_piece(
     engine = _engine(store, content_store, git_brain, provider)
     piece_a = await _piece(store, slug="p-cross-a")
     piece_b = await _piece(store, slug="p-cross-b")
-    interview_b = await engine.open_interview(piece_b.id, interviewer_personas=["ferriss"])
+    interview_b = await engine.open_interview(piece_b.id, interviewer_personas=["tactician"])
 
     with pytest.raises(InterviewNotFound):
         await engine.edit_answer(piece_a.id, "0" * 24, "x", interview_id=interview_b.id)
@@ -774,7 +774,7 @@ async def test_edit_answer_rejects_an_interview_id_from_a_different_piece(
 async def test_engine_without_provider_raises_a_clear_error(store, content_store, git_brain):
     engine = _engine(store, content_store, git_brain, None)
     piece = await _piece(store, slug="p-no-provider")
-    interview = await engine.open_interview(piece.id, interviewer_personas=["ferriss"])
+    interview = await engine.open_interview(piece.id, interviewer_personas=["tactician"])
     with pytest.raises(RuntimeError):
         await engine.next_question(interview.id)
 
@@ -783,7 +783,7 @@ async def test_budget_ceiling_blocks_next_question(store, content_store, git_bra
     provider = FakeInterviewProvider()
     engine = _engine(store, content_store, git_brain, provider)
     piece = await _piece(store, slug="p-budget")
-    interview = await engine.open_interview(piece.id, interviewer_personas=["ferriss"])
+    interview = await engine.open_interview(piece.id, interviewer_personas=["tactician"])
     with pytest.raises(RunBudgetExceeded):
         await engine.next_question(interview.id, budget=RunBudget(max_calls=0))
 
@@ -814,11 +814,11 @@ async def test_http_open_next_question_respond_transcript_mark_complete(store, c
 
     async with await _http(app) as client:
         opened = await client.post(
-            f"/api/pieces/{piece.id}/interviews", json={"interviewer_personas": ["ferriss"]}
+            f"/api/pieces/{piece.id}/interviews", json={"interviewer_personas": ["tactician"]}
         )
         assert opened.status_code == 200
         interview_id = opened.json()["id"]
-        assert opened.json()["interviewer_personas"] == ["ferriss"]
+        assert opened.json()["interviewer_personas"] == ["tactician"]
 
         provider.queue(PipelineStep.INTERVIEW_QUESTION, "What's the workload?")
         asked = await client.post(f"/api/interviews/{interview_id}/next-question")
@@ -852,7 +852,7 @@ async def test_http_advance_persona_skip_needs_no_pending_question(store, conten
     async with await _http(app) as client:
         opened = await client.post(
             f"/api/pieces/{piece.id}/interviews",
-            json={"interviewer_personas": ["ferriss", "skeptic"]},
+            json={"interviewer_personas": ["tactician", "skeptic"]},
         )
         interview_id = opened.json()["id"]
         assert opened.json()["current_question"] is None
@@ -892,7 +892,7 @@ async def test_http_advance_persona_404_unknown_interview_and_422_bad_direction(
 
         piece = await _piece(store, slug="p-http-advance-bad-direction")
         opened = await client.post(
-            f"/api/pieces/{piece.id}/interviews", json={"interviewer_personas": ["ferriss"]}
+            f"/api/pieces/{piece.id}/interviews", json={"interviewer_personas": ["tactician"]}
         )
         interview_id = opened.json()["id"]
         bad = await client.post(
@@ -922,7 +922,7 @@ async def test_http_404_unknown_interview_and_409_no_pending_question(store, con
         assert missing.status_code == 404
 
         opened = await client.post(
-            f"/api/pieces/{piece.id}/interviews", json={"interviewer_personas": ["ferriss"]}
+            f"/api/pieces/{piece.id}/interviews", json={"interviewer_personas": ["tactician"]}
         )
         interview_id = opened.json()["id"]
 
@@ -947,7 +947,7 @@ async def test_http_list_interviewer_personas_roster(store, content_store, git_b
         resp = await client.get("/api/personas/interviewers")
         assert resp.status_code == 200
         roster = resp.json()
-        assert "ferriss" in roster
+        assert "tactician" in roster
         assert "skeptic" in roster
         assert roster == sorted(roster)  # GitBrain.list_personas returns them sorted
 
@@ -960,7 +960,7 @@ async def test_http_transcript_turns_structured(store, content_store, git_brain)
 
     async with await _http(app) as client:
         opened = await client.post(
-            f"/api/pieces/{piece.id}/interviews", json={"interviewer_personas": ["ferriss"]}
+            f"/api/pieces/{piece.id}/interviews", json={"interviewer_personas": ["tactician"]}
         )
         interview_id = opened.json()["id"]
 
@@ -975,7 +975,7 @@ async def test_http_transcript_turns_structured(store, content_store, git_brain)
         assert turns.status_code == 200
         body = turns.json()
         assert len(body) == 1
-        assert body[0]["persona"] == "ferriss"
+        assert body[0]["persona"] == "tactician"
         assert body[0]["question"] == "What's the workload?"
         assert body[0]["answer"] == "10TB"
 
@@ -993,7 +993,7 @@ async def test_http_edit_answer_409_once_complete_but_200_while_open(store, cont
 
     async with await _http(app) as client:
         opened = await client.post(
-            f"/api/pieces/{piece.id}/interviews", json={"interviewer_personas": ["ferriss"]}
+            f"/api/pieces/{piece.id}/interviews", json={"interviewer_personas": ["tactician"]}
         )
         interview_id = opened.json()["id"]
 
@@ -1051,7 +1051,7 @@ async def test_answering_a_question_stamps_last_human_touch_at(store, content_st
     provider = FakeInterviewProvider()
     engine = _engine(store, content_store, git_brain, provider)
     piece = await _piece(store, slug="p-human-touch")
-    interview = await engine.open_interview(piece.id, interviewer_personas=["ferriss"])
+    interview = await engine.open_interview(piece.id, interviewer_personas=["tactician"])
 
     assert (await store.pieces.get(piece.id)).last_human_touch_at is None
 
@@ -1071,7 +1071,7 @@ async def test_editing_an_answer_stamps_last_human_touch_at(store, content_store
     provider = FakeInterviewProvider()
     engine = _engine(store, content_store, git_brain, provider)
     piece = await _piece(store, slug="p-human-touch-edit")
-    interview = await engine.open_interview(piece.id, interviewer_personas=["ferriss"])
+    interview = await engine.open_interview(piece.id, interviewer_personas=["tactician"])
 
     provider.queue(PipelineStep.INTERVIEW_QUESTION, "How much storage?")
     await engine.next_question(interview.id)
@@ -1096,7 +1096,7 @@ async def test_research_sidecar_detour_does_not_stamp_human_touch(store, content
     provider = FakeInterviewProvider()
     engine = _engine(store, content_store, git_brain, provider)
     piece = await _piece(store, slug="p-research-no-touch")
-    interview = await engine.open_interview(piece.id, interviewer_personas=["ferriss"])
+    interview = await engine.open_interview(piece.id, interviewer_personas=["tactician"])
 
     provider.queue(PipelineStep.INTERVIEW_QUESTION, "How much storage?")
     await engine.next_question(interview.id)

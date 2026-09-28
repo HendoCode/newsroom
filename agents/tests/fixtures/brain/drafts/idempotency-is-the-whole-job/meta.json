@@ -1,0 +1,35 @@
+{
+  "slug": "idempotency-is-the-whole-job",
+  "title": "Idempotency keys are the whole job",
+  "voice": "demo-dana",
+  "origin": "Oracle run 2026-09-14 · Spike #1 (see VAULT.md)",
+  "target": "design write-up, 1200-1500 words",
+  "target_formats": [
+    "long-form technical design write-up",
+    "three-paragraph social summary plus diagram"
+  ],
+  "partners": [],
+  "stage": "interviewing",
+  "panel": {
+    "selected": ["architect", "domain-specialist", "skeptic"],
+    "completed": ["architect", "domain-specialist"],
+    "in_progress": {
+      "persona": "skeptic",
+      "pending_question": "Q3 — retention window length, row count, storage cost, and what was ruled out"
+    }
+  },
+  "council": {
+    "rounds": 0,
+    "editors": [],
+    "aggregate_score": null,
+    "hard_caps": []
+  },
+  "open_gaps": 3,
+  "has_draft": false,
+  "published_url": null,
+  "demo": {
+    "fictional": true,
+    "subjects": ["Harborline Freight"],
+    "note": "Invented subject, numbers, and quotes. No external citations by design."
+  }
+}

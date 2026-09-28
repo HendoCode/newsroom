@@ -234,7 +234,7 @@ def test_assemble_rejects_invalidators_in_stable_prefix():
         "run started 2026-07-30T09:15:00Z",  # ISO datetime (datetime.now leak)
         "id 123e4567-e89b-42d3-a456-426614174000",  # uuid
         "run_id=abc123",  # explicit run id
-        "piece-id: token-vs-storage",  # explicit piece id
+        "piece-id: the-board-on-the-wall",  # explicit piece id
     ):
         with pytest.raises(CacheInvalidatorError):
             a.assemble(t0=["fine"], t1=[bad], t2="tail", cache=True)
@@ -265,17 +265,17 @@ def test_assembler_reads_brain_and_content_via_git_layer(git_brain, content_stor
     # T0: engine + persona + partner read through the brain module.
     assert a.engine_block("2-draft")
     assert a.persona_block("editor", "cold-reader")
-    assert a.partner_block("aws")
+    assert a.partner_block("meridian-cloudworks")
     # T1: transcript + revision + sources read through the content module.
-    assert a.transcript_block("token-vs-storage")
-    assert a.revision_block("token-vs-storage")
-    assert a.sources_block("token-vs-storage")
+    assert a.transcript_block("the-board-on-the-wall")
+    assert a.revision_block("the-board-on-the-wall")
+    assert a.sources_block("the-board-on-the-wall")
 
 
 def test_council_shaped_assembly_from_real_brain(git_brain, content_store):
     a = PromptAssembler(git_brain, content_store)
-    t0 = [a.engine_block("3-revision-loop"), *a.voice_pack_blocks("demo-mira"), a.partner_block("aws")]
-    t1 = [a.revision_block("token-vs-storage"), a.transcript_block("token-vs-storage")]
+    t0 = [a.engine_block("3-revision-loop"), *a.voice_pack_blocks("demo-mira"), a.partner_block("meridian-cloudworks")]
+    t1 = [a.revision_block("the-board-on-the-wall"), a.transcript_block("the-board-on-the-wall")]
     prompt = a.assemble(t0=t0, t1=t1, t2="You are the slop-allergist. Score this draft.", cache=True)
     assert len(prompt.system) == len(t0) + len(t1)
     assert prompt.cache is True

@@ -117,7 +117,7 @@ def _machine(
 
 
 async def _piece(store: WorkStateStore, stage: PieceStage, **extra) -> Piece:
-    piece = Piece(slug=extra.pop("slug", "token-vs-storage"), voice="demo-mira", stage=stage, **extra)
+    piece = Piece(slug=extra.pop("slug", "the-board-on-the-wall"), voice="demo-mira", stage=stage, **extra)
     return await store.pieces.insert(piece)
 
 
