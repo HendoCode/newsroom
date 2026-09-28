@@ -22,7 +22,7 @@ def get_secrets_provider(
     *,
     backend: str,
     ttl_seconds: float,
-    aws_ssm_prefix: str = "/content-machine/",
+    aws_ssm_prefix: str = "/newsroom/",
     azure_vault_url: str = "",
 ) -> SecretsProvider:
     normalized = backend.strip().lower()

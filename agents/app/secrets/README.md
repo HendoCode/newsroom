@@ -20,7 +20,7 @@ Config knobs (all optional; unset = dev default):
 - `SECRETS_BACKEND` — `env` (default) | `aws` | `azure`.
 - `SECRETS_CACHE_TTL_SECONDS` — how long a resolved value is cached before the next `.get()`
   re-reads the backend (default `300`).
-- `SECRETS_AWS_SSM_PREFIX` — SSM parameter path prefix (default `/content-machine/`).
+- `SECRETS_AWS_SSM_PREFIX` — SSM parameter path prefix (default `/newsroom/`).
 - `SECRETS_AZURE_VAULT_URL` — e.g. `https://<vault-name>.vault.azure.net/`.
 
 These four names are shared verbatim with `web/`'s Node resolver (`web/lib/secrets/`) so both

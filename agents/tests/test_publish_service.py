@@ -422,7 +422,7 @@ async def test_publish_with_a_named_root_configured_uses_the_published_subfolder
     service = _service(
         store, git_brain, content_store, template_store,
         storage=FakeStorage(), docs_client=docs, pdf_renderer=FakePdfRenderer(),
-        drive_client=drive_client, root_folder_name="content-machine",
+        drive_client=drive_client, root_folder_name="newsroom",
     )
 
     result = await service.publish(piece.id)
@@ -432,7 +432,7 @@ async def test_publish_with_a_named_root_configured_uses_the_published_subfolder
     root_name, root_parent = drive_client.folders_created[0]
     piece_folder_name, piece_folder_parent = drive_client.folders_created[1]
     subfolder_name, subfolder_parent = drive_client.folders_created[2]
-    assert (root_name, root_parent) == ("content-machine", "root")
+    assert (root_name, root_parent) == ("newsroom", "root")
     assert (piece_folder_name, piece_folder_parent) == (piece.slug, "folder-1")
     assert subfolder_name == "Published"
 

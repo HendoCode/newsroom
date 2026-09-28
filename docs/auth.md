@@ -81,7 +81,7 @@ the OAuth client first.
   real values into the gitignored `.env`/`web/.env.local` to exercise real Google login — see
   `docs/local-dev.md` "Signing in".
 - **AWS POC deploy:** the two creds live in SSM Parameter Store
-  (`/content-machine/GOOGLE_CLIENT_ID`, `/content-machine/GOOGLE_CLIENT_SECRET`, populated
+  (`/newsroom/GOOGLE_CLIENT_ID`, `/newsroom/GOOGLE_CLIENT_SECRET`, populated
   out-of-band, not Terraform-managed) and are pre-materialized into the `web` container's
   environment by `user-data` at boot — the same treatment as `NEXTAUTH_SECRET`, for the same
   Edge-runtime reason. See `infra/aws-poc/README.md` "Why web doesn't use SECRETS_BACKEND=aws".

@@ -18,33 +18,33 @@ class FakeSsmClient implements SsmClientLike {
 
 describe("AwsSecretsProvider", () => {
   it("fetches by prefixed parameter name", async () => {
-    const client = new FakeSsmClient({ "/content-machine/ANTHROPIC_API_KEY": "aws-secret-value" });
-    const provider = new AwsSecretsProvider({ prefix: "/content-machine/", client });
+    const client = new FakeSsmClient({ "/newsroom/ANTHROPIC_API_KEY": "aws-secret-value" });
+    const provider = new AwsSecretsProvider({ prefix: "/newsroom/", client });
     await expect(provider.get("ANTHROPIC_API_KEY")).resolves.toBe("aws-secret-value");
-    expect(client.calls).toEqual(["/content-machine/ANTHROPIC_API_KEY"]);
+    expect(client.calls).toEqual(["/newsroom/ANTHROPIC_API_KEY"]);
   });
 
   it("rejects with SecretNotFoundError when the parameter is missing", async () => {
     const client = new FakeSsmClient({});
-    const provider = new AwsSecretsProvider({ prefix: "/content-machine/", client });
+    const provider = new AwsSecretsProvider({ prefix: "/newsroom/", client });
     await expect(provider.get("MISSING")).rejects.toThrow(SecretNotFoundError);
   });
 
   it("caches so the client is called once", async () => {
-    const client = new FakeSsmClient({ "/content-machine/ANTHROPIC_API_KEY": "aws-secret-value" });
-    const provider = new AwsSecretsProvider({ prefix: "/content-machine/", client, ttlSeconds: 300 });
+    const client = new FakeSsmClient({ "/newsroom/ANTHROPIC_API_KEY": "aws-secret-value" });
+    const provider = new AwsSecretsProvider({ prefix: "/newsroom/", client, ttlSeconds: 300 });
     await provider.get("ANTHROPIC_API_KEY");
     await provider.get("ANTHROPIC_API_KEY");
-    expect(client.calls).toEqual(["/content-machine/ANTHROPIC_API_KEY"]);
+    expect(client.calls).toEqual(["/newsroom/ANTHROPIC_API_KEY"]);
   });
 
   it("force refresh re-reads a rotated value", async () => {
-    const values: Record<string, string> = { "/content-machine/ANTHROPIC_API_KEY": "first-value" };
+    const values: Record<string, string> = { "/newsroom/ANTHROPIC_API_KEY": "first-value" };
     const client = new FakeSsmClient(values);
-    const provider = new AwsSecretsProvider({ prefix: "/content-machine/", client, ttlSeconds: 300 });
+    const provider = new AwsSecretsProvider({ prefix: "/newsroom/", client, ttlSeconds: 300 });
     await expect(provider.get("ANTHROPIC_API_KEY")).resolves.toBe("first-value");
 
-    values["/content-machine/ANTHROPIC_API_KEY"] = "rotated-value";
+    values["/newsroom/ANTHROPIC_API_KEY"] = "rotated-value";
     await expect(provider.get("ANTHROPIC_API_KEY")).resolves.toBe("first-value");
     await expect(provider.get("ANTHROPIC_API_KEY", { forceRefresh: true })).resolves.toBe(
       "rotated-value",

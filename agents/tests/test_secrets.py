@@ -226,10 +226,10 @@ def test_settings_google_oauth_client_id_resolves_via_aws_backend(
                 raise self.exceptions.ParameterNotFound("not found")
             return {"Parameter": {"Value": self.values[Name]}}
 
-    fake_client = FakeSsmClient({"/content-machine/GOOGLE_OAUTH_CLIENT_ID": "real-client-id"})
+    fake_client = FakeSsmClient({"/newsroom/GOOGLE_OAUTH_CLIENT_ID": "real-client-id"})
     monkeypatch.setattr(
         "app.config.get_secrets_provider",
-        lambda **_: AwsSecretsProvider(prefix="/content-machine/", client=fake_client),
+        lambda **_: AwsSecretsProvider(prefix="/newsroom/", client=fake_client),
     )
     monkeypatch.setenv("SECRETS_BACKEND", "aws")
     get_settings.cache_clear()

@@ -77,7 +77,7 @@ class Settings(BaseSettings):
     secrets_backend: str = "env"
     secrets_cache_ttl_seconds: float = 300.0
     # AWS SSM Parameter Store: every secret name below is read from "<prefix><NAME>".
-    secrets_aws_ssm_prefix: str = "/content-machine/"
+    secrets_aws_ssm_prefix: str = "/newsroom/"
     # Azure Key Vault URL, e.g. "https://<vault-name>.vault.azure.net/".
     secrets_azure_vault_url: str = ""
 
@@ -147,8 +147,8 @@ class Settings(BaseSettings):
     # Also resolved through the secrets shim — see the `brain_deploy_key` property below.
     # Default identity stamped on machine-authored commits when the acting user is unknown.
     # A real acting user is passed per-commit for attribution (D15/§1.17).
-    git_author_name: str = "content-machine-agent"
-    git_author_email: str = "agent@content-machine.local"
+    git_author_name: str = "newsroom-agent"
+    git_author_email: str = "agent@newsroom.local"
 
     # --- Publish (finalized → published HITL button; app/publish/, docs/design.md D13 note). ---
     # NOT secrets — plain resource identifiers, not credentials. The bucket is generally public by

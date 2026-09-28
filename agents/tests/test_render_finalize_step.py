@@ -292,13 +292,13 @@ async def test_with_a_named_root_configured_the_folder_is_created_and_reused(
         docs_client=docs_client,
         pdf_renderer=FakePdfRenderer(),
         drive_client=drive_client,
-        root_folder_name="content-machine",
+        root_folder_name="newsroom",
     )
 
     await step.run(_ctx(piece, store, git_brain, content_store))
 
     # Root folder first, then the piece folder parented under it.
-    assert drive_client.folders_created == [("content-machine", "root"), (piece.slug, "folder-1")]
+    assert drive_client.folders_created == [("newsroom", "root"), (piece.slug, "folder-1")]
     after_run = await store.pieces.get(piece.id)
     assert after_run is not None
     folder_id = after_run.drive_folder_id
@@ -319,7 +319,7 @@ async def test_with_a_named_root_configured_the_folder_is_created_and_reused(
 
     # A second finalize run must reuse the same folder — never create a second one.
     await step.run(_ctx(after_run, store, git_brain, content_store))
-    assert drive_client.folders_created == [("content-machine", "root"), (piece.slug, "folder-1")]
+    assert drive_client.folders_created == [("newsroom", "root"), (piece.slug, "folder-1")]
 
 
 @pytest.mark.asyncio
@@ -341,7 +341,7 @@ async def test_a_failed_drive_upload_warns_and_skips_rather_than_failing_the_run
         docs_client=FakeDocsClient(),
         pdf_renderer=FakePdfRenderer(),
         drive_client=FailingDriveClient(),
-        root_folder_name="content-machine",
+        root_folder_name="newsroom",
     )
 
     result = await step.run(_ctx(piece, store, git_brain, content_store, formats=["html"]))

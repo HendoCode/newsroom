@@ -21,7 +21,7 @@
 #
 # Bare compose flags (starting with '-') are treated as args to `up`; a leading subcommand
 # (down/ps/logs/…) is used as-is. The plain `docker compose up` (no script) uses project
-# "content-machine" on https 443 / agents 8000 / mongo 27017.
+# "newsroom" on https 443 / agents 8000 / mongo 27017.
 set -euo pipefail
 
 if [[ $# -lt 1 ]]; then

@@ -241,7 +241,7 @@ def test_discover_repo_computes_prefix_for_own_repo_root(brain_repo) -> None:
 def test_discover_repo_computes_prefix_when_nested(brain_repo) -> None:
     # discover_repo still supports a brain nested inside a larger repo (e.g. a dev who prefers to
     # keep it vendored) — prove that shape independently of the primary brain_repo fixture.
-    nested = brain_repo / "vendor" / "content-machine-agent"
+    nested = brain_repo / "vendor" / "newsroom-agent"
     nested.mkdir(parents=True)
     (nested / "PANEL.md").write_text("nested\n")
     subprocess.run(["git", "-C", str(brain_repo), "add", "-A"], check=True)
@@ -251,7 +251,7 @@ def test_discover_repo_computes_prefix_when_nested(brain_repo) -> None:
         check=True,
     )
     repo, prefix = discover_repo(str(nested))
-    assert prefix == "vendor/content-machine-agent"
+    assert prefix == "vendor/newsroom-agent"
     assert repo.root == brain_repo.resolve()
 
 
