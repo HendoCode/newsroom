@@ -16,13 +16,13 @@ const { fetchDashboard } = vi.hoisted(() => ({
 }));
 vi.mock("@/lib/agents-client", () => ({ fetchDashboard }));
 
-import ContentMachineHome from "./page";
+import NewsroomHome from "./page";
 
-describe("ContentMachineHome", () => {
+describe("NewsroomHome", () => {
   it("mounts the redesigned Dashboard (Inbox + Machine + Library), not the old Operator Desk", async () => {
     fetchDashboard.mockResolvedValue({ source: "store", items: [] });
 
-    render(await ContentMachineHome());
+    render(await NewsroomHome());
 
     expect(fetchDashboard).toHaveBeenCalledWith("you@company");
     expect(screen.getByRole("heading", { name: "Dashboard" })).toBeInTheDocument();
@@ -31,7 +31,7 @@ describe("ContentMachineHome", () => {
     expect(screen.getByRole("heading", { name: "Library" })).toBeInTheDocument();
     expect(screen.getByRole("link", { name: "Library" })).toHaveAttribute(
       "href",
-      "/content-machine#library",
+      "/newsroom#library",
     );
     expect(screen.queryByText(/HumanObligation/i)).toBeNull();
     expect(screen.queryByText(/Operator Desk/i)).toBeNull();

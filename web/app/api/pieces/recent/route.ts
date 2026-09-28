@@ -3,7 +3,7 @@ import { NextResponse } from "next/server";
 import { fetchRecentPieces } from "@/lib/agents-client";
 
 /**
- * BFF route for the Operator Desk's recent-pieces strip (`web/app/content-machine/`).
+ * BFF route for the Operator Desk's recent-pieces strip (`web/app/newsroom/`).
  *
  * Same posture as the `/api/dashboard` proxy: `web/` holds no work-state (D5), so this reads the
  * agents projection over REST and degrades to a 502 the desk renders as a quiet "unavailable"

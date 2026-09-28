@@ -21,8 +21,8 @@ import { cn } from "@/lib/utils";
  */
 
 const NAV_SECTIONS = [
-  { key: "dashboard", label: "Dashboard", href: "/content-machine", ready: true },
-  { key: "library", label: "Library", href: "/content-machine#library", ready: true },
+  { key: "dashboard", label: "Dashboard", href: "/newsroom", ready: true },
+  { key: "library", label: "Library", href: "/newsroom#library", ready: true },
   { key: "new-idea", label: "New idea", href: "/pieces/new", ready: true },
   { key: "radar", label: "Radar", href: "/narrative", ready: true },
   { key: "spikes", label: "Spikes & Vault", href: "/spikes", ready: true },
@@ -53,7 +53,7 @@ export function AppShell({
             >
               <LayoutGrid className="h-4 w-4" aria-hidden />
             </Link>
-            <Link href="/content-machine" className="flex items-center gap-2">
+            <Link href="/newsroom" className="flex items-center gap-2">
               <span className="flex h-9 w-9 items-center justify-center rounded-md bg-primary text-primary-foreground">
                 <Sparkles className="h-5 w-5" aria-hidden />
               </span>

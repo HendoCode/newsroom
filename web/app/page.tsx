@@ -7,8 +7,8 @@ import { requireUser } from "@/lib/session";
  * already; `requireUser()` yields the typed signed-in user and redirects to /signin as
  * defense-in-depth, same convention as every other protected page. `lib/auth-actions.ts`'s
  * sign-in server action already defaults `redirectTo` to `/` when there's no deep-link
- * `callbackUrl`, so moving this root route to the hub (and the old root to `/content-machine`,
- * see `app/content-machine/page.tsx`) is what actually wires "land on the hub after login" —
+ * `callbackUrl`, so moving this root route to the hub (and the old root to `/newsroom`,
+ * see `app/newsroom/page.tsx`) is what actually wires "land on the hub after login" —
  * no further redirect-callback change was needed.
  */
 export default async function Hub() {

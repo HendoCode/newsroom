@@ -7,7 +7,7 @@ import { requireUser } from "@/lib/session";
 /**
  * Newsroom home: the redesigned desk (Inbox + Machine strip + Library).
  *
- * Lives at `/content-machine` — the post-login hub (`app/page.tsx`) is the platform landing
+ * Lives at `/newsroom` — the post-login hub (`app/page.tsx`) is the platform landing
  * destination; this route is what its "Newsroom" card opens into. The PR #120 Operator
  * Desk tracer is no longer the home screen (it leaked internal enum names into copy and only
  * listed ~6 recent pieces). Middleware gates this route; `requireUser()` yields the typed
@@ -20,7 +20,7 @@ import { requireUser } from "@/lib/session";
  */
 export const dynamic = "force-dynamic";
 
-export default async function ContentMachineHome() {
+export default async function NewsroomHome() {
   const user = await requireUser();
 
   let initial: DashboardResponse;

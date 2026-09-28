@@ -9,7 +9,7 @@ describe("AppHub", () => {
 
     expect(screen.getByText("Newsroom")).toBeInTheDocument();
     const cta = screen.getByRole("link", { name: /open newsroom/i });
-    expect(cta).toHaveAttribute("href", "/content-machine");
+    expect(cta).toHaveAttribute("href", "/newsroom");
   });
 
   it("shows a non-functional 'more apps coming' affordance without inventing a fake app", () => {

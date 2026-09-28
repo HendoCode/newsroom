@@ -114,7 +114,7 @@ export function PieceDetailView({
       <div className="flex flex-wrap items-start justify-between gap-3">
         <div>
           <Button asChild variant="ghost" size="sm" className="mb-2 -ml-2">
-            <Link href="/content-machine">&larr; Back to dashboard</Link>
+            <Link href="/newsroom">&larr; Back to dashboard</Link>
           </Button>
           <div className="flex flex-wrap items-center gap-2">
             <h1 className="font-serif text-3xl font-semibold">{piece.title}</h1>
