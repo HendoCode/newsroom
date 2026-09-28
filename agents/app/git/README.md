@@ -1,7 +1,7 @@
 # Brain pin (build/test) vs. the live clone (runtime)
 
 `agents/` consumes the agent brain as a **clone** of its own repo,
-[`HendoCode/content-machine-brain`](https://github.com/HendoCode/content-machine-brain) — see this
+[`HendoCode/masthead`](https://github.com/HendoCode/masthead) — see this
 repo's `AGENTS.md` ("agents/ Git brain as a clone, not a subdirectory") for the full split. This
 doc covers a narrower, downstream concern: **which commit of that brain do we build and test
 against**, and how that differs from what the running app tracks.
@@ -31,7 +31,7 @@ when something *sets the env var*, on purpose, for a build/test invocation.
 
 ```json
 {
-  "repo": "https://github.com/HendoCode/content-machine-brain.git",
+  "repo": "https://github.com/HendoCode/masthead.git",
   "ref": "<40-char commit SHA>",
   "note": "..."
 }

@@ -260,7 +260,7 @@ def test_discover_repo_computes_prefix_when_nested(brain_repo) -> None:
 
 @pytest.fixture
 def bare_remote(tmp_path: Path) -> Path:
-    """A local bare repo standing in for the real ``content-machine-brain`` GitHub remote."""
+    """A local bare repo standing in for the real ``masthead`` GitHub remote."""
     remote = tmp_path / "remote.git"
     subprocess.run(["git", "init", "-q", "--bare", "-b", "main", str(remote)], check=True)
     return remote

@@ -98,7 +98,7 @@ variable "anthropic_api_key_placeholder" {
 }
 
 variable "brain_repo_url_placeholder" {
-  description = "Git clone URL for HendoCode/content-machine-brain (agents/app/secrets shim: BRAIN_REPO_URL). Blank by default — the agents container then behaves exactly like local dev with no brain configured (brain-dependent screens stay empty/503). Populate in SSM the same way as the Anthropic key to enable it."
+  description = "Git clone URL for HendoCode/masthead (agents/app/secrets shim: BRAIN_REPO_URL). Blank by default — the agents container then behaves exactly like local dev with no brain configured (brain-dependent screens stay empty/503). Populate in SSM the same way as the Anthropic key to enable it."
   type        = string
   default     = ""
   sensitive   = true

@@ -53,7 +53,7 @@ attempt a real `tofu apply` from these files as written.
   created when `brain_repo_url_placeholder`/`brain_deploy_key_placeholder` are non-blank — the
   default blank leaves the parameter absent entirely, which the app's secrets shim treats the same
   as a blank value: a fully-degraded no-op, same as local dev with no brain configured. Set the var
-  or `put-parameter` out-of-band, then re-apply, to enable the `HendoCode/content-machine-brain`
+  or `put-parameter` out-of-band, then re-apply, to enable the `HendoCode/masthead`
   clone-on-boot `cmw-brain-split` added). `BRAIN_DEPLOY_KEY` holds an SSH deploy-key private key,
   not a PAT — see "Brain push credential" below for generate/install/store steps.
   `GOOGLE_OAUTH_CLIENT_ID`/`GOOGLE_OAUTH_CLIENT_SECRET`/`GOOGLE_OAUTH_REFRESH_TOKEN` (the Drive
@@ -237,7 +237,7 @@ The `BUILD_COMMIT` arg bakes only the non-sensitive commit SHA (plus short form 
    `agents`' secrets shim caches for `SECRETS_CACHE_TTL_SECONDS` (default 300s) — no restart
    needed, just wait up to 5 minutes. Optionally also populate `BRAIN_REPO_URL`/`BRAIN_DEPLOY_KEY`
    the same way (see "Brain push credential" below for how to generate/install the deploy key
-   first) to have the instance clone `HendoCode/content-machine-brain` on next restart
+   first) to have the instance clone `HendoCode/masthead` on next restart
    (`app.git.ensure_brain_available`) — leaving them blank is a fully-supported no-op (brain-
    dependent screens just stay empty/503, same as local dev with no brain configured). Same story
    for `GOOGLE_OAUTH_CLIENT_ID`/`GOOGLE_OAUTH_CLIENT_SECRET`/`GOOGLE_OAUTH_REFRESH_TOKEN` — see
@@ -312,7 +312,7 @@ or the readout shows 0.0.
 ## Brain push credential (SSH deploy key)
 
 `BRAIN_DEPLOY_KEY` is an SSH **deploy key** — a repo-scoped, read-write credential authorizing
-push/pull against exactly `HendoCode/content-machine-brain` and nothing else (least-privilege:
+push/pull against exactly `HendoCode/masthead` and nothing else (least-privilege:
 compare to a classic PAT, which is scoped to every repo the token's user can see). The private key
 never touches this Terraform config, an image layer, or `.git/config` — `agents/app/git/ssh_auth.py`
 resolves it through the secrets shim at runtime and materializes it into a process-local, mode-0600
@@ -324,7 +324,7 @@ file for the lifetime of the container.
    ssh-keygen -t ed25519 -C "cmw-brain-deploy-key" -f ./cmw-brain-deploy-key -N ""
    ```
    This writes `cmw-brain-deploy-key` (private) and `cmw-brain-deploy-key.pub` (public).
-2. **Install the public key on the brain repo** — `HendoCode/content-machine-brain` → Settings →
+2. **Install the public key on the brain repo** — `HendoCode/masthead` → Settings →
    Deploy keys → Add deploy key → paste `cmw-brain-deploy-key.pub` → check **Allow write access**
    (unchecked defaults to read-only, which breaks `GitRepo.commit()`'s auto-push) → Add key.
 3. **Store the private key in SSM** (never in a committed file, never as a `tofu` variable/CLI
@@ -336,7 +336,7 @@ file for the lifetime of the container.
    Also populate `BRAIN_REPO_URL` with the **SSH** clone URL (not HTTPS):
    ```
    aws ssm put-parameter --name /newsroom/BRAIN_REPO_URL \
-     --type SecureString --overwrite --value "git@github.com:HendoCode/content-machine-brain.git"
+     --type SecureString --overwrite --value "git@github.com:HendoCode/masthead.git"
    ```
    Then delete the local private key file (`rm ./cmw-brain-deploy-key*`) — SSM is its only home
    from here on.
@@ -640,7 +640,7 @@ User-data's own log is at `/var/log/cmw-poc-user-data.log` on the instance.
   it's deliberately not bundled into the CloudFront/WAF PR that added this section.
 - **The agent-brain-mount hold resolved differently than the scoping report's §5 recommendation
   predicted** — not "bake into the image at build," but `cmw-brain-split`'s brain-as-its-own-repo
-  clone-on-boot (`HendoCode/content-machine-brain`, `app.git.ensure_brain_available`). This
+  clone-on-boot (`HendoCode/masthead`, `app.git.ensure_brain_available`). This
   Terraform provisions exactly what that mechanism needs (`BRAIN_REPO_URL`/`BRAIN_DEPLOY_KEY` in
   SSM, `BRAIN_ROOT=/brain` on the `agents` container) — see "Brain push credential" above for
   generate/install/store, then restart `agents` to pick up a real brain; leave the two placeholder

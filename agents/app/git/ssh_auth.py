@@ -2,7 +2,7 @@
 
 A repo-scoped GitHub deploy key is the least-privilege credential for machine push access: unlike
 a classic PAT (`repo` scope — every repo the token's user can see), a deploy key authorizes exactly
-one repository (`HendoCode/content-machine-brain`) and is revocable there alone, with no other
+one repository (`HendoCode/masthead`) and is revocable there alone, with no other
 credential affected. The private key material is resolved just-in-time through the secrets shim
 (`app.secrets`, e.g. `BRAIN_DEPLOY_KEY`) and never committed, baked into an image, or written to
 `.git/config` — this module only ever materializes it into a process-local, mode-0600 file used
