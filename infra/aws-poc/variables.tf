@@ -51,13 +51,13 @@ variable "auth_allowed_email_domain" {
 }
 
 variable "ssm_prefix" {
-  description = "SSM Parameter Store path prefix. MUST match agents/app/secrets (SECRETS_AWS_SSM_PREFIX, default \"/content-machine/\") and web/lib/secrets — the app's secrets shim reads f\"{prefix}{NAME}\" verbatim, so changing this without also setting SECRETS_AWS_SSM_PREFIX on both containers will break secret resolution."
+  description = "SSM Parameter Store path prefix. MUST match agents/app/secrets (SECRETS_AWS_SSM_PREFIX, default \"/newsroom/\") and web/lib/secrets — the app's secrets shim reads f\"{prefix}{NAME}\" verbatim, so changing this without also setting SECRETS_AWS_SSM_PREFIX on both containers will break secret resolution."
   type        = string
-  default     = "/content-machine/"
+  default     = "/newsroom/"
 
   validation {
     condition     = can(regex("^/.*/$", var.ssm_prefix))
-    error_message = "ssm_prefix must start and end with \"/\", e.g. \"/content-machine/\"."
+    error_message = "ssm_prefix must start and end with \"/\", e.g. \"/newsroom/\"."
   }
 }
 

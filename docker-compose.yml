@@ -21,7 +21,7 @@
 #   - mongo uses a tmpfs datastore → per-instance + ephemeral (no shared named volume).
 # Launch an isolated instance with `scripts/instance.sh` (see README / docs/local-dev.md).
 
-name: ${COMPOSE_PROJECT_NAME:-content-machine}
+name: ${COMPOSE_PROJECT_NAME:-newsroom}
 
 services:
   web:
@@ -60,7 +60,7 @@ services:
       # unless a real deployment overrides SECRETS_BACKEND to aws/azure.
       SECRETS_BACKEND: ${SECRETS_BACKEND:-env}
       SECRETS_CACHE_TTL_SECONDS: ${SECRETS_CACHE_TTL_SECONDS:-300}
-      SECRETS_AWS_SSM_PREFIX: ${SECRETS_AWS_SSM_PREFIX:-/content-machine/}
+      SECRETS_AWS_SSM_PREFIX: ${SECRETS_AWS_SSM_PREFIX:-/newsroom/}
       SECRETS_AZURE_VAULT_URL: ${SECRETS_AZURE_VAULT_URL:-}
     ports:
       - "${WEB_PORT:-3000}:3000"
@@ -114,26 +114,26 @@ services:
       # Git brain (HendoCode/content-machine-brain), bind-mounted below at a fixed in-container
       # path — set BRAIN_REPO_URL (+ BRAIN_DEPLOY_KEY if the mount is empty and needs an
       # authenticated SSH clone) in a git-ignored .env to populate it on first boot. Left unset,
-      # this degrades exactly like a missing content-machine-agent/ did before this split: no
+      # this degrades exactly like a missing newsroom-agent/ did before this split: no
       # brain, git-dependent routes report 503. Both are resolved through the secrets shim below
       # (app/config.py's brain_repo_url/brain_deploy_key properties) rather than read raw.
       BRAIN_ROOT: /brain
       BRAIN_REPO_URL: ${BRAIN_REPO_URL:-}
       BRAIN_DEPLOY_KEY: ${BRAIN_DEPLOY_KEY:-}
-      GIT_AUTHOR_NAME: ${GIT_AUTHOR_NAME:-content-machine-agent}
-      GIT_AUTHOR_EMAIL: ${GIT_AUTHOR_EMAIL:-agent@content-machine.local}
+      GIT_AUTHOR_NAME: ${GIT_AUTHOR_NAME:-newsroom-agent}
+      GIT_AUTHOR_EMAIL: ${GIT_AUTHOR_EMAIL:-agent@newsroom.local}
       # Secrets shim (app/secrets/README.md) — same config convention as web/ above. Defaults
       # below MUST match Settings' own defaults (never blank for a non-string field): "env" needs
       # zero cloud setup, so this is what `docker compose up` uses unless a real deployment
       # overrides SECRETS_BACKEND to aws/azure.
       SECRETS_BACKEND: ${SECRETS_BACKEND:-env}
       SECRETS_CACHE_TTL_SECONDS: ${SECRETS_CACHE_TTL_SECONDS:-300}
-      SECRETS_AWS_SSM_PREFIX: ${SECRETS_AWS_SSM_PREFIX:-/content-machine/}
+      SECRETS_AWS_SSM_PREFIX: ${SECRETS_AWS_SSM_PREFIX:-/newsroom/}
       SECRETS_AZURE_VAULT_URL: ${SECRETS_AZURE_VAULT_URL:-}
     volumes:
       # A bind mount, not a named volume: the brain clone should be the SAME clone a developer can
       # `cd` into and inspect/commit/push with their own git, on the host — not container-private
-      # state. Defaults to a sibling of this repo (see content-machine-agent/README.md's re-point
+      # state. Defaults to a sibling of this repo (see newsroom-agent/README.md's re-point
       # instructions); override BRAIN_HOST_PATH if yours lives elsewhere. If the host path is
       # empty, BRAIN_REPO_URL above clones straight into it on first boot, so the mount becomes a
       # real host-side clone the developer can keep using directly afterward.

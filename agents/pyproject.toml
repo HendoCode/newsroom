@@ -1,5 +1,5 @@
 [project]
-name = "content-machine-agents"
+name = "newsroom-agents"
 version = "0.1.0"
 description = "FastAPI service hosting the deterministic orchestration state machine and LLM-facing work (docs/design.md D5, §6)."
 requires-python = ">=3.12"

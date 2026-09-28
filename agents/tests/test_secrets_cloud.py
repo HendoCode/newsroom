@@ -48,41 +48,41 @@ class FakeKeyVaultClient:
 
 
 def test_aws_provider_fetches_by_prefixed_name() -> None:
-    client = FakeSsmClient({"/content-machine/ANTHROPIC_API_KEY": "aws-secret-value"})
-    provider = AwsSecretsProvider(prefix="/content-machine/", client=client)
+    client = FakeSsmClient({"/newsroom/ANTHROPIC_API_KEY": "aws-secret-value"})
+    provider = AwsSecretsProvider(prefix="/newsroom/", client=client)
     assert provider.get("ANTHROPIC_API_KEY") == "aws-secret-value"
-    assert client.calls == ["/content-machine/ANTHROPIC_API_KEY"]
+    assert client.calls == ["/newsroom/ANTHROPIC_API_KEY"]
 
 
 def test_aws_provider_raises_secret_not_found() -> None:
     client = FakeSsmClient({})
-    provider = AwsSecretsProvider(prefix="/content-machine/", client=client)
+    provider = AwsSecretsProvider(prefix="/newsroom/", client=client)
     with pytest.raises(SecretNotFoundError):
         provider.get("MISSING")
 
 
 def test_aws_provider_caches_so_the_client_is_called_once(monkeypatch: pytest.MonkeyPatch) -> None:
-    client = FakeSsmClient({"/content-machine/ANTHROPIC_API_KEY": "aws-secret-value"})
-    provider = AwsSecretsProvider(prefix="/content-machine/", client=client, ttl_seconds=300.0)
+    client = FakeSsmClient({"/newsroom/ANTHROPIC_API_KEY": "aws-secret-value"})
+    provider = AwsSecretsProvider(prefix="/newsroom/", client=client, ttl_seconds=300.0)
     provider.get("ANTHROPIC_API_KEY")
     provider.get("ANTHROPIC_API_KEY")
-    assert client.calls == ["/content-machine/ANTHROPIC_API_KEY"]
+    assert client.calls == ["/newsroom/ANTHROPIC_API_KEY"]
 
 
 def test_aws_provider_force_refresh_re_reads() -> None:
-    values = {"/content-machine/ANTHROPIC_API_KEY": "first-value"}
+    values = {"/newsroom/ANTHROPIC_API_KEY": "first-value"}
     client = FakeSsmClient(values)
-    provider = AwsSecretsProvider(prefix="/content-machine/", client=client, ttl_seconds=300.0)
+    provider = AwsSecretsProvider(prefix="/newsroom/", client=client, ttl_seconds=300.0)
     assert provider.get("ANTHROPIC_API_KEY") == "first-value"
 
-    values["/content-machine/ANTHROPIC_API_KEY"] = "rotated-value"
+    values["/newsroom/ANTHROPIC_API_KEY"] = "rotated-value"
     assert provider.get("ANTHROPIC_API_KEY") == "first-value"
     assert provider.get("ANTHROPIC_API_KEY", force_refresh=True) == "rotated-value"
 
 
 def test_aws_provider_never_imports_boto3_when_client_is_injected() -> None:
     # No boto3 call happens as long as a client is supplied — the constructor never imports it.
-    client = FakeSsmClient({"/content-machine/X": "v"})
+    client = FakeSsmClient({"/newsroom/X": "v"})
     provider = AwsSecretsProvider(client=client)
     assert provider.get("X") == "v"
 

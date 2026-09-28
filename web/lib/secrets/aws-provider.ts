@@ -1,6 +1,6 @@
 /**
  * The `aws` backend — AWS Systems Manager Parameter Store, one parameter per secret name under a
- * shared prefix (default `/content-machine/`). Ambient IAM credentials only: an instance/task
+ * shared prefix (default `/newsroom/`). Ambient IAM credentials only: an instance/task
  * role in production, the caller's SSO/OIDC session elsewhere — `@aws-sdk/client-ssm`'s default
  * credential provider chain resolves both, so no AWS key is ever stored here.
  *
@@ -57,7 +57,7 @@ export class AwsSecretsProvider extends CachingSecretsProvider {
 
   constructor(opts: AwsSecretsProviderOptions = {}) {
     super(opts.ttlSeconds);
-    this.prefix = opts.prefix ?? "/content-machine/";
+    this.prefix = opts.prefix ?? "/newsroom/";
     this.client = opts.client ?? new RealSsmClient();
   }
 
