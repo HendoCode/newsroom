@@ -19,7 +19,7 @@ import type {
 } from "@/lib/content-workflow/types";
 import type { RecentPiece, RecentPiecesResponse } from "@/lib/pieces/types";
 
-/** Content-workflow first-mile tracer (PR #120). Not the home screen — `/content-machine`
+/** Content-workflow first-mile tracer (PR #120). Not the home screen — `/newsroom`
  * mounts `Dashboard` (Inbox + Machine strip + Library). Kept so the commit-idea payload tests
  * and `/content-projects` creation path still have a UI. Copy here is operator English, never
  * raw enum names. */

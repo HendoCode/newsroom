@@ -18,12 +18,12 @@ export interface HubApp {
 
 export const HUB_APPS: HubApp[] = [
   {
-    id: "content-machine",
+    id: "newsroom",
     name: "Newsroom",
     blurb:
       "Turn interviews and source material into on-voice drafts, run them through council review, and ship finalized pieces.",
     icon: Sparkles,
-    href: "/content-machine",
+    href: "/newsroom",
     enabled: true,
   },
 ];

@@ -4,12 +4,12 @@ import { HUB_APPS } from "@/lib/hub/apps";
 
 describe("HUB_APPS", () => {
   it("lists Newsroom as a real, enabled entry routing into the existing app", () => {
-    const contentMachine = HUB_APPS.find((app) => app.id === "content-machine");
-    expect(contentMachine).toBeDefined();
-    expect(contentMachine?.enabled).toBe(true);
-    expect(contentMachine?.href).toBe("/content-machine");
-    expect(contentMachine?.name).toBe("Newsroom");
-    expect(contentMachine?.blurb.length).toBeGreaterThan(0);
+    const newsroomApp = HUB_APPS.find((app) => app.id === "newsroom");
+    expect(newsroomApp).toBeDefined();
+    expect(newsroomApp?.enabled).toBe(true);
+    expect(newsroomApp?.href).toBe("/newsroom");
+    expect(newsroomApp?.name).toBe("Newsroom");
+    expect(newsroomApp?.blurb.length).toBeGreaterThan(0);
   });
 
   it("gives every entry the fields AppHub needs to render a card", () => {
