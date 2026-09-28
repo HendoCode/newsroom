@@ -1,5 +1,5 @@
 {
-  "name": "content-machine-web",
+  "name": "newsroom-web",
   "version": "0.1.0",
   "private": true,
   "description": "Next.js (App Router) UI + BFF for the newsroom webapp (docs/design.md §6).",

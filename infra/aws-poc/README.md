@@ -1,4 +1,4 @@
-# AWS POC deploy — content-machine-webapp
+# AWS POC deploy — newsroom
 
 OpenTofu for a single-EC2 "kick the tires" deploy: one `t3.medium`, running the same
 three-container stack (`web` / `agents` / `mongo`) as local dev, plus a Caddy container
@@ -44,7 +44,7 @@ attempt a real `tofu apply` from these files as written.
   means a plain `tofu destroy` will refuse to delete it (see "Teardown").
 - IAM instance role: `AmazonSSMManagedInstanceCore` (Session Manager) +
   `AmazonEC2ContainerRegistryReadOnly` (image pulls) + one inline policy scoped to
-  `ssm:GetParameter` on exactly `var.ssm_prefix*` (default `/content-machine/*`).
+  `ssm:GetParameter` on exactly `var.ssm_prefix*` (default `/newsroom/*`).
 - SSM Parameter Store (SecureString) under that prefix: `ANTHROPIC_API_KEY` (placeholder —
   captain populates the real value, see below), `NEXTAUTH_SECRET`, `MONGO_URL`,
   `MONGO_ROOT_USERNAME`/`MONGO_ROOT_PASSWORD`, `ORIGIN_VERIFY_SECRET` (Terraform-generated, the
@@ -231,7 +231,7 @@ The `BUILD_COMMIT` arg bakes only the non-sensitive commit SHA (plus short form 
    window for both; neither is a hang.
 4. **Populate the real secrets** (placeholders only exist so far):
    ```
-   aws ssm put-parameter --name /content-machine/ANTHROPIC_API_KEY \
+   aws ssm put-parameter --name /newsroom/ANTHROPIC_API_KEY \
      --type SecureString --overwrite --value "sk-ant-..."
    ```
    `agents`' secrets shim caches for `SECRETS_CACHE_TTL_SECONDS` (default 300s) — no restart
@@ -330,12 +330,12 @@ file for the lifetime of the container.
 3. **Store the private key in SSM** (never in a committed file, never as a `tofu` variable/CLI
    argument):
    ```
-   aws ssm put-parameter --name /content-machine/BRAIN_DEPLOY_KEY \
+   aws ssm put-parameter --name /newsroom/BRAIN_DEPLOY_KEY \
      --type SecureString --overwrite --value "$(cat ./cmw-brain-deploy-key)"
    ```
    Also populate `BRAIN_REPO_URL` with the **SSH** clone URL (not HTTPS):
    ```
-   aws ssm put-parameter --name /content-machine/BRAIN_REPO_URL \
+   aws ssm put-parameter --name /newsroom/BRAIN_REPO_URL \
      --type SecureString --overwrite --value "git@github.com:HendoCode/content-machine-brain.git"
    ```
    Then delete the local private key file (`rm ./cmw-brain-deploy-key*`) — SSM is its only home
@@ -368,11 +368,11 @@ the SSM half.
 2. **Store all three values in SSM** (never in a committed file, never as a `tofu`
    variable/CLI argument):
    ```
-   aws ssm put-parameter --name /content-machine/GOOGLE_OAUTH_CLIENT_ID \
+   aws ssm put-parameter --name /newsroom/GOOGLE_OAUTH_CLIENT_ID \
      --type SecureString --overwrite --value "<client id>"
-   aws ssm put-parameter --name /content-machine/GOOGLE_OAUTH_CLIENT_SECRET \
+   aws ssm put-parameter --name /newsroom/GOOGLE_OAUTH_CLIENT_SECRET \
      --type SecureString --overwrite --value "<client secret>"
-   aws ssm put-parameter --name /content-machine/GOOGLE_OAUTH_REFRESH_TOKEN \
+   aws ssm put-parameter --name /newsroom/GOOGLE_OAUTH_REFRESH_TOKEN \
      --type SecureString --overwrite --value "<refresh token>"
    ```
    Unlike `GOOGLE_CLIENT_ID`/`GOOGLE_CLIENT_SECRET` below, `agents` resolves these three **live**
@@ -416,9 +416,9 @@ secret in this config), so a fresh apply never bricks sign-in while waiting on G
   reason `brain_repo_url_placeholder`/`brain_deploy_key_placeholder` are opt-in rather than always
   written. Populate them the same way as the Anthropic key:
   ```
-  aws ssm put-parameter --name /content-machine/GOOGLE_CLIENT_ID \
+  aws ssm put-parameter --name /newsroom/GOOGLE_CLIENT_ID \
     --type SecureString --overwrite --value "<client id>"
-  aws ssm put-parameter --name /content-machine/GOOGLE_CLIENT_SECRET \
+  aws ssm put-parameter --name /newsroom/GOOGLE_CLIENT_SECRET \
     --type SecureString --overwrite --value "<client secret>"
   ```
 - `user-data` fetches both by name at boot (`templates/user-data.sh.tpl`'s
@@ -518,7 +518,7 @@ The repo root also has a production compose overlay (`docker-compose.prod.yml` +
 Caddyfile`, `docs/deploy.md`) that fronts `web` with the same kind of Caddy reverse proxy. This
 deploy deliberately does **not** reuse it: that overlay is layered on top of the base
 `docker-compose.yml` with `-f docker-compose.yml -f docker-compose.prod.yml`, which still needs
-the base file's `build:` context — i.e. this `content-machine-webapp` repo checked out on the
+the base file's `build:` context — i.e. this `newsroom` repo checked out on the
 host. This EC2 instance never gets a checkout or credential for **that** repo (§2 of the scoping
 report) and instead pulls prebuilt `web`/`agents` images from ECR, so
 `infra/aws-poc/templates/` carries its own self-contained compose file + Caddyfile that doesn't

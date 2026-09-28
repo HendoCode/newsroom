@@ -24,7 +24,7 @@ function currentConfigKey(): string {
   return [
     process.env.SECRETS_BACKEND ?? "env",
     process.env.SECRETS_CACHE_TTL_SECONDS ?? "300",
-    process.env.SECRETS_AWS_SSM_PREFIX ?? "/content-machine/",
+    process.env.SECRETS_AWS_SSM_PREFIX ?? "/newsroom/",
     process.env.SECRETS_AZURE_VAULT_URL ?? "",
   ].join("|");
 }
@@ -37,7 +37,7 @@ function buildProvider(): SecretsProvider {
   }
   if (backend === "aws") {
     return new AwsSecretsProvider({
-      prefix: process.env.SECRETS_AWS_SSM_PREFIX ?? "/content-machine/",
+      prefix: process.env.SECRETS_AWS_SSM_PREFIX ?? "/newsroom/",
       ttlSeconds,
     });
   }

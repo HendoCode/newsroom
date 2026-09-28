@@ -146,7 +146,7 @@ project name, and exports the matching `AUTH_URL` for you:
 ./scripts/instance.sh bob 3200 -- down -v
 ```
 
-This runs happily **alongside** the default `docker compose up` (project `content-machine`
+This runs happily **alongside** the default `docker compose up` (project `newsroom`
 on https 443 / agents 8000 / mongo 27017). Verified: two instances up at once, each `web/`
 reaching its own `agents/`, zero port/datastore/project-name collisions.
 
@@ -243,10 +243,10 @@ padlock instead, trust the CA once:
 1. Bring the stack up (`docker compose up -d`), then pull the generated root CA cert out of its
    named volume:
    ```bash
-   docker run --rm -v content-machine_caddy_dev_data:/data alpine \
+   docker run --rm -v newsroom_caddy_dev_data:/data alpine \
      cat /data/caddy/pki/authorities/local/root.crt > /tmp/caddy-local-ca.crt
    ```
-   (swap `content-machine` for `$COMPOSE_PROJECT_NAME` if you launched via `scripts/instance.sh`
+   (swap `newsroom` for `$COMPOSE_PROJECT_NAME` if you launched via `scripts/instance.sh`
    or a custom project name — the volume is named `<project>_caddy_dev_data`).
 2. Trust it in your OS store:
    - **macOS:** `sudo security add-trusted-cert -d -r trustRoot -k /Library/Keychains/System.keychain /tmp/caddy-local-ca.crt`

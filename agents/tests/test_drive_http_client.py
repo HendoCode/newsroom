@@ -109,7 +109,7 @@ async def test_find_or_create_returns_an_existing_root_via_files_list(
 
     _mock_transport(monkeypatch, handler)
     client = HttpDriveFolderClient("cid", "secret", "refresh")
-    ref = await client.find_or_create_folder("content-machine")
+    ref = await client.find_or_create_folder("newsroom")
 
     assert ref.file_id == "root-1"
     assert ref.url == "https://drive.google.com/drive/folders/root-1"
@@ -117,7 +117,7 @@ async def test_find_or_create_returns_an_existing_root_via_files_list(
     req = requests[0]
     assert req.url.path == "/drive/v3/files"
     q = req.url.params.get("q")
-    assert "name = 'content-machine'" in q
+    assert "name = 'newsroom'" in q
     assert "mimeType = 'application/vnd.google-apps.folder'" in q
     assert "trashed = false" in q
     assert req.url.params.get("fields")
@@ -141,14 +141,14 @@ async def test_find_or_create_creates_the_root_when_the_list_is_empty(
 
     _mock_transport(monkeypatch, handler)
     client = HttpDriveFolderClient("cid", "secret", "refresh")
-    ref = await client.find_or_create_folder("content-machine")
+    ref = await client.find_or_create_folder("newsroom")
 
     assert ref.file_id == "root-1"
     # A list then a create — the create is parented at the My Drive root.
     assert [r.method for r in requests] == ["GET", "POST"]
     create_req = requests[1]
     assert json.loads(create_req.content) == {
-        "name": "content-machine",
+        "name": "newsroom",
         "mimeType": "application/vnd.google-apps.folder",
         "parents": ["root"],
     }
@@ -156,7 +156,7 @@ async def test_find_or_create_creates_the_root_when_the_list_is_empty(
 
 async def test_find_or_create_requires_credentials(client: HttpDriveFolderClient) -> None:
     with pytest.raises(DocsExportError):
-        await client.find_or_create_folder("content-machine")
+        await client.find_or_create_folder("newsroom")
 
 
 async def test_create_folder_falls_back_to_a_constructed_url_without_webviewlink(

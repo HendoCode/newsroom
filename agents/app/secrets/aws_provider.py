@@ -1,5 +1,5 @@
 """The ``aws`` backend — AWS Systems Manager Parameter Store, one parameter per secret name
-under a shared prefix (default ``/content-machine/``). Ambient IAM credentials only: an
+under a shared prefix (default ``/newsroom/``). Ambient IAM credentials only: an
 instance/task role in production, the caller's SSO/OIDC session elsewhere — boto3's default
 credential chain resolves both, so no AWS key is ever stored here. Secrets Manager would slot in
 behind the same ``_fetch`` seam if a future ticket needs it; SSM is the thinner of the two for a
@@ -21,7 +21,7 @@ class AwsSecretsProvider(CachingSecretsProvider):
     def __init__(
         self,
         *,
-        prefix: str = "/content-machine/",
+        prefix: str = "/newsroom/",
         ttl_seconds: float = 300.0,
         client: Any | None = None,
     ) -> None:

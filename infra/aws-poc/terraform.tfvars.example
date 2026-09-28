@@ -26,7 +26,7 @@
 
 # Must match agents/app/secrets + web/lib/secrets defaults unless you also override
 # SECRETS_AWS_SSM_PREFIX on both containers.
-# ssm_prefix = "/content-machine/"
+# ssm_prefix = "/newsroom/"
 
 # Bump these after pushing a new image build (see README "Apply sequence").
 # web_image_tag    = "latest"
