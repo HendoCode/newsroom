@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 # Regenerate the checked-in Git test fixture (agents/tests/fixtures/brain/) from the pinned
-# Masthead (content-machine-brain repo) ref recorded in agents/brain.lock — see agents/app/git/README.md for the
-# full pin/bump story.
+# brain repo ref recorded in agents/brain.lock (HendoCode/masthead) — see agents/app/git/README.md
+# for the full pin/bump story.
 #
 # Usage:
 #   scripts/regenerate-brain-fixture.sh          # regenerate from brain.lock's pinned ref

@@ -10,7 +10,7 @@ import type { TranscriptTurn } from "@/lib/interviews/types";
 function turn(overrides: Partial<TranscriptTurn> = {}): TranscriptTurn {
   return {
     id: "t1",
-    persona: "ferriss",
+    persona: "tactician",
     question: "Q?",
     answer: "A.",
     research_derived: false,
@@ -28,34 +28,34 @@ describe("personaQuestionCount", () => {
   });
 
   it("counts only turns from the active persona, ignoring other personas' turns", () => {
-    const turns = [...turnsFor("ferriss", 2), ...turnsFor("skeptic", 3)];
-    expect(personaQuestionCount(turns, "ferriss", false)).toBe(2);
+    const turns = [...turnsFor("tactician", 2), ...turnsFor("skeptic", 3)];
+    expect(personaQuestionCount(turns, "tactician", false)).toBe(2);
   });
 
   it("adds one for a currently pending (asked, unanswered) question", () => {
-    const turns = turnsFor("ferriss", 2);
-    expect(personaQuestionCount(turns, "ferriss", true)).toBe(3);
+    const turns = turnsFor("tactician", 2);
+    expect(personaQuestionCount(turns, "tactician", true)).toBe(3);
   });
 });
 
 describe("shouldNudgeWrapUp", () => {
   it("is false below the threshold", () => {
-    const turns = turnsFor("ferriss", WRAPUP_NUDGE_THRESHOLD - 1);
-    expect(shouldNudgeWrapUp(turns, "ferriss", false)).toBe(false);
+    const turns = turnsFor("tactician", WRAPUP_NUDGE_THRESHOLD - 1);
+    expect(shouldNudgeWrapUp(turns, "tactician", false)).toBe(false);
   });
 
   it("is true once the active persona reaches the threshold", () => {
-    const turns = turnsFor("ferriss", WRAPUP_NUDGE_THRESHOLD);
-    expect(shouldNudgeWrapUp(turns, "ferriss", false)).toBe(true);
+    const turns = turnsFor("tactician", WRAPUP_NUDGE_THRESHOLD);
+    expect(shouldNudgeWrapUp(turns, "tactician", false)).toBe(true);
   });
 
   it("counts a pending question toward the threshold", () => {
-    const turns = turnsFor("ferriss", WRAPUP_NUDGE_THRESHOLD - 1);
-    expect(shouldNudgeWrapUp(turns, "ferriss", true)).toBe(true);
+    const turns = turnsFor("tactician", WRAPUP_NUDGE_THRESHOLD - 1);
+    expect(shouldNudgeWrapUp(turns, "tactician", true)).toBe(true);
   });
 
   it("does not count a different persona's turns toward the active persona's threshold", () => {
     const turns = turnsFor("skeptic", WRAPUP_NUDGE_THRESHOLD + 2);
-    expect(shouldNudgeWrapUp(turns, "ferriss", false)).toBe(false);
+    expect(shouldNudgeWrapUp(turns, "tactician", false)).toBe(false);
   });
 });

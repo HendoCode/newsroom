@@ -17,7 +17,7 @@ async def _store() -> WorkStateStore:
 
 async def _anchor(store: WorkStateStore) -> Piece:
     return await store.pieces.insert(
-        Piece(slug="token-vs-storage", voice="demo-mira", title="Token vs storage", stage=PieceStage.released)
+        Piece(slug="the-board-on-the-wall", voice="demo-mira", title="Token vs storage", stage=PieceStage.released)
     )
 
 
@@ -65,7 +65,7 @@ async def test_promote_mints_a_top_level_piece_with_parent() -> None:
     assert piece.owner == "alex@example.com"
     assert piece.stage == PieceStage.interviewing
     assert piece.target == "linkedin-post"
-    assert piece.slug == "token-vs-storage-linkedin-post"
+    assert piece.slug == "the-board-on-the-wall-linkedin-post"
 
     with pytest.raises(DerivativeAlreadyPromoted):
         await service.promote(anchor.id, artifact.id)

@@ -55,7 +55,7 @@ def test_split_editorial_and_count_open_gaps():
 
 
 async def test_rewrite_happy_path_assembles_context_and_returns_html(git_brain, content_store):
-    piece = Piece(slug="token-vs-storage", voice="demo-mira")
+    piece = Piece(slug="the-board-on-the-wall", voice="demo-mira")
     provider = RecordingProvider(
         [LLMResult(text=GOOD_REWRITE, model=MODEL_GLM5, stop_reason="end_turn", usage=Usage(input_tokens=5, output_tokens=5), cost_usd=0.0)]
     )
@@ -80,10 +80,10 @@ async def test_rewrite_happy_path_assembles_context_and_returns_html(git_brain, 
     assert any(voice.voice_guide in t for t in system_texts)
 
     transcript_text = strip_legacy_research_markers(
-        content_store.read_transcript("token-vs-storage")
+        content_store.read_transcript("the-board-on-the-wall")
     )
     assert any(transcript_text in t for t in system_texts)
-    revision_text = content_store.read_draft("token-vs-storage")
+    revision_text = content_store.read_draft("the-board-on-the-wall")
     assert any(revision_text in t for t in system_texts)
 
     tail = call["messages"][0]["content"]
@@ -96,7 +96,7 @@ async def test_rewrite_happy_path_assembles_context_and_returns_html(git_brain, 
 
 
 async def test_rewrite_raises_refusal_error(git_brain, content_store):
-    piece = Piece(slug="token-vs-storage", voice="demo-mira")
+    piece = Piece(slug="the-board-on-the-wall", voice="demo-mira")
     provider = RecordingProvider(
         [LLMResult(text="", model=MODEL_GLM5, stop_reason="refusal", usage=Usage(), cost_usd=0.0)]
     )
@@ -106,7 +106,7 @@ async def test_rewrite_raises_refusal_error(git_brain, content_store):
 
 
 async def test_rewrite_empty_response_is_permanent_error(git_brain, content_store):
-    piece = Piece(slug="token-vs-storage", voice="demo-mira")
+    piece = Piece(slug="the-board-on-the-wall", voice="demo-mira")
     provider = RecordingProvider(
         [LLMResult(text="   ", model=MODEL_GLM5, stop_reason="end_turn", usage=Usage(), cost_usd=0.0)]
     )
@@ -116,7 +116,7 @@ async def test_rewrite_empty_response_is_permanent_error(git_brain, content_stor
 
 
 async def test_rewrite_rejects_inline_gap_marker(git_brain, content_store):
-    piece = Piece(slug="token-vs-storage", voice="demo-mira")
+    piece = Piece(slug="the-board-on-the-wall", voice="demo-mira")
     provider = RecordingProvider(
         [LLMResult(text=BAD_INLINE_GAP, model=MODEL_GLM5, stop_reason="end_turn", usage=Usage(), cost_usd=0.0)]
     )

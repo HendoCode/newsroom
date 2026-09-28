@@ -163,10 +163,12 @@ class PublishService:
         article_html = extract_semantic_body(stripped)
 
         tokens, brand_warnings = self._brand_tokens(piece.voice)
-        template = self.template_store.read()
+        # No branded template in the brain (the neutral demo brain ships none) degrades to the
+        # built-in plain template with a warning — publishing still mints unbranded outputs.
+        template, template_warnings = self.template_store.read_or_plain()
         rendered_at = utcnow()
 
-        warnings: list[str] = list(brand_warnings)
+        warnings: list[str] = [*brand_warnings, *template_warnings]
         logo_src = await self._inline_logo(tokens, warnings)
         branded_html = render_branded_html(
             template,

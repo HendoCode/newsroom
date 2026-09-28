@@ -5,7 +5,7 @@ with **no server**. An opt-in integration test (see ``test_repositories_integrat
 at a real ``MONGO_URL`` and skips when unreachable.
 
 The Git suite copies the checked-in **fixture brain** (``agents/tests/fixtures/brain/`` — a frozen
-snapshot of the real ``HendoCode/content-machine-brain`` content) into a throwaway git repo, so we
+snapshot of the real ``HendoCode/masthead`` content) into a throwaway git repo, so we
 exercise the true on-disk layout while committing safely to a temp repo (never the worktree, and
 never the real brain clone). The fixture is laid out at its own repo root (no nested subdirectory)
 to match production, where the brain is cloned as its own repo rather than nested under a
@@ -25,8 +25,9 @@ from mongomock_motor import AsyncMongoMockClient
 from app.git import GitBrain, GitContentStore
 from app.lake import ContentLake, build_content_lake
 from app.repositories import WorkStateStore
+from tests.synthetic_brand import seed_synth_brand
 
-# agents/tests/fixtures/brain — a frozen snapshot of HendoCode/content-machine-brain's content.
+# agents/tests/fixtures/brain — a frozen snapshot of HendoCode/masthead's content.
 FIXTURE_BRAIN = Path(__file__).resolve().parent / "fixtures" / "brain"
 
 
@@ -47,7 +48,7 @@ async def lake() -> ContentLake:
 @pytest.fixture
 def brain_repo(tmp_path: Path) -> Path:
     """A temp git repo, at its own root, seeded with a copy of the fixture brain — the same shape
-    as a real ``content-machine-brain`` clone (prefix ``""``)."""
+    as a real ``masthead`` clone (prefix ``""``)."""
     root = tmp_path / "repo"
     root.mkdir()
     # -b main: never depend on the host's init.defaultBranch (CI and local boxes differ).
@@ -83,3 +84,18 @@ def git_brain(brain_repo: Path) -> GitBrain:
 @pytest.fixture
 def content_store(brain_repo: Path) -> GitContentStore:
     return GitContentStore(str(brain_repo))
+
+
+@pytest.fixture
+def branded_brain_repo(brain_repo: Path) -> Path:
+    """The fixture brain **plus** the synthetic brand assets (tests/synthetic_brand.py).
+
+    The brain repo is the neutral demo suite and ships no personal branding, so this is what the
+    branded render path is tested against — the plain fallback is covered by the bare
+    ``brain_repo``."""
+    return seed_synth_brand(brain_repo)
+
+
+@pytest.fixture
+def branded_git_brain(branded_brain_repo: Path) -> GitBrain:
+    return GitBrain(str(branded_brain_repo))

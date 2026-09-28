@@ -134,12 +134,12 @@ def test_clone_carries_deploy_key_ssh_command_in_env(
     monkeypatch.setattr(subprocess, "run", fake_run)
     dest = tmp_path / "cloned-brain"
     GitRepo.clone(
-        "git@github.com:HendoCode/content-machine-brain.git", dest, ssh_deploy_key=_FAKE_KEY
+        "git@github.com:HendoCode/masthead.git", dest, ssh_deploy_key=_FAKE_KEY
     )
 
     assert len(calls) == 1
     cmd, kwargs = calls[0]
-    assert cmd == ["git", "clone", "git@github.com:HendoCode/content-machine-brain.git", str(dest.resolve())]
+    assert cmd == ["git", "clone", "git@github.com:HendoCode/masthead.git", str(dest.resolve())]
     env = kwargs["env"]
     assert env is not None and "GIT_SSH_COMMAND" in env
 
@@ -161,7 +161,7 @@ def _clean_settings_cache(monkeypatch: pytest.MonkeyPatch) -> None:
 def test_ensure_brain_available_clones_with_deploy_key_from_settings(
     monkeypatch: pytest.MonkeyPatch, tmp_path: Path
 ) -> None:
-    monkeypatch.setenv("BRAIN_REPO_URL", "git@github.com:HendoCode/content-machine-brain.git")
+    monkeypatch.setenv("BRAIN_REPO_URL", "git@github.com:HendoCode/masthead.git")
     monkeypatch.setenv("BRAIN_DEPLOY_KEY", "fake-deploy-key-material")
     monkeypatch.setenv("BRAIN_ROOT", str(tmp_path / "brain"))
     get_settings.cache_clear()
@@ -179,7 +179,7 @@ def test_ensure_brain_available_clones_with_deploy_key_from_settings(
     monkeypatch.setattr(GitRepo, "clone", staticmethod(fake_clone))
     ensure_brain_available()  # must not raise — GitError is swallowed by design
 
-    assert captured["url"] == "git@github.com:HendoCode/content-machine-brain.git"
+    assert captured["url"] == "git@github.com:HendoCode/masthead.git"
     assert captured["ssh_deploy_key"] == "fake-deploy-key-material"
 
 

@@ -17,7 +17,7 @@ from fastapi.testclient import TestClient
 
 from app import models as m
 from app.dashboard import load_collections, seed_work_state
-from app.git import open_content_store
+from app.git import GitContentStore, open_content_store
 from app.main import app
 from app.models import utcnow
 from app.piece_detail import (
@@ -37,9 +37,9 @@ VIEWER = "me@example.com"
 
 def test_find_piece_collections_joins_seed_by_deterministic_id() -> None:
     seed = seed_work_state(VIEWER)
-    found = find_piece_collections(seed, "seed-token-vs-storage")
+    found = find_piece_collections(seed, "seed-the-board-on-the-wall")
     assert found is not None
-    assert found.piece.slug == "token-vs-storage"
+    assert found.piece.slug == "the-board-on-the-wall"
     assert len(found.councils) == 1 and found.councils[0].aggregate == 9.2
     assert len(found.review_rounds) == 1 and found.review_rounds[0].round_number == 2
 
@@ -394,10 +394,10 @@ def test_activity_log_sorts_newest_first_and_never_drops_undated_entries() -> No
 
 def test_read_draft_content_reads_the_real_editorial_block(brain_repo: Path) -> None:
     content = open_content_store(brain_root=str(brain_repo))
-    draft = read_draft_content(content, "token-vs-storage")
+    draft = read_draft_content(content, "rehearse-the-rollback")
     assert draft is not None
     assert 'class="editorial"' in draft
-    assert "[GAP]" in draft
+    assert "[GAP:" in draft  # the piece's own open annotation, verbatim from the brain
 
 
 def test_read_draft_content_none_for_unknown_slug(brain_repo: Path) -> None:
@@ -408,7 +408,7 @@ def test_read_draft_content_none_for_unknown_slug(brain_repo: Path) -> None:
 def test_read_draft_content_none_when_content_store_unavailable() -> None:
     """``app.state.git_content`` is ``None`` whenever the Git brain isn't reachable (lifespan
     catches ``GitError`` there, not here) — the reader just degrades gracefully."""
-    assert read_draft_content(None, "token-vs-storage") is None
+    assert read_draft_content(None, "the-board-on-the-wall") is None
 
 
 # --- /api/pieces/{id} wire contract -----------------------------------------------------------
@@ -430,10 +430,10 @@ def test_piece_detail_endpoint_seeds_and_reads_real_draft(
 ) -> None:
     monkeypatch.setenv("BRAIN_ROOT", str(brain_repo))
     with TestClient(app) as client:  # lifespan runs → no Mongo → seed path
-        resp = client.get("/api/pieces/seed-token-vs-storage", params={"viewer": VIEWER})
+        resp = client.get("/api/pieces/seed-the-board-on-the-wall", params={"viewer": VIEWER})
     assert resp.status_code == 200
     body = resp.json()
-    assert body["slug"] == "token-vs-storage"
+    assert body["slug"] == "the-board-on-the-wall"
     # The seed fallback is honest about provenance — the piece-detail screen renders its
     # "seeded data" badge off this flag (cmw-boss-facing-presentation).
     assert body["seeded"] is True
@@ -444,28 +444,61 @@ def test_piece_detail_endpoint_seeds_and_reads_real_draft(
     # covered above — the between-rounds routing log's actual HTTP JSON shape.
     assert [r["round_number"] for r in body["review_rounds"]] == [2]
     assert body["review_rounds"][0]["routing_log"] == []
-    # Evidence trail (claim chips + retrieval/source list) is real wire too: this fixture draft
-    # authors no footnote chips, but its sources.md research citations still fill the drawer.
+    # Evidence trail (claim chips + retrieval/source list) is real wire too. The demo brain's
+    # provenance sheet is a transcript-traceability TABLE with no external URLs (its meta.json says
+    # "No external citations by design"), so both halves of the drawer are honestly empty here —
+    # the populated shapes are covered by test_piece_detail_endpoint_carries_claim_citations below
+    # and by tests/test_evidence.py.
     assert body["evidence_citations"] == []
-    assert body["evidence_sources"]
-    assert all(s["kind"] == "sources-md" for s in body["evidence_sources"])
+    assert body["evidence_sources"] == []
+
+
+def _add_citation_shaped_draft(brain_repo: Path, slug: str) -> None:
+    """Overwrite a piece's draft in the throwaway clone with the chip + sources shape.
+
+    No masthead demo piece cites anything externally (by design), so the claim-citation wire
+    contract needs a draft that does — seeded per test into the temp brain copy, exactly like the
+    other synthetic folders in this suite, never into the checked-in snapshot.
+    """
+    folder = brain_repo / "drafts" / slug
+    (folder / "draft.html").write_text(
+        "<html><head><title>Rehearse the rollback</title></head><body><article>"
+        '<p>The drill took two hours.<sup class="fn"><a href="#src1" id="r1">1</a></sup></p>'
+        '<p>Six minutes of events were lost.<sup class="fn"><a href="#src2" id="r2">2</a></sup></p>'
+        '<ol><li id="src1">Drill log. <a href="#r1">&#8617;</a></li>'
+        '<li id="src2">Runbook. <a href="https://runbook.test/rollback">runbook.test/rollback</a> '
+        '<a href="#r2">&#8617;</a></li></ol></article></body></html>',
+        encoding="utf-8",
+    )
+    (folder / "sources.md").write_text(
+        "# Sources & Handoff\n\n## Research citations\n"
+        "- Drill duration confirmed in the log https://runbook.test/drill-log\n",
+        encoding="utf-8",
+    )
+    GitContentStore(str(brain_repo)).repo.commit(
+        [f"drafts/{slug}/draft.html", f"drafts/{slug}/sources.md"],
+        f"content(drafts): citation-shaped {slug}",
+        "test",
+        "t@test",
+    )
 
 
 def test_piece_detail_endpoint_carries_claim_citations(
     monkeypatch: pytest.MonkeyPatch, brain_repo: Path
 ) -> None:
-    """The aws-gsi-faq fixture draft authors real footnote chips — the endpoint must carry them
-    as claim-level citations plus the footnote + sources.md source entries behind them."""
+    """A draft that DOES author footnote chips must surface them as claim-level citations, plus the
+    footnote + sources.md source entries behind them."""
+    _add_citation_shaped_draft(brain_repo, "rehearse-the-rollback")
     monkeypatch.setenv("BRAIN_ROOT", str(brain_repo))
     with TestClient(app) as client:
-        resp = client.get("/api/pieces/seed-aws-gsi-faq", params={"viewer": VIEWER})
+        resp = client.get("/api/pieces/seed-rehearse-the-rollback", params={"viewer": VIEWER})
     assert resp.status_code == 200
     body = resp.json()
-    assert [c["chip"] for c in body["evidence_citations"]] == ["1", "2", "3", "4", "5"]
+    assert [c["chip"] for c in body["evidence_citations"]] == ["1", "2"]
     assert body["evidence_citations"][0]["source_id"] == "src1"
     kinds = [s["kind"] for s in body["evidence_sources"]]
-    assert kinds.count("footnote") == 5  # src1…src5, chips point at them
-    assert "sources-md" in kinds  # the sources.md research citations fill the same drawer
+    assert kinds.count("footnote") == 2  # src1 + src2, the chips point at them
+    assert "sources-md" in kinds  # the sources.md research citation fills the same drawer
 
 
 def test_piece_detail_endpoint_unknown_id_404() -> None:
@@ -476,6 +509,6 @@ def test_piece_detail_endpoint_unknown_id_404() -> None:
 
 def test_piece_detail_endpoint_never_leaks_secrets() -> None:
     with TestClient(app) as client:
-        raw = client.get("/api/pieces/seed-token-vs-storage").text.lower()
+        raw = client.get("/api/pieces/seed-the-board-on-the-wall").text.lower()
     for forbidden in ("api_key", "apikey", "mongo_url", "secret", "password"):
         assert forbidden not in raw

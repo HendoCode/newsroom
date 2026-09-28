@@ -95,7 +95,7 @@ class QueuedProvider(LLMProvider):
 
 
 async def _piece(store, *, stage: PieceStage = PieceStage.incorporating, **extra) -> Piece:
-    piece = Piece(slug="token-vs-storage", voice="demo-mira", stage=stage, **extra)
+    piece = Piece(slug="the-board-on-the-wall", voice="demo-mira", stage=stage, **extra)
     return await store.pieces.insert(piece)
 
 
@@ -364,10 +364,15 @@ async def test_incorporate_failed_rewrite_leaves_no_partial_routing(store, git_b
 # --- review-edit-sourced lesson proposals (cmw-reviewer-can-edit-doc) ------------------------
 
 EDITED_PHRASE_OLD = (
-    "That ratio is the whole point, so it's worth drawing it to scale before we argue about "
-    "anything."
+    "A schedule is not a list of sailings. It is an argument about who is where, and the board was\n"
+    "  the form that argument took. Everybody in the building could read the state of it without asking\n"
+    "  anybody for anything."
 )
-EDITED_PHRASE_NEW = "That ratio matters, so let's put it in perspective before debating it."
+EDITED_PHRASE_NEW = (
+    "A schedule is not a list of sailings. It is an argument about who is where, and the board was\n"
+    "  the form that argument took. Anyone in the building could read its state without asking\n"
+    "  anybody for anything."
+)
 
 
 def _lessons_json(*pairs: tuple[str, str]) -> str:

@@ -620,7 +620,7 @@ This file is the project's committed home for project-intrinsic agent knowledge:
   cross-request.
 - `draft_html` is rendered via `dangerouslySetInnerHTML` (`components/piece-detail/draft-view.tsx`)
   — it is trusted, Git-committed content the internal pipeline writes to the brain clone
-  (`HendoCode/content-machine-brain`, via `agents/app/git`), never third-party input.
+  (`HendoCode/masthead`, via `agents/app/git`), never third-party input.
 - **The interview transcript (D16b) is reachable from piece-detail** via
   `components/piece-detail/transcript-record.tsx` — before this it was only reachable through the
   kickoff share link (`spike-kickoff.tsx`), unrecoverable once that moment passed. Fetches

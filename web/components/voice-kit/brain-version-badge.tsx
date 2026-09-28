@@ -3,7 +3,7 @@ import type { BrainStatus } from "@/lib/agents-client";
 
 /**
  * "Which brain am I running" (D1/D2): the commit-ish of the on-disk brain clone
- * (`HendoCode/content-machine-brain`) the agents service currently has checked out. Voice-kit is
+ * (`HendoCode/masthead`) the agents service currently has checked out. Voice-kit is
  * the screen most directly about brain content, so this lives here rather than in the shared
  * `AppShell` — scoping it avoids threading a new fetch through every other page.
  */

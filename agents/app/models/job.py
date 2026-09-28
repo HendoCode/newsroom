@@ -110,7 +110,8 @@ class Job(MongoModel):
     formats: list[str] | None = None
     # Meaningful only for type=council: the "2-4 more by fit" editors beyond the mandatory editors
     # (engine/3-revision-loop.md — technical-reviewer for a technical piece, closer/cold-reader for
-    # a customer story, housel/perell/puri for opinion/brand, ...). Which fit category a piece
+    # a customer story, durability-reader/idea-density/hook-retention for opinion/brand, ...). Which
+    # fit category a piece
     # belongs to is a judgment call the coordinator triggering the round makes (mirroring how the
     # engine step frames selection as "you" choosing); None means "mandatory + per-partner
     # steward(s) only" for this round. Unknown persona names are dropped, not rejected (§1.2 roster

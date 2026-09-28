@@ -124,17 +124,17 @@ class Settings(BaseSettings):
     embedding_dim: int = 256
 
     # --- Git brain / content store (D1/D2/D4, §7). Brain lives in its own repo,
-    # `HendoCode/content-machine-brain`, cloned read-write onto disk rather than baked in as a
+    # `HendoCode/masthead`, cloned read-write onto disk rather than baked in as a
     # subdirectory. ---
     # Filesystem root of the local brain clone (voices/personas/engine/piece folders). Git *is*
     # the versioning: read from here, and content revisions / transcripts / accepted lessons /
     # voice-kit edits are committed (and, when a remote is configured, pushed) here. Server-side
     # path only. Default assumes a sibling checkout, matching a developer's own manually-cloned
     # brain (the local-dev path — no BRAIN_REPO_URL needed in that case).
-    brain_root: str = "../content-machine-brain"
+    brain_root: str = "../masthead"
     # Git remote URL to clone BRAIN_ROOT from when it doesn't exist yet (container / managed-host
     # boot) and to fast-forward-pull from on subsequent boots, picking up hand-nurtured brain
-    # updates. An SSH URL (`git@github.com:HendoCode/content-machine-brain.git`) — left blank for
+    # updates. An SSH URL (`git@github.com:HendoCode/masthead.git`) — left blank for
     # local dev, where BRAIN_ROOT already points at a clone the developer manages with their own
     # git (ambient SSH credentials, manual pull/push). Resolved through the secrets shim — see the
     # `brain_repo_url` property below, not a field here.

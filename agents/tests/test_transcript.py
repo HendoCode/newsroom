@@ -29,7 +29,7 @@ def test_append_turn_stores_clean_answer_with_anchor_provenance(content_store: G
     turn = append_turn(
         content_store,
         slug,
-        persona="ferriss",
+        persona="tactician",
         question="Q?",
         answer="Researched fact.",
         research_derived=True,
@@ -37,7 +37,7 @@ def test_append_turn_stores_clean_answer_with_anchor_provenance(content_store: G
 
     raw = content_store.read_transcript(slug)  # the committed bytes, un-stripped
     assert "[RESEARCH-DERIVED]" not in raw
-    assert f"<!-- turn:{turn.id} persona:ferriss research:true -->" in raw
+    assert f"<!-- turn:{turn.id} persona:tactician research:true -->" in raw
 
     parsed = parse_turns(raw)[0]
     assert parsed.answer == "Researched fact."
@@ -50,12 +50,12 @@ def test_parse_turns_strips_legacy_marker_kept_in_stored_data(content_store: Git
     anchor. Deliberately hand-authored, not round-tripped: the real writer no longer emits it, so
     hand-building the legacy shape is the only way to exercise it."""
     text = (
-        "## Ferriss\n\n"
+        "## Tactician\n\n"
         "**Q — What's the real bill?**\n"
-        f"<!-- turn:{'0' * 24} persona:ferriss research:true -->\n"
+        f"<!-- turn:{'0' * 24} persona:tactician research:true -->\n"
         "[RESEARCH-DERIVED] Anchor: ~$230/month.\n\n"
         "**Q — A live example?**\n"
-        f"<!-- turn:{'1' * 24} persona:ferriss research:false -->\n"
+        f"<!-- turn:{'1' * 24} persona:tactician research:false -->\n"
         "From the author's own experience: yes.\n\n"
     )
 
@@ -74,7 +74,7 @@ def test_strip_legacy_research_markers_is_boundary_anchored() -> None:
     ``**Q`` question line — both shapes legacy data actually used) — a mid-prose occurrence is a
     genuine mention of the marker (e.g. a transcript preamble explaining it) and must survive."""
     anchored = (
-        f"<!-- turn:{'0' * 24} persona:ferriss research:true -->\n"
+        f"<!-- turn:{'0' * 24} persona:tactician research:true -->\n"
         "[RESEARCH-DERIVED] Researched.\n\n"
     )
     legacy_question_line = "**Q1 — Where's the money going?**\n[RESEARCH-DERIVED] Into tokens.\n\n"
@@ -93,9 +93,9 @@ def test_read_transcript_strips_legacy_markers(content_store: GitContentStore) -
     slug = "p-transcript-read-strips"
     content_store.commit_transcript(
         slug,
-        "## Ferriss\n\n"
+        "## Tactician\n\n"
         "**Q — Q?**\n"
-        f"<!-- turn:{'0' * 24} persona:ferriss research:true -->\n"
+        f"<!-- turn:{'0' * 24} persona:tactician research:true -->\n"
         "[RESEARCH-DERIVED] Clean now.\n\n",
         message="test: seeded legacy-marker transcript",
     )
@@ -106,8 +106,8 @@ def test_read_transcript_strips_legacy_markers(content_store: GitContentStore) -
 
 def test_round_trip_single_persona_multiple_turns(content_store: GitContentStore) -> None:
     slug = "p-transcript-roundtrip"
-    t1 = append_turn(content_store, slug, persona="ferriss", question="Q1?", answer="Answer one.")
-    t2 = append_turn(content_store, slug, persona="ferriss", question="Q2?", answer="Answer two.")
+    t1 = append_turn(content_store, slug, persona="tactician", question="Q1?", answer="Answer one.")
+    t2 = append_turn(content_store, slug, persona="tactician", question="Q2?", answer="Answer two.")
 
     turns = parse_turns(read_transcript(content_store, slug))
     assert [t.id for t in turns] == [t1.id, t2.id]
@@ -122,7 +122,7 @@ def test_round_trip_across_a_persona_change_does_not_bleed_the_next_heading(
     the ``## <next persona>`` heading ``append_turn`` writes ahead of turn N+1's question."""
     slug = "p-transcript-persona-change"
     first = append_turn(
-        content_store, slug, persona="ferriss", question="Ferriss Q1?", answer="Ferriss answer."
+        content_store, slug, persona="tactician", question="Tactician Q1?", answer="Tactician answer."
     )
     second = append_turn(
         content_store, slug, persona="skeptic", question="Skeptic Q1?", answer="Skeptic answer."
@@ -135,9 +135,9 @@ def test_round_trip_across_a_persona_change_does_not_bleed_the_next_heading(
     assert parsed_first.id == first.id
     assert parsed_second.id == second.id
 
-    # The bug: parsed_first.answer used to be "Ferriss answer.\n\n## Skeptic" — the next persona's
+    # The bug: parsed_first.answer used to be "Tactician answer.\n\n## Skeptic" — the next persona's
     # heading bled into the prior turn's answer.
-    assert parsed_first.answer == "Ferriss answer."
+    assert parsed_first.answer == "Tactician answer."
     assert "##" not in parsed_first.answer
     assert "Skeptic" not in parsed_first.answer
     assert parsed_second.answer == "Skeptic answer."
@@ -145,14 +145,14 @@ def test_round_trip_across_a_persona_change_does_not_bleed_the_next_heading(
 
 def test_round_trip_three_personas_two_changes(content_store: GitContentStore) -> None:
     slug = "p-transcript-three-personas"
-    a = append_turn(content_store, slug, persona="ferriss", question="A?", answer="Answer A.")
+    a = append_turn(content_store, slug, persona="tactician", question="A?", answer="Answer A.")
     b = append_turn(content_store, slug, persona="skeptic", question="B?", answer="Answer B.")
-    c = append_turn(content_store, slug, persona="ferriss", question="C?", answer="Answer C.")
+    c = append_turn(content_store, slug, persona="tactician", question="C?", answer="Answer C.")
 
     turns = parse_turns(read_transcript(content_store, slug))
     assert [t.id for t in turns] == [a.id, b.id, c.id]
     assert [t.answer for t in turns] == ["Answer A.", "Answer B.", "Answer C."]
-    assert [t.persona for t in turns] == ["ferriss", "skeptic", "ferriss"]
+    assert [t.persona for t in turns] == ["tactician", "skeptic", "tactician"]
 
 
 def test_edit_answer_across_a_persona_change_preserves_the_next_heading(
@@ -162,7 +162,7 @@ def test_edit_answer_across_a_persona_change_preserves_the_next_heading(
     editing the last turn before a persona change must not delete the next persona's heading."""
     slug = "p-transcript-edit-persona-change"
     first = append_turn(
-        content_store, slug, persona="ferriss", question="Ferriss Q1?", answer="Original answer."
+        content_store, slug, persona="tactician", question="Tactician Q1?", answer="Original answer."
     )
     second = append_turn(
         content_store, slug, persona="skeptic", question="Skeptic Q1?", answer="Skeptic answer."

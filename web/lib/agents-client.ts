@@ -90,7 +90,7 @@ export interface AgentsStatus {
   llm_configured: boolean;
 }
 
-/** Provenance for the on-disk brain clone (`HendoCode/content-machine-brain`) — "which brain am I
+/** Provenance for the on-disk brain clone (`HendoCode/masthead`) — "which brain am I
  * running." `connected: false` means every other field is null (brain_root isn't reachable). */
 export interface BrainStatus {
   connected: boolean;

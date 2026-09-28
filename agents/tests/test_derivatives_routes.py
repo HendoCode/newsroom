@@ -21,7 +21,7 @@ def _client() -> AsyncClient:
 async def test_create_list_promote_over_http() -> None:
     store = WorkStateStore(AsyncMongoMockClient()["deriv_routes"])
     piece = await store.pieces.insert(
-        Piece(slug="token-vs-storage", voice="demo-mira", title="Token vs storage", stage=PieceStage.released)
+        Piece(slug="the-board-on-the-wall", voice="demo-mira", title="Token vs storage", stage=PieceStage.released)
     )
     _attach(store)
 
@@ -78,11 +78,11 @@ async def test_derivatives_quality_reflects_a_cleared_council() -> None:
 
     store = WorkStateStore(AsyncMongoMockClient()["deriv_quality"])
     anchor = await store.pieces.insert(
-        Piece(slug="token-vs-storage", voice="demo-mira", title="T", stage=PieceStage.released)
+        Piece(slug="the-board-on-the-wall", voice="demo-mira", title="T", stage=PieceStage.released)
     )
     derivative = await store.pieces.insert(
         Piece(
-            slug="token-vs-storage-linkedin-post",
+            slug="the-board-on-the-wall-linkedin-post",
             voice="demo-mira",
             stage=PieceStage.finalized,
             role=PieceRole.derivative,

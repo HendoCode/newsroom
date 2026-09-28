@@ -47,7 +47,7 @@ class FakeDriveClient:
         raise NotImplementedError
 
 
-async def _piece(store: WorkStateStore, *, slug: str = "token-vs-storage") -> Piece:
+async def _piece(store: WorkStateStore, *, slug: str = "the-board-on-the-wall") -> Piece:
     return await store.pieces.insert(Piece(slug=slug, voice="demo-dana"))
 
 

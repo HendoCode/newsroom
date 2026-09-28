@@ -174,7 +174,7 @@ async def _noop_sleep(_seconds: float) -> None:
 
 async def _piece(store, stage: PieceStage, **extra) -> Piece:
     piece = Piece(
-        slug=extra.pop("slug", "token-vs-storage"),
+        slug=extra.pop("slug", "the-board-on-the-wall"),
         voice=extra.pop("voice", "demo-mira"),
         stage=stage,
         **extra,
@@ -198,7 +198,7 @@ async def _ctx(
     )
 
 
-def _seed_revision(content_store, slug: str = "token-vs-storage") -> str:
+def _seed_revision(content_store, slug: str = "the-board-on-the-wall") -> str:
     """The real fixture pieces already have a committed ``draft.html`` in the seed-brain commit —
     reuse that sha as ``latest_revision`` rather than authoring a redundant new commit."""
     return content_store.revision_history(slug)[0].sha
@@ -209,7 +209,7 @@ def _seed_revision(content_store, slug: str = "token-vs-storage") -> str:
 # text, not an inline marker), which would otherwise trip `_assert_no_inline_gaps` on any test that
 # round-trips that real content back through the apply-fixes path. Tests that exercise the apply
 # call use this instead; tests that only read the real fixture's revision/transcript verbatim (to
-# assert on context assembly) are unaffected and keep using the real "token-vs-storage" piece.
+# assert on context assembly) are unaffected and keep using the real "the-board-on-the-wall" piece.
 GOOD_COUNCIL_DRAFT = (
     "<!DOCTYPE html><html><head><title>t</title></head><body>"
     "<article><h1>Title</h1><p>Some prose about the topic.</p></article>"
@@ -338,7 +338,8 @@ def test_select_editors_derivative_piece_gets_destination_specific_council(git_b
     selected = _select_editors(piece, job, git_brain)
     assert selected[:2] == ["slop-allergist", "voice-guardian"]
     assert "technical-reviewer" in selected  # universal facts gate
-    assert "puri" in selected and "cold-reader" in selected and "closer" in selected
+    # The social destination's own judgment: a first-scroll hook reader and a closing-line reader.
+    assert "cold-reader" in selected and "closer" in selected
     assert len(selected) == len(set(selected))
 
 
@@ -354,7 +355,9 @@ def test_select_editors_derivative_whitepaper_gets_different_judgment(git_brain)
         git_brain,
     )
     assert linkedin != whitepaper
-    assert "housel" in whitepaper and "housel" not in linkedin
+    # Each destination adds its own editors and none of the other's.
+    assert "structure-editor" in whitepaper and "structure-editor" not in linkedin
+    assert "closer" in linkedin and "closer" not in whitepaper
 
 
 def test_select_editors_derivative_unknown_destination_still_gets_generic_judgment(git_brain):
@@ -483,7 +486,7 @@ async def test_council_step_no_fixes_or_gaps_skips_apply_call_but_still_updates_
 ):
     sha = _seed_revision(content_store)
     piece = await _piece(
-        store, PieceStage.council, slug="token-vs-storage", voice="demo-mira", latest_revision=sha
+        store, PieceStage.council, slug="the-board-on-the-wall", voice="demo-mira", latest_revision=sha
     )
     provider = ScriptedProvider(
         {
@@ -499,8 +502,8 @@ async def test_council_step_no_fixes_or_gaps_skips_apply_call_but_still_updates_
     assert len(provider.calls) == 2  # 2 editor calls; no apply call (no fixes, no gaps)
     updated = await store.pieces.get(piece.id)
     assert updated.latest_revision != sha  # sources.md changed -> a new revision commit still lands
-    assert content_store.read_draft("token-vs-storage") == content_store.read_revision(
-        "token-vs-storage", sha
+    assert content_store.read_draft("the-board-on-the-wall") == content_store.read_revision(
+        "the-board-on-the-wall", sha
     )  # draft.html itself is untouched
 
 
@@ -509,7 +512,7 @@ async def test_council_step_aggregate_below_bar_is_recorded_honestly(
 ):
     sha = _seed_revision(content_store)
     piece = await _piece(
-        store, PieceStage.council, slug="token-vs-storage", voice="demo-mira", latest_revision=sha
+        store, PieceStage.council, slug="the-board-on-the-wall", voice="demo-mira", latest_revision=sha
     )
     provider = ScriptedProvider(
         {
@@ -532,7 +535,7 @@ async def test_council_step_prior_round_feedback_is_passed_to_the_same_editor(
 ):
     sha = _seed_revision(content_store)
     piece = await _piece(
-        store, PieceStage.council, slug="token-vs-storage", voice="demo-mira", latest_revision=sha
+        store, PieceStage.council, slug="the-board-on-the-wall", voice="demo-mira", latest_revision=sha
     )
     await store.councils.insert(
         Council(
@@ -577,7 +580,7 @@ async def test_council_step_shared_prefix_has_one_cache_breakpoint_and_full_tran
 ):
     sha = _seed_revision(content_store)
     piece = await _piece(
-        store, PieceStage.council, slug="token-vs-storage", voice="demo-mira", latest_revision=sha
+        store, PieceStage.council, slug="the-board-on-the-wall", voice="demo-mira", latest_revision=sha
     )
     provider = ScriptedProvider(
         {
@@ -609,10 +612,10 @@ async def test_council_step_shared_prefix_has_one_cache_breakpoint_and_full_tran
     engine_text = git_brain.read_engine("3-revision-loop")
     assert any(engine_text in t for t in system_texts)
     transcript_text = strip_legacy_research_markers(
-        content_store.read_transcript("token-vs-storage")
+        content_store.read_transcript("the-board-on-the-wall")
     )
     assert any(transcript_text in t for t in system_texts)
-    revision_text = content_store.read_revision("token-vs-storage", sha)
+    revision_text = content_store.read_revision("the-board-on-the-wall", sha)
     assert any(revision_text in t for t in system_texts)
     # cache flag exercised via spying_stream (neutral seam)
 
@@ -699,7 +702,7 @@ async def test_council_step_shared_prefix_includes_the_purpose_block(store, git_
     piece = await _piece(
         store,
         PieceStage.council,
-        slug="token-vs-storage",
+        slug="the-board-on-the-wall",
         voice="demo-mira",
         latest_revision=sha,
         origin_spike_id=spike.id,
@@ -742,9 +745,9 @@ async def test_council_step_malformed_editor_response_raises_and_commits_nothing
 ):
     sha = _seed_revision(content_store)
     piece = await _piece(
-        store, PieceStage.council, slug="token-vs-storage", voice="demo-mira", latest_revision=sha
+        store, PieceStage.council, slug="the-board-on-the-wall", voice="demo-mira", latest_revision=sha
     )
-    before_sources = content_store.read_sources("token-vs-storage")
+    before_sources = content_store.read_sources("the-board-on-the-wall")
     bad_result = LLMResult(
         text="not json", model=MODEL_OPUS, stop_reason="end_turn", usage=Usage(), cost_usd=0.0
     )
@@ -763,13 +766,13 @@ async def test_council_step_malformed_editor_response_raises_and_commits_nothing
     assert await store.councils.by_piece(piece.id) == []
     updated = await store.pieces.get(piece.id)
     assert updated.latest_revision == sha
-    assert content_store.read_sources("token-vs-storage") == before_sources
+    assert content_store.read_sources("the-board-on-the-wall") == before_sources
 
 
 async def test_council_step_apply_refusal_raises_and_commits_nothing(store, git_brain, content_store):
     sha = _seed_revision(content_store)
     piece = await _piece(
-        store, PieceStage.council, slug="token-vs-storage", voice="demo-mira", latest_revision=sha
+        store, PieceStage.council, slug="the-board-on-the-wall", voice="demo-mira", latest_revision=sha
     )
     provider = ScriptedProvider(
         {
@@ -934,11 +937,11 @@ async def test_council_step_plugs_into_state_machine_and_advances_to_review(
         }
     )
     registry = StepRegistry()
-    registry.register(_SeedDraftStep(content_store, "token-vs-storage"))
+    registry.register(_SeedDraftStep(content_store, "the-board-on-the-wall"))
     registry.register(CouncilStep(brain=git_brain, content=content_store))
     runner = JobRunner(store, registry, provider=provider, sleep=_noop_sleep)
     machine = PieceMachine(store, runner)
-    piece = await _piece(store, PieceStage.interviewing, slug="token-vs-storage", voice="demo-mira")
+    piece = await _piece(store, PieceStage.interviewing, slug="the-board-on-the-wall", voice="demo-mira")
 
     updated = await machine.enough_input(piece.id, actor="demo-mira@x")
 
@@ -960,11 +963,11 @@ async def test_council_step_failure_flags_piece_without_rolling_back_content(
         }
     )
     registry = StepRegistry()
-    registry.register(_SeedDraftStep(content_store, "token-vs-storage"))
+    registry.register(_SeedDraftStep(content_store, "the-board-on-the-wall"))
     registry.register(CouncilStep(brain=git_brain, content=content_store))
     runner = JobRunner(store, registry, provider=provider, sleep=_noop_sleep)
     machine = PieceMachine(store, runner)
-    piece = await _piece(store, PieceStage.interviewing, slug="token-vs-storage", voice="demo-mira")
+    piece = await _piece(store, PieceStage.interviewing, slug="the-board-on-the-wall", voice="demo-mira")
 
     updated = await machine.enough_input(piece.id, actor="demo-mira@x")
 
