@@ -15,12 +15,12 @@ from app.repositories import WorkStateStore
 
 
 async def test_insert_assigns_id_and_timestamps(store: WorkStateStore) -> None:
-    piece = await store.pieces.insert(m.Piece(slug="token-vs-storage", voice="demo-mira"))
+    piece = await store.pieces.insert(m.Piece(slug="the-board-on-the-wall", voice="demo-mira"))
     assert piece.id is not None
     assert piece.created_at is not None and piece.updated_at is not None
     fetched = await store.pieces.get(piece.id)
     assert fetched is not None
-    assert fetched.slug == "token-vs-storage"
+    assert fetched.slug == "the-board-on-the-wall"
     assert fetched.stage == m.PieceStage.interviewing
 
 
@@ -251,11 +251,11 @@ async def test_lesson_proposed_and_by_voice(store: WorkStateStore) -> None:
 
 async def test_interview_open_for_piece(store: WorkStateStore) -> None:
     await store.interviews.insert(
-        m.Interview(piece_id="p1", interviewer_personas=["ferriss", "architect"])
+        m.Interview(piece_id="p1", interviewer_personas=["tactician", "architect"])
     )
     await store.interviews.insert(m.Interview(piece_id="p1", status=m.InterviewStatus.complete))
     open_ivs = await store.interviews.open_for_piece("p1")
-    assert len(open_ivs) == 1 and open_ivs[0].interviewer_personas == ["ferriss", "architect"]
+    assert len(open_ivs) == 1 and open_ivs[0].interviewer_personas == ["tactician", "architect"]
 
 
 async def test_interview_by_piece_orders_by_creation_for_stable_round_numbering(

@@ -60,7 +60,7 @@ docker compose down -v
 ## Git brain (voice kit, lessons, interview)
 
 The Git-brain-backed features — voice kit, the lessons loop, and the interview engine — read
-from a clone of [`HendoCode/content-machine-brain`](https://github.com/HendoCode/content-machine-brain)
+from a clone of [`HendoCode/masthead`](https://github.com/HendoCode/masthead)
 that `docker-compose.yml` bind-mounts into the `agents` container at `/brain` (`agents/`'s own
 `BRAIN_ROOT` is set to that fixed in-container path; see the orientation section of this repo's
 `CLAUDE.md`/`AGENTS.md` for the full data-flow). **Before running `docker compose up`, clone the
@@ -68,10 +68,10 @@ brain repo as a sibling of this checkout:**
 
 ```bash
 cd ..
-git clone git@github.com:HendoCode/content-machine-brain.git
+git clone git@github.com:HendoCode/masthead.git
 ```
 
-The default `BRAIN_HOST_PATH` (`../content-machine-brain`) already expects exactly that layout —
+The default `BRAIN_HOST_PATH` (`../masthead`) already expects exactly that layout —
 override it in your `.env` if your clone lives elsewhere (see `.env.example`). The mount is
 read-write (not read-only): voice-kit edits and accepted lessons commit straight into this clone,
 same as they would against a real developer-managed checkout, and auto-push if the clone has a
@@ -187,7 +187,7 @@ pytest -q
 
 ## Brain pin (build/test reproducibility)
 
-`agents/` reads the agent brain from a Git clone of `HendoCode/content-machine-brain` that
+`agents/` reads the agent brain from a Git clone of `HendoCode/masthead` that
 **runtime** tracks live (pulls the branch tip, pushes lessons/edits back). Building/testing
 against a moving target isn't reproducible, so `agents/brain.lock` separately pins a known-good
 brain commit for that purpose, honored via `BRAIN_REF` — unset for any normal dev/prod boot above,

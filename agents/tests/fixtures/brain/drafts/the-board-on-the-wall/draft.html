@@ -1,0 +1,337 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>The board on the wall</title>
+<!--
+  Machine DRAFT artifact for the piece — not the published file.
+  Convention: drafts/<piece>/draft.html (self-contained, browser-openable), started from
+  templates/draft-skeleton.html. The council edits this file in place.
+  Revision state: v4 — final. Council aggregate 9.2 (round 2), stage=ready-for-human-pass.
+  The editorial block below is kept (with nothing open in it) because the parser contract in
+  engine/2-draft.md and the external-share strip in engine/feedback-intake.md key off that
+  literal <section class="editorial"> string. It is removed at the human pass.
+
+  FICTIONAL DEMO PIECE: Kestrel Bay Ferry Authority, its people, and every detail below are
+  invented. The clearances recorded in sources.md are part of the fiction.
+-->
+<style>
+  :root {
+    --background: #fcfbf8;
+    --card: #f4f2ec;
+    --foreground: #22201c;
+    --muted: #6a655c;
+    --accent: #6b5a45;
+    --border: #ddd8cd;
+    --radius: 0.5rem;
+  }
+  * { box-sizing: border-box; }
+  body {
+    max-width: 42rem;
+    margin: 0 auto;
+    padding: 4rem clamp(1.25rem, 4vw, 3rem) 5rem;
+    background: var(--background);
+    color: var(--foreground);
+    font: 18px/1.75 ui-serif, Georgia, "Times New Roman", serif;
+  }
+  h1 {
+    margin: 0 0 0.75rem;
+    font-size: clamp(2rem, 5.5vw, 2.9rem);
+    font-weight: 600;
+    letter-spacing: -0.02em;
+    line-height: 1.15;
+    text-wrap: balance;
+  }
+  h2 {
+    margin: 2.75rem 0 0.5rem;
+    font-size: 1.2rem;
+    font-weight: 600;
+    letter-spacing: 0.02em;
+    color: var(--accent);
+    font-family: ui-sans-serif, system-ui, sans-serif;
+  }
+  p { margin: 0 0 1.25rem; }
+  .kicker {
+    margin: 0 0 0.9rem;
+    color: var(--accent);
+    font: 700 0.74rem/1.4 ui-sans-serif, system-ui, sans-serif;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+  }
+  .dek {
+    max-width: 34rem;
+    margin: 0 0 2.5rem;
+    color: var(--muted);
+    font-size: 1.08rem;
+    font-style: italic;
+  }
+  blockquote {
+    margin: 2rem 0;
+    padding-left: 1.25rem;
+    border-left: 2px solid var(--accent);
+    color: var(--accent);
+    font-size: 1.15rem;
+    line-height: 1.6;
+  }
+  blockquote p { margin: 0; }
+  hr { border: none; border-top: 1px solid var(--border); margin: 2.75rem 0; }
+  figure { margin: 2.75rem 0; }
+  figure svg {
+    display: block;
+    width: 100%;
+    height: auto;
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    background: var(--card);
+  }
+  figcaption {
+    margin-top: 0.7rem;
+    color: var(--muted);
+    font: 0.84rem/1.55 ui-sans-serif, system-ui, sans-serif;
+    text-align: left;
+  }
+  .byline {
+    margin: 0 0 2.5rem;
+    color: var(--muted);
+    font: 0.85rem/1.5 ui-sans-serif, system-ui, sans-serif;
+  }
+  section.editorial {
+    margin-top: 3.5rem;
+    padding: 1.25rem 1.5rem;
+    border: 1px dashed var(--border);
+    border-radius: var(--radius);
+    background: var(--card);
+    color: var(--muted);
+    font: 0.9rem/1.6 ui-sans-serif, system-ui, sans-serif;
+  }
+  section.editorial h2 { margin-top: 0; color: var(--foreground); }
+  section.editorial .tag {
+    font: 700 0.78rem/1 ui-monospace, SFMono-Regular, Menlo, monospace;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    color: var(--foreground);
+  }
+  @media print { body { max-width: none; padding: 0 0.5in; } section.editorial { display: none; } }
+</style>
+</head>
+<body>
+<article>
+  <p class="kicker">Field notes · Kestrel Bay</p>
+  <h1>The board on the wall</h1>
+  <p class="dek">For forty years the ferry terminal ran its day on a painted board and a handful
+  of magnets. When the system replaced it, everyone kept walking to that wall.</p>
+  <p class="byline">Mira Calder · ~1,500 words · demo piece, fictional subject</p>
+
+  <p>At ten to six in the summer the magnets are warm. The board sits on the back wall of
+  Terminal 4 beside the window, and the sun gets to it first, so if you come in early and put your
+  hand flat on it to steady yourself on the way past, the little discs have held the heat from the
+  glass. Nobody ever said to touch the board. People did.</p>
+
+  <p>It was painted steel with a brass rail along the bottom, and it had been there longer than
+  anyone working there. Two boats, three crews, one that's always in the yard. That was the whole
+  problem the board solved, and the scheduler on the 06:40 said it that way to anyone new who
+  asked how a ferry terminal works.</p>
+
+  <p>A schedule is not a list of sailings. It is an argument about who is where, and the board was
+  the form that argument took. Everybody in the building could read the state of it without asking
+  anybody for anything.</p>
+
+  <h2>The colors</h2>
+
+  <p>Blue meant a vessel on its normal rotation. Red meant a vessel that could not sail — in the
+  yard, or waiting on a survey, or under an inspection nobody had finished arguing about. White
+  meant a crew change that had not settled yet, so the magnet might move before the morning was
+  out. The columns were days. A red magnet in Tuesday's column was a boat out of the water on
+  Tuesday, and you could see from the doorway where the gap was and who would have to cover it.</p>
+
+  <p>The red one had a chip in it, a piece gone from the lower corner since about 1998, and that
+  chip was information too. It told you which red magnet was the long-standing yard vessel rather
+  than whatever had broken this week.</p>
+
+  <p>There were rules about who could move them. Any scheduler could move a blue or a white. Only
+  the duty superintendent could move a red, and if you moved a red you said so out loud, because
+  moving a red magnet meant telling somebody a boat was not coming.</p>
+
+  <blockquote><p>"That was the whole permission system. It was a rule about speech, not about
+  access. If the wrong person moved a red, somebody would say <em>who moved the Cormorant?</em>
+  and you'd find out in about ninety seconds."</p></blockquote>
+
+  <h2>The meeting</h2>
+
+  <p>The replacement had been coming for years. Grant money, an audit recommendation, the usual
+  weather. What made it happen when it did was a retirement: the man who kept the board was
+  leaving, and the authority decided the knowledge should not leave with him. Get it out of his
+  head and into a database. That was the sentence in the paper.</p>
+
+  <p>The meeting had five people in it. The superintendent, the operations manager, two
+  schedulers, and a clerk taking notes. The superintendent did not argue against the system. He
+  asked one question, and nobody answered it.</p>
+
+  <blockquote><p>"Fine. But tell me who's allowed to move the red ones."</p></blockquote>
+
+  <p>The manager said something about permissions and roles. The superintendent said, right, and
+  then said, so tell me what the system calls a yard day. There was a pause in the room of the
+  kind that gets written into the minutes as <em>discussion</em>. The clerk wrote the question in
+  the open-items column, where it stayed.</p>
+
+  <hr>
+
+  <p>The system was correct. This matters, and it is easy to lose when you are telling a story
+  about something being taken down. It held the rotations, the crew assignments, the yard
+  schedule, the survey dates, and the reasons. It kept a record of who changed what, which the
+  board had never done except in the form of somebody shouting across an office. It printed a
+  daily sheet, and it could tell you in March what had sailed in November.</p>
+
+  <p>What it could not do was sit on a wall.</p>
+
+  <h2>05:40</h2>
+
+  <p>The third morning after the cutover, a relief vessel came in early and the deckhand on duty
+  needed to know whether he was going out on the second sailing. Deck crew never had logins. There
+  had been no reason for them to have logins; the board was on the wall and the wall was in the
+  room they were already standing in.</p>
+
+  <p>So he walked to the wall. There was a screen there now, turned off, and the office was empty
+  at twenty to six. He went and found the clerk.</p>
+
+  <p>That was not a system failure. Nothing was down. Nothing was wrong in the database, and if
+  you had asked the vendor they would have shown you the sailing list, correct, on a screen,
+  behind a login, in an office, at an hour when the person who needed it was on a dock in the
+  dark. It was a room failure.</p>
+
+  <blockquote><p>"Everybody who needed the board could read it from the doorway. Only some of them
+  could log in."</p></blockquote>
+
+  <h2>Eleven days, and a printout</h2>
+
+  <p>The yard foreman asked whether the daily sheet could be printed and stuck on the wall. It
+  could, and it was, and that continued for a month. Everybody called it a temporary measure,
+  including the people who knew it was not.</p>
+
+  <p>In the yard the loss was specific. A yard day on the board had been the red magnet with the
+  chip in it, hanging in a column where you could see it from the door. In the system it was a
+  status code behind a login the yard never had a reason to hold. The foreman's printout was not
+  nostalgia. It was the only way his crew could see the week without asking an office for it.</p>
+
+  <p>And for the first two weeks, people kept walking to that wall. Even the ones who had asked
+  for the system. They would cross the room, stop, stand in front of a screen that was turned off,
+  and then laugh at themselves and go back to a terminal. Nobody mentioned it in the meeting. It
+  happened every morning.</p>
+
+  <figure>
+    <svg viewBox="0 0 720 260" role="img" aria-label="Schematic of the scheduling board: seven day columns, a brass rail along the bottom, and colored magnets for vessel status">
+      <title>The board at Terminal 4, as described</title>
+      <rect x="0" y="0" width="720" height="260" fill="#f4f2ec"/>
+      <rect x="16" y="16" width="688" height="196" fill="#fbfaf6" stroke="#ddd8cd"/>
+      <g font-family="ui-sans-serif, system-ui, sans-serif" font-size="12" fill="#6a655c">
+        <text x="40" y="40">MON</text>
+        <text x="136" y="40">TUE</text>
+        <text x="232" y="40">WED</text>
+        <text x="328" y="40">THU</text>
+        <text x="424" y="40">FRI</text>
+        <text x="520" y="40">SAT</text>
+        <text x="616" y="40">SUN</text>
+      </g>
+      <g stroke="#ddd8cd">
+        <line x1="112" y1="20" x2="112" y2="208"/>
+        <line x1="208" y1="20" x2="208" y2="208"/>
+        <line x1="304" y1="20" x2="304" y2="208"/>
+        <line x1="400" y1="20" x2="400" y2="208"/>
+        <line x1="496" y1="20" x2="496" y2="208"/>
+        <line x1="592" y1="20" x2="592" y2="208"/>
+      </g>
+      <!-- blue: on rotation -->
+      <g fill="#4a5a6a">
+        <rect x="40" y="60" width="56" height="20" rx="3"/>
+        <rect x="136" y="60" width="56" height="20" rx="3"/>
+        <rect x="328" y="60" width="56" height="20" rx="3"/>
+        <rect x="424" y="60" width="56" height="20" rx="3"/>
+        <rect x="616" y="60" width="56" height="20" rx="3"/>
+        <rect x="40" y="96" width="56" height="20" rx="3"/>
+        <rect x="232" y="96" width="56" height="20" rx="3"/>
+        <rect x="520" y="96" width="56" height="20" rx="3"/>
+      </g>
+      <!-- red: cannot sail; the chipped one is the long-standing yard vessel -->
+      <g fill="#8a4a3c">
+        <rect x="136" y="96" width="56" height="20" rx="3"/>
+        <rect x="232" y="60" width="56" height="20" rx="3"/>
+        <rect x="424" y="96" width="56" height="20" rx="3"/>
+        <rect x="520" y="60" width="56" height="20" rx="3"/>
+        <path d="M520 60 h56 v20 h-49 l-7 -7 z"/>
+      </g>
+      <!-- white: unsettled crew change -->
+      <g fill="#fbfaf6" stroke="#6a655c">
+        <rect x="328" y="96" width="56" height="20" rx="3"/>
+        <rect x="616" y="96" width="56" height="20" rx="3"/>
+      </g>
+      <!-- brass rail: magnets parked overnight = unassigned -->
+      <rect x="16" y="216" width="688" height="12" rx="3" fill="#b08b4f"/>
+      <g fill="#8a4a3c">
+        <rect x="40" y="234" width="44" height="16" rx="3"/>
+      </g>
+      <g fill="#fbfaf6" stroke="#6a655c">
+        <rect x="96" y="234" width="44" height="16" rx="3"/>
+      </g>
+      <g font-family="ui-sans-serif, system-ui, sans-serif" font-size="11" fill="#6a655c">
+        <text x="152" y="246">parked on the rail overnight = unassigned</text>
+        <text x="470" y="246">blue on rotation · red cannot sail · white unsettled</text>
+      </g>
+    </svg>
+    <figcaption>Drawn from the clerk's description, not from a photograph: seven day columns,
+    three magnet colors, one chipped red, and the brass rail along the bottom where the unassigned
+    ones parked overnight so you could see the count from across the room.</figcaption>
+  </figure>
+
+  <p>The eleven days are not really the story. The system was new, the terminal was learning it,
+  and things were slower the way anything is slower when the people doing it are reading instead
+  of remembering. What the eleven days showed was where the knowledge had actually been living.
+  It had not been living in the superintendent's head, which was the assumption in the paper. It
+  had been living on a wall, in a form anyone in the building could read without being
+  anyone in particular.</p>
+
+  <h2>The rail</h2>
+
+  <p>They took the board down in pieces. The superintendent kept the brass rail off the bottom of
+  it, the one the magnets parked on overnight, and it is on a shelf in his office now, with
+  nothing on it and nothing near it.</p>
+
+  <p>He was asked about it once, in the way people ask about objects in offices. He said,
+  <em>I could read it from the door</em>, and then he went on to something else.</p>
+
+  <p>It did not sound like sentiment at the time and it does not read like it now. He was
+  explaining what the rail was for. From the door, before the lights were on, before anybody had
+  said good morning: how many magnets were not in a column. That was the number the rail held,
+  and it was the first number of the day, and for forty years it was available to everyone who
+  walked in, whether or not they had been given a password.</p>
+
+  <p>The system has that number too. It is on a dashboard, and it is accurate, and it is a great
+  deal better than a board at everything a board was never going to be good at. To see it you go
+  to a screen, and you are known to it, and if you are a deckhand at twenty to six on a dock with
+  the water going out, you are neither.</p>
+
+  <p>Some things in a workplace are not storage. They are the part of the work that lets a person
+  who is not in the meeting know what is happening in it. That is what was on the wall, and it is
+  what the open-items column in the clerk's notes was never going to hold.</p>
+</article>
+
+<section class="editorial" aria-label="Editorial annotations, not for publication">
+  <h2>Editorial annotations</h2>
+  <p><span class="tag">[NO OPEN GAPS]</span> Council aggregate 9.2 at round 2; every gap raised in
+  round 1 is closed and recorded in <code>sources.md</code>. The two quotes the machine could not
+  source were cut rather than reconstructed, per <code>voice/demo-mira/voice-guide.md</code>
+  (nothing invented). One detail — the vessel name <em>Cormorant</em> — appears only inside a
+  quoted question and is flagged in the clearance checklist as the author's invention for the
+  demo, not a sourced detail.</p>
+  <p><span class="tag">[NOTE: scope decision]</span> The "eleven worse days" material from
+  <code>VAULT.md</code> spike #2 was deliberately kept to one paragraph. The council agreed the
+  piece is about legibility, not about the cutover's difficulty, and a full account of the eleven
+  days would give it two through-lines. If a future piece wants that argument, it is spike #2's,
+  and it should be its own essay.</p>
+  <p><span class="tag">[NOTE: human pass]</span> Remove this section before any external share.
+  Adaptation for a social destination is two excerpts — the opening scene and the closing
+  paragraph — with the through-line stated in one sentence between them. Not a bullet summary;
+  it would break the voice.</p>
+</section>
+</body>
+</html>

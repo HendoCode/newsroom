@@ -14,7 +14,7 @@ from app.piece_md import (
     piece_md_content_section,
 )
 
-# The engine-pipeline metadata shape (as in the fixture brain's aws-gsi-faq/token-vs-storage).
+# The engine-pipeline metadata shape (as in the fixture brain's rehearse-the-rollback/the-board-on-the-wall).
 _METADATA_PIECE_MD = """\
 # Piece: sample-brief
 

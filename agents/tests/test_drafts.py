@@ -67,10 +67,18 @@ async def test_list_drafts_returns_fixture_slugs(store: WorkStateStore, brain_re
     assert resp.status_code == 200
     body = resp.json()
     slugs = {d["slug"] for d in body["items"]}
-    assert slugs == {"aws-gsi-faq", "token-vs-storage"}
-    # Both fixture pieces have draft.html.
+    assert slugs == {
+        "idempotency-is-the-whole-job",
+        "rehearse-the-rollback",
+        "the-board-on-the-wall",
+    }
+    # Two of the three demo pieces are drafted in HTML; the third is still mid-interview with
+    # transcript + sources but no draft.html yet (its meta.json says "has_draft": false).
+    by_slug = {d["slug"]: d for d in body["items"]}
+    assert by_slug["rehearse-the-rollback"]["has_html"] is True
+    assert by_slug["the-board-on-the-wall"]["has_html"] is True
+    assert by_slug["idempotency-is-the-whole-job"]["has_html"] is False
     for d in body["items"]:
-        assert d["has_html"] is True
         assert d["title"]
         assert d["revision"] is not None
 
@@ -107,10 +115,10 @@ async def test_read_draft_renders_html(store: WorkStateStore, brain_repo: Path) 
         app.state.work_state = store
         app.state.git_content = content
         async with _client() as client:
-            resp = await client.get("/api/brain/drafts/token-vs-storage")
+            resp = await client.get("/api/brain/drafts/rehearse-the-rollback")
     assert resp.status_code == 200
     body = resp.json()
-    assert body["slug"] == "token-vs-storage"
+    assert body["slug"] == "rehearse-the-rollback"
     assert body["content_kind"] == "html"
     assert body["draft_html"] is not None
     assert body["draft_html"].startswith("<")
@@ -163,7 +171,7 @@ async def test_read_draft_adds_review_doc_link(store: WorkStateStore, brain_repo
 
     await sync_brain_pieces(store, content)
     pieces = {p.slug: p for p in await store.pieces.find({})}
-    piece = pieces["token-vs-storage"]
+    piece = pieces["rehearse-the-rollback"]
     await store.review_rounds.insert(
         ReviewRound(
             piece_id=piece.id,
@@ -179,7 +187,7 @@ async def test_read_draft_adds_review_doc_link(store: WorkStateStore, brain_repo
         app.state.work_state = store
         app.state.git_content = content
         async with _client() as client:
-            resp = await client.get("/api/brain/drafts/token-vs-storage")
+            resp = await client.get("/api/brain/drafts/rehearse-the-rollback")
     assert resp.status_code == 200
     body = resp.json()
     assert body["review_doc_url"] == "https://docs.google.com/review"
@@ -194,7 +202,7 @@ async def test_read_draft_adds_final_doc_link(store: WorkStateStore, brain_repo:
 
     await sync_brain_pieces(store, content)
     pieces = {p.slug: p for p in await store.pieces.find({})}
-    piece = pieces["token-vs-storage"]
+    piece = pieces["rehearse-the-rollback"]
     piece.final_doc = DocRef(doc_id="doc-2", url="https://docs.google.com/final", share_mode=ShareMode.internal)
     await store.pieces.update(piece.id, piece.model_dump())
 
@@ -202,7 +210,7 @@ async def test_read_draft_adds_final_doc_link(store: WorkStateStore, brain_repo:
         app.state.work_state = store
         app.state.git_content = content
         async with _client() as client:
-            resp = await client.get("/api/brain/drafts/token-vs-storage")
+            resp = await client.get("/api/brain/drafts/rehearse-the-rollback")
     assert resp.status_code == 200
     body = resp.json()
     assert body["final_doc_url"] == "https://docs.google.com/final"

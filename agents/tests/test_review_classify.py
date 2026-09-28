@@ -64,7 +64,7 @@ class SequencedProvider(LLMProvider):
 
 
 def _piece(**overrides) -> Piece:
-    return Piece(slug="token-vs-storage", voice="demo-mira", **overrides)
+    return Piece(slug="the-board-on-the-wall", voice="demo-mira", **overrides)
 
 
 async def test_classify_empty_items_short_circuits_without_calling_the_model():

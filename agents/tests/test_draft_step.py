@@ -132,7 +132,7 @@ async def _noop_sleep(_seconds: float) -> None:
 
 async def _piece(store, stage: PieceStage, **extra) -> Piece:
     piece = Piece(
-        slug=extra.pop("slug", "token-vs-storage"),
+        slug=extra.pop("slug", "the-board-on-the-wall"),
         voice=extra.pop("voice", "demo-mira"),
         stage=stage,
         **extra,
@@ -178,7 +178,7 @@ def test_count_open_gaps_excludes_closed_and_counts_both_tag_forms():
 async def test_draft_step_happy_path_commits_revision_and_mirrors_gaps(
     store, git_brain, content_store
 ):
-    piece = await _piece(store, PieceStage.drafting, slug="token-vs-storage", voice="demo-mira", partners=["aws"])
+    piece = await _piece(store, PieceStage.drafting, slug="the-board-on-the-wall", voice="demo-mira", partners=["meridian-cloudworks"])
     provider = RecordingProvider(
         results=[LLMResult(text=GOOD_DRAFT, model=MODEL_OPUS, stop_reason="end_turn", usage=Usage(input_tokens=1000, output_tokens=2000), cost_usd=0.0)]
     )
@@ -193,8 +193,8 @@ async def test_draft_step_happy_path_commits_revision_and_mirrors_gaps(
     updated = await store.pieces.get(piece.id)
     assert updated.latest_revision
     assert updated.open_gaps == 2  # 2 open GAP tags, 1 GAP CLOSED excluded
-    assert content_store.read_draft("token-vs-storage") == GOOD_DRAFT
-    assert content_store.revision_history("token-vs-storage")
+    assert content_store.read_draft("the-board-on-the-wall") == GOOD_DRAFT
+    assert content_store.revision_history("the-board-on-the-wall")
 
     # GLM5 tier requested via the seam (model_for_step) as the live default; never hardcoded in the step.
     call = provider.calls[0]
@@ -204,7 +204,7 @@ async def test_draft_step_happy_path_commits_revision_and_mirrors_gaps(
     # the FULL verbatim transcript is present, not summarized (D16b) — with any legacy
     # [RESEARCH-DERIVED] answer marker stripped, so the annotation never reaches the model.
     transcript_text = strip_legacy_research_markers(
-        content_store.read_transcript("token-vs-storage")
+        content_store.read_transcript("the-board-on-the-wall")
     )
     assert any(transcript_text in t for t in system_texts)
     # the engine prompt (verbatim) carries the GAP-in-editorial-block discipline straight from
@@ -212,7 +212,7 @@ async def test_draft_step_happy_path_commits_revision_and_mirrors_gaps(
     engine_text = git_brain.read_engine("2-draft")
     assert any(engine_text in t for t in system_texts)
     # a partner fact file the piece names is hydrated.
-    assert any(git_brain.read_partner("aws") in t for t in system_texts)
+    assert any(git_brain.read_partner("meridian-cloudworks") in t for t in system_texts)
     # voice pack in override order — content-lessons LAST so they override the guide.
     voice = git_brain.read_voice("demo-mira")
     guide_idx = system_texts.index(voice.voice_guide)
@@ -349,7 +349,7 @@ async def test_draft_step_prompt_includes_purpose_block_before_the_transcript(
     piece = await _piece(
         store,
         PieceStage.drafting,
-        slug="token-vs-storage",
+        slug="the-board-on-the-wall",
         voice="demo-mira",
         origin_spike_id=spike.id,
         intent=DistributionIntent(audience="infra decision-makers", angle="deliberate multi-vendor resilience"),
@@ -365,7 +365,7 @@ async def test_draft_step_prompt_includes_purpose_block_before_the_transcript(
     system_texts = provider.calls[0]["system"]
     purpose_idx = next(i for i, t in enumerate(system_texts) if "deliberate multi-vendor resilience" in t)
     transcript_text = strip_legacy_research_markers(
-        content_store.read_transcript("token-vs-storage")
+        content_store.read_transcript("the-board-on-the-wall")
     )
     transcript_idx = next(i for i, t in enumerate(system_texts) if transcript_text in t)
 
@@ -387,12 +387,12 @@ async def test_legacy_research_marker_in_stored_transcript_never_reaches_the_pro
     slug = "p-legacy-marker"
     content_store.commit_transcript(
         slug,
-        "## Ferriss\n\n"
+        "## Tactician\n\n"
         "**Q — What's the real bill?**\n"
-        f"<!-- turn:{'0' * 24} persona:ferriss research:true -->\n"
+        f"<!-- turn:{'0' * 24} persona:tactician research:true -->\n"
         "[RESEARCH-DERIVED] Anchor: ~$230/month.\n\n"
         "**Q — A live example?**\n"
-        f"<!-- turn:{'1' * 24} persona:ferriss research:false -->\n"
+        f"<!-- turn:{'1' * 24} persona:tactician research:false -->\n"
         "From the author's own experience: yes.\n\n",
         message="test: seeded legacy-marker transcript",
     )
@@ -416,7 +416,7 @@ async def test_draft_step_still_works_with_no_spike_or_intent(store, git_brain, 
     """Backward-compat: a piece with no linked Spike and no intent (most existing tests, and any
     piece created outside the pick-spike flow) contributes no purpose block rather than failing
     or emitting a confusing empty section."""
-    piece = await _piece(store, PieceStage.drafting, slug="token-vs-storage", voice="demo-mira")
+    piece = await _piece(store, PieceStage.drafting, slug="the-board-on-the-wall", voice="demo-mira")
     provider = RecordingProvider(
         results=[LLMResult(text=GOOD_DRAFT, model=MODEL_OPUS, stop_reason="end_turn", usage=Usage(), cost_usd=0.0)]
     )
@@ -435,8 +435,8 @@ async def test_draft_step_still_works_with_no_spike_or_intent(store, git_brain, 
 async def test_draft_step_rejects_inline_gap_marker_and_does_not_commit(
     store, git_brain, content_store
 ):
-    piece = await _piece(store, PieceStage.drafting, slug="aws-gsi-faq", voice="demo-dana")
-    before = content_store.read_draft("aws-gsi-faq")
+    piece = await _piece(store, PieceStage.drafting, slug="rehearse-the-rollback", voice="demo-dana")
+    before = content_store.read_draft("rehearse-the-rollback")
     provider = RecordingProvider(
         results=[LLMResult(text=BAD_DRAFT_INLINE_GAP, model=MODEL_OPUS, stop_reason="end_turn", usage=Usage(), cost_usd=0.0)]
     )
@@ -449,7 +449,7 @@ async def test_draft_step_rejects_inline_gap_marker_and_does_not_commit(
     updated = await store.pieces.get(piece.id)
     assert updated.latest_revision is None
     assert updated.open_gaps == 0
-    assert content_store.read_draft("aws-gsi-faq") == before  # untouched — no half-written revision
+    assert content_store.read_draft("rehearse-the-rollback") == before  # untouched — no half-written revision
 
 
 def test_editorial_regex_accepts_any_tag_not_just_section():
@@ -464,7 +464,7 @@ def test_editorial_regex_accepts_any_tag_not_just_section():
 async def test_draft_step_accepts_a_realistic_non_section_editorial_tag(
     store, git_brain, content_store
 ):
-    piece = await _piece(store, PieceStage.drafting, slug="token-vs-storage", voice="demo-mira")
+    piece = await _piece(store, PieceStage.drafting, slug="the-board-on-the-wall", voice="demo-mira")
     provider = RecordingProvider(
         results=[
             LLMResult(
@@ -496,8 +496,8 @@ async def test_draft_step_still_rejects_a_differently_named_gap_block(
     tripwire that will start failing, on purpose, once that brain change ships and a follow-up
     widens the regex to match it.
     """
-    piece = await _piece(store, PieceStage.drafting, slug="aws-gsi-faq", voice="demo-dana")
-    before = content_store.read_draft("aws-gsi-faq")
+    piece = await _piece(store, PieceStage.drafting, slug="rehearse-the-rollback", voice="demo-dana")
+    before = content_store.read_draft("rehearse-the-rollback")
     provider = RecordingProvider(
         results=[
             LLMResult(
@@ -515,7 +515,7 @@ async def test_draft_step_still_rejects_a_differently_named_gap_block(
     with pytest.raises(PermanentStepError):
         await step.run(ctx)
 
-    assert content_store.read_draft("aws-gsi-faq") == before  # untouched — no half-written revision
+    assert content_store.read_draft("rehearse-the-rollback") == before  # untouched — no half-written revision
 
 
 def test_build_t2_states_the_response_must_be_raw_html_only():
@@ -577,10 +577,10 @@ async def test_draft_step_requires_a_provider(store, git_brain, content_store):
 async def test_draft_step_includes_same_voice_example_pieces_and_skips_missing(
     store, git_brain, content_store
 ):
-    piece = await _piece(store, PieceStage.drafting, slug="token-vs-storage", voice="demo-mira")
-    await _piece(store, PieceStage.finalized, slug="aws-gsi-faq", voice="demo-mira")  # exists on disk
+    piece = await _piece(store, PieceStage.drafting, slug="the-board-on-the-wall", voice="demo-mira")
+    await _piece(store, PieceStage.finalized, slug="rehearse-the-rollback", voice="demo-mira")  # exists on disk
     await _piece(store, PieceStage.finalized, slug="ghost-piece", voice="demo-mira")  # no folder
-    await _piece(store, PieceStage.finalized, slug="aws-gsi-faq", voice="demo-dana")  # wrong voice
+    await _piece(store, PieceStage.finalized, slug="rehearse-the-rollback", voice="demo-dana")  # wrong voice
 
     provider = RecordingProvider(
         results=[LLMResult(text=GOOD_DRAFT, model=MODEL_OPUS, stop_reason="end_turn", usage=Usage(), cost_usd=0.0)]
@@ -591,15 +591,15 @@ async def test_draft_step_includes_same_voice_example_pieces_and_skips_missing(
     await step.run(ctx)
 
     tail = provider.calls[0]["messages"][0]["content"]
-    assert "aws-gsi-faq" in tail  # same-voice, on-disk example included
+    assert "rehearse-the-rollback" in tail  # same-voice, on-disk example included
     assert "ghost-piece" not in tail  # missing draft.html — skipped, not a crash
 
 
 async def test_draft_step_max_example_pieces_zero_disables_enrichment(
     store, git_brain, content_store
 ):
-    piece = await _piece(store, PieceStage.drafting, slug="token-vs-storage", voice="demo-mira")
-    await _piece(store, PieceStage.finalized, slug="aws-gsi-faq", voice="demo-mira")
+    piece = await _piece(store, PieceStage.drafting, slug="the-board-on-the-wall", voice="demo-mira")
+    await _piece(store, PieceStage.finalized, slug="rehearse-the-rollback", voice="demo-mira")
 
     provider = RecordingProvider(
         results=[LLMResult(text=GOOD_DRAFT, model=MODEL_OPUS, stop_reason="end_turn", usage=Usage(), cost_usd=0.0)]
@@ -627,7 +627,7 @@ async def test_draft_step_plugs_into_state_machine_and_advances_to_council(
     registry.register(StubStep(JobType.council))  # council is a separate ticket; stub stands in
     runner = JobRunner(store, registry, provider=provider, sleep=_noop_sleep)
     machine = PieceMachine(store, runner)
-    piece = await _piece(store, PieceStage.interviewing, slug="token-vs-storage", voice="demo-mira")
+    piece = await _piece(store, PieceStage.interviewing, slug="the-board-on-the-wall", voice="demo-mira")
 
     updated = await machine.enough_input(piece.id, actor="demo-mira@x")
 
@@ -708,7 +708,7 @@ async def test_draft_step_failure_flags_piece_without_rolling_back_content(
     piece = await _piece(
         store,
         PieceStage.interviewing,
-        slug="token-vs-storage",
+        slug="the-board-on-the-wall",
         voice="demo-mira",
         latest_revision="prior-sha",
     )

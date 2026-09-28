@@ -75,7 +75,7 @@ resource "aws_ssm_parameter" "brain_repo_url" {
   count = var.brain_repo_url_placeholder != "" ? 1 : 0
 
   name        = "${var.ssm_prefix}BRAIN_REPO_URL"
-  description = "Populate in SSM to have the agents container clone HendoCode/content-machine-brain into BRAIN_ROOT on boot (app.git.ensure_brain_available). Left blank, the brain-dependent screens stay empty/503 — the same graceful degradation as today."
+  description = "Populate in SSM to have the agents container clone HendoCode/masthead into BRAIN_ROOT on boot (app.git.ensure_brain_available). Left blank, the brain-dependent screens stay empty/503 — the same graceful degradation as today."
   type        = "SecureString"
   value       = var.brain_repo_url_placeholder
 
@@ -88,7 +88,7 @@ resource "aws_ssm_parameter" "brain_deploy_key" {
   count = var.brain_deploy_key_placeholder != "" ? 1 : 0
 
   name        = "${var.ssm_prefix}BRAIN_DEPLOY_KEY"
-  description = "SSH deploy-key PRIVATE key (ed25519, repo-scoped, read-write — see README 'Brain push credential') for authenticated clone/pull/push against BRAIN_REPO_URL, since the instance has no ambient SSH credential. Populate alongside BRAIN_REPO_URL. The matching public key must be installed on HendoCode/content-machine-brain (Settings -> Deploy keys -> Allow write access) before this takes effect."
+  description = "SSH deploy-key PRIVATE key (ed25519, repo-scoped, read-write — see README 'Brain push credential') for authenticated clone/pull/push against BRAIN_REPO_URL, since the instance has no ambient SSH credential. Populate alongside BRAIN_REPO_URL. The matching public key must be installed on HendoCode/masthead (Settings -> Deploy keys -> Allow write access) before this takes effect."
   type        = "SecureString"
   value       = var.brain_deploy_key_placeholder
 

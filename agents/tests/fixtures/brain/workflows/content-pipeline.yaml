@@ -1,0 +1,135 @@
+name: content-pipeline
+description: >
+  End-to-end multi-step content pipeline for Masthead.
+  Oracle -> Interview -> Draft -> Council -> Lessons.
+  Each major step ends with an interactive __approval_gate__.
+version: 1.0.0
+inputs:
+  - name: voice
+    type: string
+    required: true
+    description: Active voice pack slug (e.g. demo-dana, demo-mira)
+  - name: raw_material
+    type: string
+    required: false
+    description: Raw source material for the Oracle step
+  - name: piece_slug
+    type: string
+    required: false
+    description: Existing piece slug to resume, or blank for new Oracle run
+  - name: published_version_path
+    type: string
+    required: false
+    description: >
+      Path to the author's actually-published version of the piece, for the
+      Lessons step to diff against. Leave blank to skip Lessons.
+outputs:
+  - name: draft_path
+    type: string
+    description: Path to final draft.html
+  - name: piece_stage
+    type: string
+    description: Final stage of the piece
+steps:
+  - id: oracle
+    action: Rank raw material into content spikes
+    skill: oracle
+    conditions:
+      - ${{ inputs.piece_slug == '' }}
+    outputs: [spike_list, selected_spike, piece_slug_new]
+    compliance:
+      audit_level: detailed
+
+  - id: oracle_approval
+    action: __approval_gate__ — review spike list and confirm selected spike
+    depends_on: [oracle]
+    skill: oracle
+    inputs:
+      spike_list: ${{ steps.oracle.outputs.spike_list }}
+    conditions:
+      - ${{ inputs.piece_slug == '' }}
+    compliance:
+      requires_approval: true
+      audit_level: full
+
+  - id: interview
+    action: Run disciplined turn-taking interview with 2-4 personas
+    depends_on: [oracle_approval]
+    skill: interview
+    inputs:
+      voice: ${{ inputs.voice }}
+      piece_slug: ${{ steps.oracle.outputs.piece_slug_new || inputs.piece_slug }}
+    outputs: [transcript_path]
+    compliance:
+      audit_level: detailed
+
+  - id: interview_approval
+    action: __approval_gate__ — review transcript and confirm readiness to draft
+    depends_on: [interview]
+    skill: interview
+    inputs:
+      transcript_path: ${{ steps.interview.outputs.transcript_path }}
+    compliance:
+      requires_approval: true
+      audit_level: full
+
+  - id: draft
+    action: Generate draft.html from transcript and active voice pack
+    depends_on: [interview_approval]
+    skill: draft
+    inputs:
+      voice: ${{ inputs.voice }}
+      piece_slug: ${{ steps.oracle.outputs.piece_slug_new || inputs.piece_slug }}
+    outputs: [draft_path]
+    compliance:
+      audit_level: detailed
+
+  - id: draft_approval
+    action: __approval_gate__ — review draft before council
+    depends_on: [draft]
+    skill: draft
+    inputs:
+      draft_path: ${{ steps.draft.outputs.draft_path }}
+    compliance:
+      requires_approval: true
+      audit_level: full
+
+  - id: council
+    action: Run editorial council loop until aggregate >= 9/10
+    depends_on: [draft_approval]
+    skill: council
+    inputs:
+      voice: ${{ inputs.voice }}
+      piece_slug: ${{ steps.oracle.outputs.piece_slug_new || inputs.piece_slug }}
+    outputs: [final_draft_path, aggregate_score]
+    compliance:
+      audit_level: full
+
+  - id: council_approval
+    action: __approval_gate__ — confirm draft is ready for human pass
+    depends_on: [council]
+    skill: council
+    inputs:
+      final_draft_path: ${{ steps.council.outputs.final_draft_path }}
+      aggregate_score: ${{ steps.council.outputs.aggregate_score }}
+    compliance:
+      requires_approval: true
+      audit_level: full
+
+  - id: lessons
+    action: Diff final vs published and propose lessons
+    depends_on: [council_approval]
+    skill: lessons
+    inputs:
+      voice: ${{ inputs.voice }}
+      piece_slug: ${{ steps.oracle.outputs.piece_slug_new || inputs.piece_slug }}
+      published_version_path: ${{ inputs.published_version_path }}
+    outputs: [proposed_lessons]
+    conditions:
+      - ${{ inputs.published_version_path != '' }}
+    compliance:
+      audit_level: detailed
+
+error_handling:
+  on_step_failure: pause
+  escalation_target: user

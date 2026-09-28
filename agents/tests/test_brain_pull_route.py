@@ -117,7 +117,7 @@ def test_pull_route_fast_forwards_and_reports_the_new_commit(
 
     with TestClient(app) as client:
         # Boot cloned at "seed"; a hand-nurtured edit lands on the remote afterward, same as a
-        # human editing content-machine-brain directly on GitHub/another checkout.
+        # human editing masthead directly on GitHub/another checkout.
         new_sha = _push_update(bare_remote, tmp_path, "hand-nurtured edit", "v2\n")
 
         before = client.get("/api/brain/status").json()

@@ -16,7 +16,7 @@ from app.review.routing import route_non_fix_items
 
 
 async def _piece(store, **overrides) -> Piece:
-    piece = Piece(slug="token-vs-storage", voice="demo-mira", **overrides)
+    piece = Piece(slug="the-board-on-the-wall", voice="demo-mira", **overrides)
     return await store.pieces.insert(piece)
 
 

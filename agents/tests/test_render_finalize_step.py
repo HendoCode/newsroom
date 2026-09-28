@@ -19,7 +19,8 @@ from app.orchestration import JobRunner, PieceMachine, StepContext, StepRegistry
 from app.orchestration.retry import PermanentStepError
 from app.render.docs_export import DocRef
 from app.render.step import FinalizeStep
-from app.render.template import TemplateStore
+from app.render.template import PLAIN_TEMPLATE_VERSION, TemplateStore
+from tests.synthetic_brand import SYNTH_BRAND_MARKER
 from app.repositories import WorkStateStore
 
 
@@ -91,12 +92,18 @@ class FakeDriveClient:
 
 @pytest.fixture
 def template_store(brain_repo: Path) -> TemplateStore:
+    """The brain as it ships today — no branded template, so every render here degrades to plain."""
     return TemplateStore(str(brain_repo))
+
+
+@pytest.fixture
+def branded_template_store(branded_brain_repo: Path) -> TemplateStore:
+    return TemplateStore(str(branded_brain_repo))
 
 
 async def _make_piece(store: WorkStateStore, *, stage: PieceStage = PieceStage.review) -> Piece:
     return await store.pieces.insert(
-        Piece(slug="token-vs-storage", voice="demo-dana", stage=stage, latest_revision="rev-42")
+        Piece(slug="the-board-on-the-wall", voice="demo-dana", stage=stage, latest_revision="rev-42")
     )
 
 
@@ -127,21 +134,22 @@ def _ctx(
 @pytest.mark.asyncio
 async def test_produces_all_three_formats_by_default(
     store: WorkStateStore,
-    git_brain: GitBrain,
+    branded_git_brain: GitBrain,
     content_store: GitContentStore,
-    template_store: TemplateStore,
+    branded_template_store: TemplateStore,
 ) -> None:
+    """The full branded path (D13 Item 5) against a brain that carries branding."""
     piece = await _make_piece(store)
     pdf_renderer = FakePdfRenderer()
     docs_client = FakeDocsClient()
-    step = FinalizeStep(template_store=template_store, pdf_renderer=pdf_renderer, docs_client=docs_client)
+    step = FinalizeStep(
+        template_store=branded_template_store, pdf_renderer=pdf_renderer, docs_client=docs_client
+    )
 
-    result = await step.run(_ctx(piece, store, git_brain, content_store))
+    result = await step.run(_ctx(piece, store, branded_git_brain, content_store))
 
     assert "produced html, pdf, doc" in result.notes[0]
-    assert docs_client.calls and docs_client.calls[0][0] == (
-        "The cheapest line on your AWS bill is the one you're arguing about"
-    )
+    assert docs_client.calls and docs_client.calls[0][0] == "The board on the wall"
     assert "branded-header" not in docs_client.calls[0][1]
     # The clean semantic Doc gets a professional Drive-friendly wrapper (real headings/fonts).
     assert "<!DOCTYPE html>" in docs_client.calls[0][1]
@@ -162,6 +170,35 @@ async def test_produces_all_three_formats_by_default(
     assert "demo-dana-v1" in branded_html
     assert (out_dir / "branded.pdf").read_bytes() == pdf_renderer.content
     assert '"doc_id": "doc-123"' in (out_dir / "google-doc.json").read_text(encoding="utf-8")
+
+
+@pytest.mark.asyncio
+async def test_a_brain_without_branding_finalizes_plain_and_says_so(
+    store: WorkStateStore,
+    git_brain: GitBrain,
+    content_store: GitContentStore,
+    template_store: TemplateStore,
+) -> None:
+    """The neutral demo brain has no visual identity and no branded template: finalize still
+    produces every format, records the plain provenance, and warns instead of failing."""
+    piece = await _make_piece(store)
+    step = FinalizeStep(
+        template_store=template_store, pdf_renderer=FakePdfRenderer(), docs_client=FakeDocsClient()
+    )
+
+    result = await step.run(_ctx(piece, store, git_brain, content_store))
+
+    assert any("branded template not found" in w for w in result.notes)
+    assert any("visual identity unavailable" in w for w in result.notes)
+    updated = await store.pieces.get(piece.id)
+    assert updated is not None
+    assert updated.final_template_version == PLAIN_TEMPLATE_VERSION
+
+    out_dir = _finalized_dir(content_store, piece.slug)
+    branded_html = (out_dir / "branded.html").read_text(encoding="utf-8")
+    assert "Some things in a workplace are not storage" in branded_html  # content still shipped
+    assert SYNTH_BRAND_MARKER not in branded_html
+    assert (out_dir / "branded.pdf").read_bytes().startswith(b"%PDF")
 
 
 @pytest.mark.asyncio
@@ -372,4 +409,4 @@ async def test_machine_finalize_trigger_advances_review_to_finalized(
 
     assert PieceStage(result.stage) == PieceStage.finalized
     assert result.final_doc is not None and result.final_doc.doc_id == "doc-123"
-    assert result.final_template_version == "demo-dana-v1"
+    assert result.final_template_version == PLAIN_TEMPLATE_VERSION

@@ -220,9 +220,9 @@ def seed_work_state(viewer: str | None = None) -> WorkStateCollections:
         return Piece(**kwargs)
 
     # 1 · review + owner=you  → predicate branch: owner of a piece in `review`.
-    token = piece(
-        slug="token-vs-storage",
-        title="Tokens vs. storage: where the money actually goes",
+    board = piece(
+        slug="the-board-on-the-wall",
+        title="The board on the wall",
         voice="demo-mira",
         stage=PieceStage.review,
         owner=you,
@@ -230,10 +230,10 @@ def seed_work_state(viewer: str | None = None) -> WorkStateCollections:
 
     )
     # 2 · interviewing + assigned expert=you  → branch: assigned expert on an open interview.
-    aws = piece(
-        slug="aws-gsi-faq",
-        title="AWS GSI technical eval FAQ",
-        voice="team",
+    rollback = piece(
+        slug="rehearse-the-rollback",
+        title="Rehearse the rollback",
+        voice="demo-dana",
         stage=PieceStage.interviewing,
         owner=_TEAMMATE_A,
         assigned_experts=[you],
@@ -305,27 +305,27 @@ def seed_work_state(viewer: str | None = None) -> WorkStateCollections:
 
     )
 
-    pieces = [token, aws, latency, pricing, agentcore, launch_recap, vpc, onboarding]
+    pieces = [board, rollback, latency, pricing, agentcore, launch_recap, vpc, onboarding]
 
     interviews = [
-        # The open interview that puts `aws` on your plate (assigned to you).
+        # The open interview that puts `rollback` on your plate (assigned to you).
         Interview(
             id=new_id(),
-            piece_id=aws.id,
+            piece_id=rollback.id,
             assigned_expert=you,
-            interviewer_personas=["ferriss", "architect"],
+            interviewer_personas=["tactician", "architect"],
             status=InterviewStatus.open,
-            about="AWS GSI technical eval FAQ",
+            about="Rehearse the rollback",
             updated_at=now,
         ),
         # A second open interview on the same piece, assigned to a teammate (not yours).
         Interview(
             id=new_id(),
-            piece_id=aws.id,
+            piece_id=rollback.id,
             assigned_expert=_TEAMMATE_B,
             interviewer_personas=["operator"],
             status=InterviewStatus.open,
-            about="AWS GSI cost angle",
+            about="Rollback drill cost angle",
             updated_at=now,
         ),
         # A COMPLETE interview on `latency` → you (the owner) decide "enough input".
@@ -362,10 +362,10 @@ def seed_work_state(viewer: str | None = None) -> WorkStateCollections:
     ]
 
     councils = [
-        # token-vs-storage cleared the bar on round 2 — mandatory editors always present (§1.13).
+        # the-board-on-the-wall cleared the bar on round 2 — mandatory editors always present (§1.13).
         Council(
             id=new_id(),
-            piece_id=token.id,
+            piece_id=board.id,
             revision="rev-7",
             round_number=2,
             editor_scores=[
@@ -380,7 +380,7 @@ def seed_work_state(viewer: str | None = None) -> WorkStateCollections:
     review_rounds = [
         ReviewRound(
             id=new_id(),
-            piece_id=token.id,
+            piece_id=board.id,
             round_number=2,
             minted_from_revision="rev-7",
             opened_at=now,

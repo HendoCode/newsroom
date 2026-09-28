@@ -1,6 +1,6 @@
 # Engine — Feedback Intake (side-tool for Step 5, the human pass)
 
-How the machine accumulates edit input from OTHER people — colleagues, partners,
+How the machine accumulates edit input from OTHER people — colleagues, stakeholders,
 interviewees — and routes it back into the loop without losing the one-source-of-truth
 discipline. This is not a new step; it feeds Step 4 (council/revision) and Step 2 (interview).
 
@@ -15,8 +15,9 @@ it's written there.
 A draft that still has open clearances or an editorial block is NOT the same artifact for every
 audience. Before any share, decide which version this is:
 - INTERNAL review (colleagues) → keep the editorial block; it tells owners what's pending.
-- EXTERNAL review (partner/client, e.g. AWS) → strip `<section class="editorial">`, resolve
-  every open clearance and GAP first, and clear confidential source material (diagrams, internal
+- EXTERNAL review (a named subject, client, or stakeholder outside the team) → strip
+  `<section class="editorial">`, resolve every open clearance and GAP first, and clear
+  confidential source material (diagrams, internal
   pricing). Never share externally while `piece.md` lists open clearances. When in doubt, ask.
 Add a banner to any pre-final share: "DRAFT — not for external distribution," and list the
 not-yet-cleared names/figures so no reviewer quotes or forwards them.

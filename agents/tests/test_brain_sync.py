@@ -71,23 +71,30 @@ async def test_sync_registers_every_brain_draft(store: WorkStateStore, brain_rep
     content = GitContentStore(str(brain_repo))
     result = await sync_brain_pieces(store, content)
 
-    # The fixture brain holds exactly two draft folders.
-    assert sorted(result.created) == ["aws-gsi-faq", "token-vs-storage"]
-    assert result.drafts == 2
+    # The fixture brain holds exactly three draft folders.
+    assert sorted(result.created) == [
+        "idempotency-is-the-whole-job",
+        "rehearse-the-rollback",
+        "the-board-on-the-wall",
+    ]
+    assert result.drafts == 3
 
     pieces = {p.slug: p for p in await store.pieces.find({})}
-    faq = pieces["aws-gsi-faq"]
-    assert faq.title == '[TBD — e.g. "Hendo on AWS: Technical Evaluation FAQ"]'
-    assert faq.voice == "demo-dana"
-    assert faq.partners == ["aws"]
-    assert faq.stage == SYNCED_STAGE == PieceStage.review
-    assert faq.brain_synced is True
-    # Provenance pointer: the real commit that seeded the fixture brain.
-    assert faq.latest_revision is not None and len(faq.latest_revision) == 40
+    board = pieces["the-board-on-the-wall"]
+    assert board.title == "The board on the wall"
+    assert board.voice == "demo-mira"  # lifted from piece.md, never defaulted
+    assert board.brain_synced is True
+    # Provenance pointer: the commit that seeded the throwaway clone of the fixture brain.
+    assert board.latest_revision is not None and len(board.latest_revision) == 40
 
-    token = pieces["token-vs-storage"]
-    assert token.voice == "demo-mira"  # lifted from piece.md, never defaulted
-    assert token.brain_synced is True
+    rollback = pieces["rehearse-the-rollback"]
+    assert rollback.title == "Rehearse the rollback"
+    assert rollback.voice == "demo-dana"
+    # The demo pieces declare no partner in piece.md ("Partners: none configured"), which the
+    # metadata block lifts verbatim as the "none" token rather than an empty list.
+    assert rollback.partners == ["none"]
+    assert rollback.stage == SYNCED_STAGE == PieceStage.review
+    assert rollback.target and "practice note" in rollback.target
 
 
 async def test_sync_is_idempotent(store: WorkStateStore, brain_repo: Path) -> None:
@@ -95,10 +102,14 @@ async def test_sync_is_idempotent(store: WorkStateStore, brain_repo: Path) -> No
     first = await sync_brain_pieces(store, content)
     second = await sync_brain_pieces(store, content)
 
-    assert len(first.created) == 2
+    assert len(first.created) == 3
     assert second.created == []
-    assert sorted(second.existing) == ["aws-gsi-faq", "token-vs-storage"]
-    assert len(await store.pieces.find({})) == 2
+    assert sorted(second.existing) == [
+        "idempotency-is-the-whole-job",
+        "rehearse-the-rollback",
+        "the-board-on-the-wall",
+    ]
+    assert len(await store.pieces.find({})) == 3
 
 
 async def test_sync_never_touches_a_piece_the_pipeline_already_owns(
@@ -107,13 +118,13 @@ async def test_sync_never_touches_a_piece_the_pipeline_already_owns(
     """A slug that already has a Piece (pipeline-created or previously synced) is skipped whole —
     the sync never re-stages, re-titles, or re-stamps an existing record."""
     original = await store.pieces.insert(
-        Piece(slug="token-vs-storage", voice="demo-dana", title="Pipeline title", stage=PieceStage.interviewing)
+        Piece(slug="rehearse-the-rollback", voice="demo-dana", title="Pipeline title", stage=PieceStage.interviewing)
     )
     content = GitContentStore(str(brain_repo))
     result = await sync_brain_pieces(store, content)
 
-    assert result.created == ["aws-gsi-faq"]
-    assert result.existing == ["token-vs-storage"]
+    assert result.created == ["idempotency-is-the-whole-job", "the-board-on-the-wall"]
+    assert result.existing == ["rehearse-the-rollback"]
     reloaded = await store.pieces.get(original.id)
     assert reloaded is not None
     assert reloaded.voice == "demo-dana"
@@ -164,10 +175,10 @@ def test_read_draft_content_prefers_draft_html(brain_repo: Path) -> None:
     """A folder WITH a draft.html is read exactly as before this ticket — the fallback never
     shadows a real revision."""
     content = GitContentStore(str(brain_repo))
-    draft = read_draft_content(content, "token-vs-storage")
+    draft = read_draft_content(content, "rehearse-the-rollback")
     assert draft is not None
     assert draft.startswith("<")  # the fixture's real draft.html, untouched
-    assert "Piece: token-vs-storage" not in draft
+    assert "Piece: rehearse-the-rollback" not in draft
 
 
 def test_read_draft_content_renders_direct_content_piece_md(brain_repo: Path) -> None:
@@ -184,7 +195,7 @@ def test_read_draft_content_renders_direct_content_piece_md(brain_repo: Path) ->
 
 
 def test_read_draft_content_metadata_only_folder_stays_none(brain_repo: Path) -> None:
-    """aws-gsi-faq has a draft.html, so mint a metadata-only folder WITHOUT one to prove the
+    """rehearse-the-rollback has a draft.html, so mint a metadata-only folder WITHOUT one to prove the
     honest 'no revision yet' state survives the fallback (no divider → no content section)."""
     folder = brain_repo / "drafts" / "scope-only"
     folder.mkdir()
@@ -253,7 +264,7 @@ async def test_sync_route_registers_and_reports(
             assert resp.status_code == 200
             body = resp.json()
             assert "iceberg-brief" in body["created"]
-            assert body["drafts"] == 3
+            assert body["drafts"] == 4
 
             # The synced piece is immediately readable through the standard piece-detail route —
             # the acceptance shape: brain content visible AND readable alongside pipeline pieces.

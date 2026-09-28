@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>{{TITLE}}</title>
+<!--
+  Draft shell — templates/draft-skeleton.html
+  Copy into drafts/<piece>/draft.html at Step 3 (engine/2-draft.md), then replace the
+  {{TOKEN}} placeholders and fill <article>. Rules that are load-bearing downstream:
+
+  1. Self-contained. No external fetches, no build step, no linked assets. CSS lives in the
+     <style> block below; diagrams are inlined <svg> inside <figure>.
+  2. Semantic markup, exactly one <h1>, no skipped heading levels.
+     editors/presentation-reviewer.md caps a draft at 6 for breaking heading hierarchy or
+     leaking raw markdown.
+  3. The <section class="editorial"> block stays AFTER </article>, keeps that literal tag and
+     class string, and never ships. The revision loop, the external-share strip in
+     engine/feedback-intake.md, and the human pass all parse that exact string.
+  4. No placeholder copy in the article. A missing fact is a [GAP: ...] in the editorial
+     block — never lorem ipsum, never an invented number.
+
+  System font stacks only: this artifact must read identically offline.
+-->
+<style>
+  :root {
+    --background: #fdfdfc;
+    --card: #f5f5f3;
+    --foreground: #1c1c1a;
+    --muted: #5c5c56;
+    --accent: #4a5a6a;
+    --border: #dedcd7;
+    --radius: 0.5rem;
+  }
+  * { box-sizing: border-box; }
+  body {
+    max-width: 46rem;
+    margin: 0 auto;
+    padding: 4rem clamp(1.25rem, 4vw, 3rem) 5rem;
+    background: var(--background);
+    color: var(--foreground);
+    font: 17px/1.7 ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif;
+  }
+  h1, h2, h3 {
+    font-family: ui-serif, Georgia, "Times New Roman", serif;
+    letter-spacing: -0.015em;
+    line-height: 1.2;
+    text-wrap: balance;
+  }
+  h1 { margin: 0 0 1rem; font-size: clamp(2rem, 5vw, 2.75rem); font-weight: 600; }
+  h2 { margin: 2.75rem 0 0.75rem; padding-top: 1rem; border-top: 1px solid var(--border); font-size: 1.5rem; font-weight: 600; }
+  h3 { margin: 2rem 0 0.5rem; font-size: 1.15rem; font-weight: 600; color: var(--accent); }
+  p { margin: 0 0 1.15rem; }
+  .kicker {
+    margin: 0 0 0.75rem;
+    color: var(--accent);
+    font-size: 0.75rem;
+    font-weight: 700;
+    letter-spacing: 0.09em;
+    text-transform: uppercase;
+  }
+  .dek { max-width: 60ch; margin: 0 0 2.25rem; color: var(--muted); font-size: 1.1rem; }
+  a { color: var(--accent); text-underline-offset: 0.18em; }
+  code {
+    padding: 0.08em 0.32em;
+    border-radius: 0.25rem;
+    background: var(--card);
+    font: 0.86em ui-monospace, SFMono-Regular, Menlo, monospace;
+  }
+  pre {
+    padding: 1rem;
+    overflow-x: auto;
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    background: var(--card);
+    font: 0.85rem/1.55 ui-monospace, SFMono-Regular, Menlo, monospace;
+  }
+  pre code { padding: 0; background: none; }
+  ul, ol { margin: 0 0 1.25rem; padding-left: 1.4rem; }
+  li { margin: 0 0 0.5rem; }
+  blockquote {
+    margin: 2rem 0;
+    padding-left: 1.25rem;
+    border-left: 3px solid var(--accent);
+    color: var(--accent);
+    font: 1.1rem/1.6 ui-serif, Georgia, serif;
+  }
+  figure { margin: 2.5rem 0; }
+  figure svg {
+    display: block;
+    width: 100%;
+    height: auto;
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    background: var(--card);
+  }
+  figcaption { margin-top: 0.7rem; color: var(--muted); font-size: 0.82rem; text-align: left; }
+  table { width: 100%; margin: 1.75rem 0; border-collapse: collapse; font-size: 0.92rem; }
+  th {
+    padding: 0.6rem 0.75rem;
+    border-bottom: 2px solid var(--border);
+    color: var(--muted);
+    font-size: 0.72rem;
+    letter-spacing: 0.05em;
+    text-align: left;
+    text-transform: uppercase;
+  }
+  td { padding: 0.65rem 0.75rem; border-bottom: 1px solid var(--border); vertical-align: top; }
+  hr { border: none; border-top: 1px solid var(--border); margin: 2.5rem 0; }
+
+  /* Editorial block — never published, never moved inside <article>. */
+  section.editorial {
+    margin-top: 3.5rem;
+    padding: 1.25rem 1.5rem;
+    border: 1px dashed var(--border);
+    border-radius: var(--radius);
+    background: var(--card);
+    color: var(--muted);
+    font-size: 0.9rem;
+  }
+  section.editorial h2 { margin-top: 0; padding-top: 0; border-top: none; font-size: 1rem; }
+  section.editorial .tag {
+    font: 700 0.78rem/1 ui-monospace, SFMono-Regular, Menlo, monospace;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    color: var(--foreground);
+  }
+  @media print { body { max-width: none; padding: 0 0.5in; } section.editorial { display: none; } }
+</style>
+</head>
+<body>
+<article>
+  <p class="kicker">{{KICKER}}</p>
+  <h1>{{TITLE}}</h1>
+  <p class="dek">{{DEK — one or two sentences; the promise the piece pays off}}</p>
+
+  <!-- Body goes here. Structure the transcript's words; invent nothing.
+       Diagrams are inlined:
+       <figure>
+         <svg viewBox="0 0 800 300" role="img" aria-label="...">...</svg>
+         <figcaption>...</figcaption>
+       </figure>
+  -->
+</article>
+
+<section class="editorial" aria-label="Editorial annotations, not for publication">
+  <h2>Editorial annotations</h2>
+  <p><span class="tag">[GAP: need X]</span> — why it matters and which interviewer to route it to.</p>
+  <p><span class="tag">[NOTE: ...]</span> — a decision the author should confirm before the human pass.</p>
+</section>
+</body>
+</html>

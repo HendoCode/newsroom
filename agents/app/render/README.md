@@ -16,8 +16,8 @@ from the draft + the versioned template, never a system of record (§1.19).
 | 1. Read | `app.git.content.GitContentStore` | The current `draft.html` (the semantic master). |
 | 2. Strip | `editorial.py` | Remove the trailing `<section class="editorial">` block — the **same shared routine** a future D11 external-share ticket reuses. |
 | 3. Extract | `semantic.py` | Title + injectable body (`<article>` if present, else the whole `<body>`) — stdlib `re` only. |
-| 4. Derive tokens | `brand.py` | Parse the `:root` CSS tokens, font variables/import, and logo URL out of `demo-dana/visual-identity.md` — **derived, never duplicated** (Item 5). |
-| 5. Inject | `template.py` | Fill the versioned template's `{{SLOT}}`s (the brain's `templates/branded/demo-dana-v1.html`, read with its Git commit sha for reproducibility). |
+| 4. Derive tokens | `brand.py` | Parse the `:root` CSS tokens, font variables/import, and logo URL out of `demo-dana/visual-identity.md` — **derived, never duplicated** (Item 5). No visual identity (or a malformed one) yields plain tokens + a warning, never an error. |
+| 5. Inject | `template.py` | Fill the versioned template's `{{SLOT}}`s (the brain's `templates/branded/demo-dana-v1.html`, read with its Git commit sha for reproducibility). A brain that ships no branded template falls back to the built-in plain skeleton, recorded as template `plain-v1` + a warning (`TemplateStore.read_or_plain`). |
 | 6. Render | `pdf.py` / `docs_export.py` | PDF via headless Chromium over the exact branded HTML; a clean Doc (semantic content only, styling stripped) via the Drive create-with-conversion trick. |
 | 7. Record | `step.py` | Source revision + template version on every output (a visible footer on HTML/PDF, the Drive file `description` on the Doc); the Doc link on `Piece.final_doc`. |
 
@@ -26,6 +26,12 @@ from the draft + the versioned template, never a system of record (§1.19).
 `Job.formats` (default is all of `html`/`pdf`/`doc`). A renderer that's missing or fails for one
 requested format **warns and skips it** rather than failing the whole job — mirrors Item 4's "one
 editor's failure completes-with-gap"; only zero-of-requested-formats is a real failure.
+
+The brain repo (`HendoCode/masthead`) is the neutral demo suite and deliberately ships **no**
+personal branding — no `visual-identity.md`, no `templates/branded/*.html`. Finalize against it
+still produces every requested format: it renders **plain/unbranded**, records `plain-v1` as the
+template version, and says so in the job's warnings. The branded path is what the Hendo Code voice
+pack supplies when a brain carries it.
 
 Outputs are written to the piece's `drafts/<slug>/finalized/` folder (branded.html /branded.pdf /
 google-doc.json) — **git-ignored**, never committed, since the render is disposable (§1.19). This

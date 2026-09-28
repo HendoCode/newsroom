@@ -7,7 +7,7 @@ revision) map cleanly onto plumbing/porcelain, and subprocess keeps the dependen
 Author identity is passed **per commit** (``-c user.name``/``-c user.email``) so a real acting
 user is attributed on every revision (D15/§1.17) without depending on ambient git config.
 
-The brain now lives in its own repo (``HendoCode/content-machine-brain``), cloned read-write onto
+The brain now lives in its own repo (``HendoCode/masthead``), cloned read-write onto
 disk rather than baked in as a subdirectory. ``clone``/``pull``/``push`` give ``GitRepo`` the three
 remote operations that need: bootstrap a fresh clone, pick up hand-nurtured updates, and publish
 machine-authored commits (accepted lessons, voice-kit edits, revisions). An optional SSH deploy key

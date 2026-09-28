@@ -123,38 +123,29 @@ def test_draft_footnotes_come_before_sources_md_entries() -> None:
 # --- the real fixture brain drafts --------------------------------------------------------------
 
 
-def test_real_fixture_aws_gsi_faq() -> None:
-    evidence = build_piece_evidence(
-        _fixture("aws-gsi-faq", "draft.html"), _fixture("aws-gsi-faq", "sources.md")
-    )
-    # The draft carries five footnote chips (1–5), each resolving to its src entry.
-    assert [c.chip for c in evidence.citations] == ["1", "2", "3", "4", "5"]
-    by_id = {c.source_id: c for c in evidence.citations}
-    assert by_id["src1"].anchor_id == "r1"
-    footnotes = [s for s in evidence.sources if s.kind == "footnote"]
-    assert [s.id for s in footnotes] == ["src1", "src2", "src3", "src4", "src5"]
-    # Chip labels round-trip onto the source entries.
-    assert [s.chip for s in footnotes] == ["1", "2", "3", "4", "5"]
-    # src2 is a public AWS doc link; src1 (the call) has no URL.
-    src2 = next(s for s in footnotes if s.id == "src2")
-    assert src2.urls == [
-        "https://docs.aws.amazon.com/bedrock-agentcore/latest/devguide/runtime-how-it-works.html"
-    ]
-    assert next(s for s in footnotes if s.id == "src1").urls == []
-    # sources.md research citations land too, under their own section.
-    md_entries = [s for s in evidence.sources if s.kind == "sources-md"]
-    assert md_entries, "the real sources.md must yield research-citation entries"
-    assert all(s.urls for s in md_entries)
-    research = [s for s in md_entries if s.section and s.section.startswith("Research citations")]
-    assert len(research) >= 5
+def test_real_fixture_demo_pieces_carry_no_external_citations() -> None:
+    """The demo brain's pieces are invented end to end — honestly empty evidence, by design.
+
+    Each fixture piece's ``meta.json`` says so (``demo.note``: "No external citations by design"),
+    its ``draft.html`` authors no ``<sup class="fn">`` chips, and its ``sources.md`` records
+    provenance as a transcript-traceability **table** with URL-less bullets — none of which is a
+    retrieval source. So the drawer degrades to empty lists rather than inventing entries
+    (the parser is deliberately lenient: no evidence, no error).
+    """
+    for slug in sorted(p.name for p in FIXTURE_DRAFTS.iterdir()):
+        draft = _fixture(slug, "draft.html") if (FIXTURE_DRAFTS / slug / "draft.html").exists() else None
+        evidence = build_piece_evidence(draft, _fixture(slug, "sources.md"))
+
+        assert evidence.citations == [], f"{slug}: the demo drafts author no footnote chips"
+        assert evidence.sources == [], f"{slug}: the demo provenance sheet cites no external URLs"
 
 
-def test_real_fixture_token_vs_storage_has_no_chips_but_has_sources() -> None:
-    evidence = build_piece_evidence(
-        _fixture("token-vs-storage", "draft.html"), _fixture("token-vs-storage", "sources.md")
-    )
-    # That draft authors no footnote chips — honestly no citations, but sources.md's
-    # research-citation list still fills the drawer.
-    assert evidence.citations == []
-    assert all(s.kind == "sources-md" for s in evidence.sources)
-    assert len(evidence.sources) >= 10
+def test_real_fixture_pieces_still_ship_transcripts_and_provenance() -> None:
+    """The read side of the same contract: these files exist and are non-empty, so the parse above
+    is proving an honest absence rather than a missing-file accident."""
+    slugs = {p.name for p in FIXTURE_DRAFTS.iterdir()}
+    assert slugs == {"idempotency-is-the-whole-job", "rehearse-the-rollback", "the-board-on-the-wall"}
+    for slug in slugs:
+        assert _fixture(slug, "sources.md").startswith("# Sources & Handoff")
+        assert _fixture(slug, "transcript.md").strip()
+        assert _fixture(slug, "piece.md").strip()

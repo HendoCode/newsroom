@@ -1,0 +1,62 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 720 260" role="img"
+     aria-label="Schematic of the scheduling board: seven day columns, a brass rail along the bottom, and colored magnets for vessel status">
+  <title>The board at Terminal 4, as described</title>
+  <desc>Editable source for the figure inlined in draft.html. Drawn from the clerk's description
+        in transcript.md (layperson Q1, Q3, Q5), not from a photograph — the caption in the draft
+        says so. Fictional demo artifact: Kestrel Bay Ferry Authority does not exist.
+        Regenerate the inlined copy in draft.html if this file changes.</desc>
+  <rect x="0" y="0" width="720" height="260" fill="#f4f2ec"/>
+  <rect x="16" y="16" width="688" height="196" fill="#fbfaf6" stroke="#ddd8cd"/>
+  <g font-family="ui-sans-serif, system-ui, sans-serif" font-size="12" fill="#6a655c">
+    <text x="40" y="40">MON</text>
+    <text x="136" y="40">TUE</text>
+    <text x="232" y="40">WED</text>
+    <text x="328" y="40">THU</text>
+    <text x="424" y="40">FRI</text>
+    <text x="520" y="40">SAT</text>
+    <text x="616" y="40">SUN</text>
+  </g>
+  <g stroke="#ddd8cd">
+    <line x1="112" y1="20" x2="112" y2="208"/>
+    <line x1="208" y1="20" x2="208" y2="208"/>
+    <line x1="304" y1="20" x2="304" y2="208"/>
+    <line x1="400" y1="20" x2="400" y2="208"/>
+    <line x1="496" y1="20" x2="496" y2="208"/>
+    <line x1="592" y1="20" x2="592" y2="208"/>
+  </g>
+  <!-- blue: on rotation -->
+  <g fill="#4a5a6a">
+    <rect x="40" y="60" width="56" height="20" rx="3"/>
+    <rect x="136" y="60" width="56" height="20" rx="3"/>
+    <rect x="328" y="60" width="56" height="20" rx="3"/>
+    <rect x="424" y="60" width="56" height="20" rx="3"/>
+    <rect x="616" y="60" width="56" height="20" rx="3"/>
+    <rect x="40" y="96" width="56" height="20" rx="3"/>
+    <rect x="232" y="96" width="56" height="20" rx="3"/>
+    <rect x="520" y="96" width="56" height="20" rx="3"/>
+  </g>
+  <!-- red: cannot sail; the chipped one (cut corner) is the long-standing yard vessel -->
+  <g fill="#8a4a3c">
+    <rect x="136" y="96" width="56" height="20" rx="3"/>
+    <rect x="232" y="60" width="56" height="20" rx="3"/>
+    <rect x="424" y="96" width="56" height="20" rx="3"/>
+    <path d="M520 60 h56 v20 h-49 l-7 -7 z"/>
+  </g>
+  <!-- white: unsettled crew change -->
+  <g fill="#fbfaf6" stroke="#6a655c">
+    <rect x="328" y="96" width="56" height="20" rx="3"/>
+    <rect x="616" y="96" width="56" height="20" rx="3"/>
+  </g>
+  <!-- brass rail: magnets parked overnight = unassigned -->
+  <rect x="16" y="216" width="688" height="12" rx="3" fill="#b08b4f"/>
+  <g fill="#8a4a3c">
+    <rect x="40" y="234" width="44" height="16" rx="3"/>
+  </g>
+  <g fill="#fbfaf6" stroke="#6a655c">
+    <rect x="96" y="234" width="44" height="16" rx="3"/>
+  </g>
+  <g font-family="ui-sans-serif, system-ui, sans-serif" font-size="11" fill="#6a655c">
+    <text x="152" y="246">parked on the rail overnight = unassigned</text>
+    <text x="470" y="246">blue on rotation · red cannot sail · white unsettled</text>
+  </g>
+</svg>

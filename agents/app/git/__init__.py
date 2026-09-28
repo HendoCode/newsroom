@@ -4,7 +4,7 @@ Git *is* the versioning (D2/D4): this package reads the brain (Voices, Personas,
 and reads/commits piece content (draft.html revisions, transcript.md, sources.md, feedback.md) and
 accepted lessons in the agent-native layout. Work-state stays in Mongo (``app.repositories``).
 
-The brain is a **clone** of its own repo (``HendoCode/content-machine-brain``), not a subdirectory
+The brain is a **clone** of its own repo (``HendoCode/masthead``), not a subdirectory
 of this one — ``ensure_brain_available`` bootstraps/refreshes that clone; ``open_brain``/
 ``open_content_store`` open read/write views onto it.
 """
