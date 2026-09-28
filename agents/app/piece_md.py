@@ -4,11 +4,11 @@
 itself NEVER writes it (``GitContentStore`` commits only ``draft.html``/``sources.md``/assets) — it
 is purely brain-authored, by hand or by brain-side agent tasks, and two shapes coexist:
 
-1. **Metadata-only** (the engine-pipeline convention, e.g. the ``aws-gsi-faq`` fixture): the file
-   is metadata + status, and the actual content lives in ``draft.html`` once drafting runs.
-2. **Direct-authored** (brain agent tasks, e.g. the 2026-08-30/31 AWS×Hendo seller briefs): the
-   file carries the metadata block, a standalone ``---`` divider, and then THE output content as
-   markdown in the same file — there is no ``draft.html`` at all.
+1. **Metadata-only** (the engine-pipeline convention, e.g. the ``rehearse-the-rollback`` piece):
+   the file is metadata + status, and the actual content lives in ``draft.html`` once drafting runs.
+2. **Direct-authored** (brain agent tasks, e.g. a seller brief a brain-side task wrote end to
+   side): the file carries the metadata block, a standalone ``---`` divider, and then THE output
+   content as markdown in the same file — there is no ``draft.html`` at all.
 
 This module exists so shape 2 is readable through the exact same surface as shape 1:
 :func:`piece_md_content_section` extracts the direct-authored content section (``None`` for
@@ -187,7 +187,8 @@ def piece_md_content_section(piece_md: str | None) -> str | None:
 
     Two brain shapes (see module docstring): a metadata-block file yields everything after its
     first standalone ``---`` divider (``None`` when it has no divider — metadata-only, e.g. the
-    ``aws-gsi-faq`` fixture — which keeps today's "no draft.html → no revision yet" behavior);
+    ``idempotency-is-the-whole-job`` piece, which is mid-interview with no draft.html yet — that
+    keeps today's "no draft.html → no revision yet" behavior);
     a file with no metadata block IS itself content and yields the whole file.
     """
     if not piece_md or not piece_md.strip():

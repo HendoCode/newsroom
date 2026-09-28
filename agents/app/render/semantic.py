@@ -5,11 +5,12 @@ finalize template needs two things out of the remaining document: the ``<title>`
 publishable body markup (``<h1>/<h2>/<p>/<figure>``, inline SVGs) to inject into the branded
 template's content slot.
 
-Real pieces are not consistent about wrapping their content in ``<article>`` — compare
-``drafts/token-vs-storage/draft.html`` (wraps in ``<article>``) with ``drafts/aws-gsi-faq/draft.html``
-(writes directly under ``<body>``, no ``<article>`` tag). So the extraction prefers an ``<article>``
+Real pieces are not guaranteed to wrap their content in ``<article>`` — the two drafted pieces in
+the brain today both do (``drafts/the-board-on-the-wall/draft.html``,
+``drafts/rehearse-the-rollback/draft.html``), but a brain-agent or hand-authored draft written
+directly under ``<body>`` is legal. So the extraction prefers an ``<article>``
 element when present and otherwise falls back to the whole ``<body>`` interior — stdlib ``re`` only,
-no new HTML-parsing dependency for what is, in both real shapes, a single well-formed element.
+no new HTML-parsing dependency for what is, in both shapes, a single well-formed element.
 """
 
 from __future__ import annotations

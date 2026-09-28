@@ -1,57 +1,40 @@
 # Content Lessons — demo-dana
 
-Starts from patterns distilled from example collateral and grows. After each piece, the
-Lessons Loop diffs the shipped version against the draft and (with approval) appends
-generalizable rules here. Lessons override the voice/style guide when they conflict.
+This file starts small and grows. After each piece, the Lessons Loop (`engine/4-lessons-loop.md`)
+diffs the machine's final draft against the published version, extracts generalizable rules, and
+— only on the author's explicit yes — appends them here.
 
-## File precedence (when guides conflict)
-When two references in this directory give conflicting guidance, apply them in this order
-(earlier wins):
-1. **content-lessons.md** (this file) — distilled from shipped work; overrides everything below.
-2. **voice-guide.md** — the authoritative register/DNA for demo-dana (partner-facing
-   voice: PRFAQs, technical FAQs, partner collateral). This is the primary voice reference.
-3. **style-guide.md** — author persona and audience.
-4. **brand-guidelines.md** — Hendo Code's shared writing-style reference (tone,
-   prohibited language, formatting conventions). Use it for brand facts everyone shares.
-   Where its register differs from voice-guide.md, **voice-guide.md wins for demo-dana
-   pieces.**
+**Lessons override `voice-guide.md` and `style-guide.md` when they conflict.** They are the
+author's own confirmed edits, which outrank any general rule.
 
-**Visual (a separate axis — governs look, not words):** `visual-identity.md` is the
-canonical color/font/component reference for any piece that renders as HTML (draft.html),
-a deck, or a graphic. Canon is the **slate/amber/cream + Josefin Sans / Georgia** system.
-It doesn't conflict with the voice files — apply it alongside them.
+## File precedence in this pack
+1. `content-lessons.md` (this file) — distilled from shipped work; wins every conflict.
+2. `voice-guide.md` — the register authority and the DNA.
+3. `style-guide.md` — who the persona is, what she writes, who reads it.
 
-## Seed lessons (from source examples, 2026-07-28)
-- Lead with the problem in parallel structure, then name the answer. ("Shipping an agent
-  is easy. Shipping it safely... is the hard part.")
-- Anchor positioning to a known product in one line when you can ("Vercel for agents").
-- Every feature is a bold claim + a concrete mechanism in the same breath. No claim floats.
-- Prefer before/after deltas and stat tiles over adjectives ("3 days → 7 min",
-  "40% → 98%+", "20× workers").
-- Make governance/security a first-class part of the story, not a footnote — self-hosted,
-  "never leaves your network", audit trail, compliance targets.
-- Name the real stack (Helm, MongoDB, Vault/KMS, Bedrock AgentCore, Vertex Agent Engine,
-  LangGraph/CrewAI). Specific tech beats generic "integrations".
-- Segment by audience when it helps (Product/AI, Enterprise buyers, Support, Developers),
-  each with its own value line.
-- Close on "why this matters for your team" + exactly one next step.
-- "X, not Y" contrast framing and parallel triads are encouraged here — the opposite of the
-  personal voices. Still: no empty adjectives, no hype without a number behind it.
+## Seed lessons (invented with the persona — the starting taste)
+- A number that carries an argument must carry its scope in the same sentence: which system,
+  which month, which traffic level. "p99 dropped to 340ms" is a claim; "settlement path, March,
+  ~1.2M events/day, p99 340ms from 1.9s" is evidence.
+- State the failure mode before the reader asks. If a design section ends without saying how it
+  breaks, the section is unfinished.
+- Never open with the industry. Open with the problem in the first two sentences.
+- Match length to the question. A 400-word answer that is complete beats a 1,400-word one with
+  the same content.
+- Name the rejected alternative and what it would have cost. A design with no rejected option
+  reads as a preference, not a decision.
 
-## Seed lessons (from a technical-FAQ example: AWS AgentCore FAQ reference, 2026-07-28)
-- Register flexes by format: a technical FAQ/PRFAQ answer is neutral, dense, and precise —
-  reference-doc register, not launch-copy energy. Same DNA, lower voltage.
-- FAQ structure: group Q&A by component/topic, enterprise concerns (billing, SLA, security &
-  compliance) last. `## Section` → `### Question?` → answer.
-- Phrase questions as a partner actually asks them (what / who / key benefits / how does it
-  work with / what's the difference / should I switch / regions / pricing / SLA / security).
-- Give the exact fact, listed out — all 15 regions, all 13 evaluators. Specific-and-long
-  beats vague-and-short in a FAQ.
-- Answer decision questions even-handedly ("you can keep using X"); honesty out-converts a
-  hard sell with this audience. Label "(Preview)" / not-GA features honestly.
-- When documenting a partner's product: cite the source, paraphrase (never copy), and
-  attribute the partner's claims to the partner ("AWS states/notes"). Mark unverified
-  partner facts for check — they go stale fast.
-
-## Learned lessons
-<!-- Appended over time. Each entry: date, the change observed, the generalizable rule. -->
+## Learned lessons (demo entries — what the loop appends in a live instance)
+<!-- Each entry: date · the change observed in the published version · the generalizable rule. -->
+- 2026-08-02 · Author cut a four-sentence explanation of what a retry budget is and replaced it
+  with a one-line definition plus a pointer. **Rule:** define a term in one line or assume the
+  reader knows it; never explain a standard concept at length in a piece whose audience runs
+  production systems.
+- 2026-08-19 · Author moved the diagram above the "Mechanism" section, from below it.
+  **Rule:** the diagram is the orientation, not the illustration — it goes before the prose that
+  walks through it.
+- 2026-09-06 · Author changed "we saw duplicates" to "the dedupe table logged 214 duplicate keys
+  between 02:11 and 02:19 UTC." **Rule:** replace observed-behavior verbs with the log line,
+  timestamp, or counter that showed it. If there is no artifact, the observation is a rumor.
+- 2026-09-06 · Author deleted a closing paragraph that began "In short,". **Rule:** if the verdict
+  section needs a summary in front of it, the verdict section is too long.

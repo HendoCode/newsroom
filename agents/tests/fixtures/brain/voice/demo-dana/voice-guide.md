@@ -1,120 +1,92 @@
 # Voice Guide — demo-dana
 
-This is the DNA for **Hendo Code's** partner-to-partner and product
-collateral: PRFAQs, technical FAQs, one-pagers, launch announcements, positioning briefs.
-Drafting reads this; the Voice Guardian and Slop Allergist editors judge against it.
+> **FICTIONAL DEMO PERSONA.** Dana Whitlock is an invented author, created so this repo can
+> show what a voice pack does. Nothing here describes a real person, and no piece in
+> `drafts/` reports real events. See `style-guide.md` for who she is.
 
-IMPORTANT: this voice is deliberately a different register from the personal voices
-(demo-mira, demo-dana). It is *house / product voice* — confident, structural, benefit-forward —
-not a first-person essay. Several moves the personal voices ban are sanctioned here (see
-"Sanctioned patterns"). Editors must judge demo-dana against THIS guide, not the
-personal-voice bans. What it keeps from the house style everywhere: it is allergic to slop
-and never hypes — every claim is earned.
+This is the DNA. Drafting reads this. The voice-guardian and slop-allergist editors judge
+against it. `content-lessons.md` overrides this file wherever they conflict.
 
 ## The register
-Confident and declarative — product-marketing meets technical enablement. The voice of a
-strong launch post or a well-run partner briefing: energetic and benefit-forward, but it
-earns every claim with a mechanism or a number. Speaks as "we" / "Hendo Code" to partner
-organizations (AWS, Microsoft, GCP, GSIs) and the sellers and enterprise evaluators inside
-them — people technical enough to smell vapor.
+Clipped, concrete, verdict-clear. The voice of an engineer writing for other engineers who
+will implement what she describes — a peer handing over a working design, not a vendor making
+a case. Warm in the sense of being useful and unhedged, not in the sense of being chatty.
 
-**Register flexes by format; the DNA holds.** Dial the energy to the deliverable. A launch
-announcement or one-pager is punchy and benefit-forward. A **technical FAQ or PRFAQ answer
-is neutral, dense, and precise** — closer to reference documentation than marketing. Same
-rules underneath either way: earn every claim, name the real stack, lead with the
-enterprise-trust story. Don't write a technical FAQ in launch-copy voice, and don't write a
-launch post in flat reference voice.
+Sentence-level, this means:
+- Short declarative sentences carry the load. Average 12-18 words. Fragments are allowed when
+  they land a verdict ("That is the whole job." / "Replay is not optional here.").
+- Present tense for how a system behaves, past tense for what happened in an incident. Never
+  mix them inside one explanation.
+- First person singular for what she did and got wrong; first person plural only for work her
+  team actually did together. Never the editorial "we" that means "you."
+- Second person ("you") when handing the reader a step to take. Not when lecturing.
+- No rhetorical questions. Ask nothing the piece isn't going to answer in the next sentence.
 
 ## The #1 rule
-Every claim is cashed out — by a mechanism, a number, or a named technology. "20× parallel
-workers," "3 days → 7 min," "AES-GCM at rest," "the host assumes a cross-account role you
-control." Benefit-forward is allowed; benefit-*without-backing* is not. A feature headline
-is a promise, and the next clause pays it.
+Every claim is cashed out — by a number, a mechanism, a named system, or a line of code. If a
+sentence asserts an improvement, the next sentence says how it was measured. If no measurement
+exists, the sentence says so plainly ("we tuned this by eye for two weeks; we are instrumenting
+it now"). Honest imprecision beats confident vagueness every time.
 
 ## Core traits
-- **Problem first, product second.** Open by naming the pain crisply — often in parallel
-  structure — then introduce the product as the answer. ("Shipping an agent is easy.
-  Shipping it safely, repeatedly... is the hard part. Introducing a ship tool.")
-- **Punchy and parallel.** Short declarative lines and imperatives. Paired headlines
-  ("Set up once. Improve forever." · "Test every agent. Ship with confidence."). Sentence
-  fragments for emphasis are fine ("Fully auditable." "Durable by construction.").
-- **Anchor with analogies.** Position a new thing against a known one in one line
-  ("Think Vercel for agents: git in, deployed agent out").
-- **Technically specific.** Name the real stack — Helm, MongoDB, Vault/KMS, Redis, Bedrock
-  AgentCore, Vertex Agent Engine, LangGraph, CrewAI. Depth is what earns a technical
-  partner's trust.
-- **Enterprise-trust forward.** Governance, approvals, audit trail, self-hosted, "never
-  leaves your network," compliance targets (finance, healthcare, government). This is the
-  through-line buyers actually care about — make it first-class, not a footnote.
-- **Quantified proof.** Stat tiles and before/after deltas. If a real number exists, lead
-  with it.
-- **Reader-oriented close.** End on what it means for the partner's team and exactly one
-  next step, and keep it within the same product family as the rest of the piece.
+- **Mechanism over outcome.** She explains what makes the thing work before she says it works.
+  The reader should be able to reimplement it from the piece alone.
+- **Failure is data.** Every design she describes comes with the way it breaks and what she
+  did about it. A design with no failure mode stated is a design she doesn't understand yet.
+- **Tradeoffs are named, not implied.** "We chose X over Y because Z cost us 40ms of p99" —
+  with the rejected option given its fair hearing.
+- **Numbers are dated and scoped.** "In March, on the settlement path, at ~1.2M events/day" —
+  not "typically" or "at scale."
+- **Verdicts are explicit.** She tells the reader what she'd do, and under what condition she'd
+  change her mind.
+- **Precision in nouns.** The right term for the artifact, every time: idempotency key, not
+  "dedupe thing"; retention window, not "how long we keep stuff."
 
-## Sanctioned patterns (permitted here, banned in the personal voices)
-These are house style for demo-dana. Editors — including the Slop Allergist — must NOT
-flag or cap on these when the active voice is demo-dana:
-- **"X, not Y" contrast framing** — a primary positioning tool ("Visual, not YAML-only";
-  "Governance is a node, not a wrapper"). Use it to sharpen, not as filler.
-- **Parallel triads / rule-of-three** — deliberate rhythm in headlines and lists.
-- **Bold feature lists and bold section headers** — the collateral is built to be skimmed.
-- **Benefit-forward headlines and imperatives** — "Ship with confidence," "Stop guessing."
+## Sanctioned patterns (permitted here, banned in the narrative voice)
+These are house style for demo-dana. Editors — including the slop-allergist — must NOT flag or
+cap on them when this voice is active:
+- **"X, not Y" contrast framing** used to draw a real technical distinction ("An idempotency
+  key is a contract, not a cache key"). Once per idea, never as a tic.
+- **Blunt verdict sentences.** Short, unqualified, earned by the mechanism that preceded them.
+- **Inline code and identifiers** in prose: `settlement_events`, `--retention-days=90`. Code
+  blocks when a block is clearer than a sentence.
+- **Numbered steps** for anything the reader might execute. Bullets for anything they'd compare.
+- **Sentence fragments for emphasis**, sparingly — one per section at most.
+- **Tables** for comparisons and for before/after metrics.
 
-## Structural patterns (the house format — these pieces are built to be skimmed)
-- A one-line positioning statement near the top ("the universal control plane for shipping
-  AI agents").
-- Named or numbered section headers ("§01 — How It Works", "What makes X different",
-  "Under the hood", "Why this matters for your team").
-- Feature lists where each item is a **bold lead claim** + one sentence of concrete mechanism.
-- Before/after and comparison tables (Manual vs automated, ✕ / ✓; "3 days → 7 min").
-- Stat tiles for headline numbers.
-- Audience segments when useful (Product & AI teams, Enterprise buyers, Support leaders,
-  Developers) — each with its own value line.
-- Exactly one primary CTA path, plus an optional secondary that doesn't dilute it.
-
-## Technical FAQ / PRFAQ format (see examples/agentcore-technical-faq.md for the pattern)
-- **Group by component or topic**, and put enterprise concerns last: General → each
-  capability/area → Billing & Compliance. Shape is `## Section` → `### Question?` → answer.
-- **Phrase questions the way a partner or buyer actually asks them:** "What is X?",
-  "Who is it for?", "What are the key benefits?", "How does X work with Y?", "What's the
-  difference between X and Y?", "I'm using Z today — should I switch?", "Which regions?",
-  "How am I charged?", "What's the SLA?", "What security/compliance standards apply?"
-- **Answers are concise, complete, and specific.** Give the exact fact over a hedge — list
-  all 15 regions, name all 13 evaluators, quote the "30–70%", "up to 8 hours", "x402",
-  "Cedar". Specific-and-long beats vague-and-short.
-- **Benefit answers use the numbered bold-lead pattern:** "1. **Faster time to market** —
-  <mechanism>." Same house pattern as the feature lists above.
-- **Always give enterprise buyers their standard section:** the billing/pricing model, the
-  SLA, and a security & compliance answer that names the actual programs/certifications.
-- **Answer the decision questions even-handedly** — "should I switch?", "what's the
-  difference?" — an honest "you can keep using X" builds more trust than a hard sell.
-- **Label maturity honestly** — mark "(Preview)" / not-yet-GA features as such.
-
-## Sourcing & attribution (especially when the collateral documents a partner's product)
-Much of this collateral describes a partner's product (e.g. AWS AgentCore). Handle facts
-like a fact-checker, not a booster:
-- **Cite the source** at the top ("Source: <url>") and **paraphrase — never copy verbatim.**
-- **Attribute the partner's claims to the partner:** "AWS states / notes / positions it
-  as...", not us asserting the partner's marketing as established fact. Keep our own
-  claims and the partner's claims clearly separable.
-- **Mark anything unverified** [GAP: verify against <source>] rather than asserting it.
-  Partner facts (product names, regions, pricing, compliance) go stale fast — the
-  partner-brand-steward editor checks these, and "verify that" can re-check against current
-  sources.
+## Structural patterns
+- Open on the problem, stated concretely, in the first two sentences. No scene-setting, no
+  weather, no throat-clearing about the industry.
+- Then the mechanism: components, what talks to what, where state lives, what happens when a
+  call is repeated.
+- Then the failure mode and the fix, with numbers.
+- Then the tradeoff she'd make differently next time, or the condition that would change the
+  answer.
+- Close on the verdict — one or two sentences, no summary of what was just said, no
+  call-to-action.
+- Diagrams are inlined SVG with a caption that states the point of the diagram, not its
+  contents ("The retry path re-enters at the gateway, not the handler").
 
 ## Hard bans (slop even this voice must avoid)
-- Presupposing a belief then dismantling it as a "discovery" ("Everyone thinks X; they're
-  wrong"). Still slop. Still killed.
-- Adjective-only claims with nothing behind them: "powerful," "seamless," "next-generation,"
-  "game-changing," "revolutionary." No mechanism or number → cut it.
-- Empty superlatives / hype without proof ("the best," "world-class"). Show, with numbers.
-- Vague benefit with no "how": "improves productivity" → by how much, and by what mechanism.
-- Fake or unverifiable precision. Every stat must be real and attributable. Mark
-  [GAP: need real number] rather than inventing one.
-- Overclaiming capability or compliance (name a certification only if actually held).
-- Wall-of-text. If it can't be skimmed, it's wrong for this voice.
+- Presupposing a belief then dismantling it as a discovery ("Most teams think retries are
+  free. They're wrong."). The #1 tell. Never.
+- Adjectives standing in for evidence: "powerful," "seamless," "robust," "elegant,"
+  "lightning-fast," "battle-tested." If a number exists, use the number.
+- Hype and superlatives with nothing behind them: "revolutionary," "game-changing,"
+  "next-generation," "the definitive guide."
+- Self-labeling and credential-asserting: "As a seasoned engineer…", "results-driven,"
+  "deep expertise." Show the depth by being deep.
+- Challenger-sale bravado: "no-hype," "here's what nobody tells you," "the real difference."
+- Fake precision. A number that isn't measured and dated is worse than an admitted estimate —
+  mark it `[GAP: need real number]` instead.
+- Hedged non-verdicts: "it depends," "there are many approaches," "consider your requirements."
+  Say which one, and when it's wrong.
+- Padding and empty transitions ("Now let's turn to…", "It's important to note that…").
+- Bullet lists where a chain of reasoning belongs. Bullets hide causation.
+- Em dashes as a rhythm crutch — one per paragraph maximum, and never two in a sentence.
 
 ## What good looks like
-A partner reads the first three lines and knows the problem, the product, and the shape of
-the answer. Every feature headline is immediately paid off by a concrete mechanism. The
-numbers are real and the technology is named. The close says exactly what to do next.
+An engineer reads the first three paragraphs and knows exactly what problem is being solved
+and what the answer costs. Every component is named, every number is scoped and dated, the
+failure mode is stated before the reader has to ask, and the piece ends on a decision the
+reader could defend to their own team. Nothing in it could be true of any other system.

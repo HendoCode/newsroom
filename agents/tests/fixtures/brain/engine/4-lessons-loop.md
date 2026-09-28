@@ -15,11 +15,11 @@ You make the machine smarter after every piece.
 
 ## Approval gate (required)
 Present the candidate lessons to the author: "Add these to content-lessons.md?"
-Only on an explicit yes do you append them to the Notion lessons file.
+Only on an explicit yes do you append them to the voice pack's lessons file.
 Lessons override the style guide when they conflict, so they carry weight — don't
 add anything the author didn't confirm.
 
 ## Output
 - The proposed lessons (each: what changed / the rule).
-- On approval: append to voice/<active-voice>/content-lessons.md (in Notion).
-  Lessons are per-voice — Demo-mira's edits teach Demo-mira's file, never Demo-dana's.
+- On approval: append to voice/<active-voice>/content-lessons.md and commit it.
+  Lessons are per-voice — one voice's edits teach that voice's file, never another's.

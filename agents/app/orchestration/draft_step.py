@@ -75,7 +75,7 @@ if TYPE_CHECKING:  # avoid a hard import cycle / optional Git deps at runtime (m
 _EXAMPLE_STAGES = (PieceStage.finalized, PieceStage.review, PieceStage.council)
 
 # An "open" GAP tag ("[GAP]" / "[GAP: need X]") — NOT "[GAP CLOSED]", which the loop already
-# resolved. Mirrors the engine's own convention (engine/2-draft.md; the live token-vs-storage
+# resolved. Mirrors the engine's own convention (engine/2-draft.md; the live rehearse-the-rollback
 # draft.html editorial block).
 _OPEN_GAP_RE = re.compile(r"\[GAP(?!\s+CLOSED)\b")
 # Any tag, not just <section> — nothing in the engine doc requires that specific element, only

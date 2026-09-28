@@ -17,26 +17,42 @@ import pytest
 from app.git import GitBrain, GitContentStore, NothingToCommit, apply_lesson_rule
 from app.git.repo import GitRepo, discover_repo
 
+# The fixture brain's pieces (see agents/tests/fixtures/brain/drafts/ — a snapshot of the pinned
+# brain ref): two carry a draft.html, one is still mid-interview with no draft yet.
+PIECE_WITH_DRAFT = "rehearse-the-rollback"
+PIECE_WITHOUT_DRAFT = "idempotency-is-the-whole-job"
+
 # --- brain reads ---------------------------------------------------------------------------
 
 
 def test_lists_and_reads_real_voices(git_brain: GitBrain) -> None:
     voices = git_brain.list_voices()
-    assert {"demo-mira", "demo-dana", "demo-dana"}.issubset(set(voices))
+    assert {"demo-mira", "demo-dana"}.issubset(set(voices))
     mira = git_brain.read_voice("demo-mira")
     assert mira.voice_guide and mira.style_guide and mira.content_lessons
-    # visual-identity + brand guidelines are demo-dana only (§1.1).
-    assert mira.visual_identity is None
+    # The brain is the neutral demo suite: it ships no personal branding for either voice (§1.1),
+    # which is what the render path's plain-token fallback exists for.
+    assert mira.visual_identity is None and mira.brand_guidelines is None
     team = git_brain.read_voice("demo-dana")
-    assert team.visual_identity is not None
-    assert team.brand_guidelines is not None
+    assert team.voice_guide and team.style_guide and team.content_lessons
+    assert team.visual_identity is None and team.brand_guidelines is None
+
+
+def test_brand_files_are_read_when_the_brain_carries_them(branded_git_brain: GitBrain) -> None:
+    """A branded brain (the Hendo Code voice pack) does carry the team-only files (§1.1)."""
+    team = branded_git_brain.read_voice("demo-dana")
+    assert team.visual_identity is not None and team.brand_guidelines is not None
+    # ...and they stay demo-dana-only: the other voice has no brand files even there.
+    assert branded_git_brain.read_voice("demo-mira").visual_identity is None
 
 
 def test_lists_and_reads_personas(git_brain: GitBrain) -> None:
     editors = git_brain.list_personas("editor")
     interviewers = git_brain.list_personas("interviewer")
     assert {"slop-allergist", "voice-guardian"}.issubset(set(editors))
-    assert "ferriss" in interviewers
+    assert {"skeptic", "architect", "operator"}.issubset(set(interviewers))
+    # The per-directory README is prose for humans, never a persona.
+    assert "README" not in editors and "README" not in interviewers
     persona = git_brain.read_persona("editor", "cold-reader")
     assert persona.kind == "editor" and persona.body
 
@@ -45,8 +61,8 @@ def test_read_engine_and_partners(git_brain: GitBrain) -> None:
     oracle = git_brain.read_engine("1-oracle")
     assert oracle  # engine step doc is readable
     partners = git_brain.list_partners()
-    assert "aws" in partners and "README" not in partners
-    assert git_brain.read_partner("aws")
+    assert "meridian-cloudworks" in partners and "README" not in partners
+    assert git_brain.read_partner("meridian-cloudworks")
 
 
 def test_unknown_persona_kind_raises(git_brain: GitBrain) -> None:
@@ -106,14 +122,14 @@ def test_write_voice_file_unknown_file_key_raises(git_brain: GitBrain) -> None:
         git_brain.write_voice_file("demo-mira", "nonsense", "x", message="x")
 
 
-def test_write_team_only_file(git_brain: GitBrain) -> None:
-    original = git_brain.read_voice("demo-dana").visual_identity
+def test_write_team_only_file(branded_git_brain: GitBrain) -> None:
+    original = branded_git_brain.read_voice("demo-dana").visual_identity
     assert original is not None
-    sha = git_brain.write_voice_file(
+    sha = branded_git_brain.write_voice_file(
         "demo-dana", "visual_identity", original + "\n<!-- retouch -->\n", message="retouch palette"
     )
     assert sha
-    assert "<!-- retouch -->" in git_brain.read_voice("demo-dana").visual_identity
+    assert "<!-- retouch -->" in branded_git_brain.read_voice("demo-dana").visual_identity
 
 
 # --- content reads -------------------------------------------------------------------------
@@ -121,16 +137,22 @@ def test_write_team_only_file(git_brain: GitBrain) -> None:
 
 def test_read_piece_files_real_layout(content_store: GitContentStore) -> None:
     slugs = content_store.list_pieces()
-    assert "token-vs-storage" in slugs
-    files = content_store.read_piece_files("token-vs-storage")
+    assert {PIECE_WITH_DRAFT, PIECE_WITHOUT_DRAFT, "the-board-on-the-wall"} == set(slugs)
+    files = content_store.read_piece_files(PIECE_WITH_DRAFT)
     assert files.draft_html and files.transcript_md and files.sources_md and files.piece_md
+
+
+def test_read_piece_files_tolerates_a_draftless_piece(content_store: GitContentStore) -> None:
+    """A piece still in the interview has transcript + sources but no draft.html."""
+    files = content_store.read_piece_files(PIECE_WITHOUT_DRAFT)
+    assert files.transcript_md and files.sources_md and files.piece_md
 
 
 # --- commit a revision, then history / rollback --------------------------------------------
 
 
 def test_commit_revision_and_history(content_store: GitContentStore) -> None:
-    slug = "token-vs-storage"
+    slug = PIECE_WITH_DRAFT
     original = content_store.read_draft(slug)
     sha1 = content_store.commit_revision(
         slug,
@@ -157,7 +179,7 @@ def test_commit_revision_and_history(content_store: GitContentStore) -> None:
 
 
 def test_rollback_creates_forward_commit(content_store: GitContentStore) -> None:
-    slug = "token-vs-storage"
+    slug = PIECE_WITH_DRAFT
     original = content_store.read_draft(slug)
     sha1 = content_store.commit_revision(slug, original + "\n<!-- v1 -->\n", message="v1")
     content_store.commit_revision(slug, original + "\n<!-- v2 -->\n", message="v2")
@@ -171,7 +193,7 @@ def test_rollback_creates_forward_commit(content_store: GitContentStore) -> None
 
 
 def test_commit_transcript(content_store: GitContentStore) -> None:
-    slug = "token-vs-storage"
+    slug = PIECE_WITH_DRAFT
     body = content_store.read_transcript(slug) + "\n\n## Gap interview\nQ: ...\nA: ...\n"
     sha = content_store.commit_transcript(slug, body, message="append gap interview turns")
     assert sha
@@ -179,7 +201,7 @@ def test_commit_transcript(content_store: GitContentStore) -> None:
 
 
 def test_no_op_commit_raises(content_store: GitContentStore) -> None:
-    slug = "token-vs-storage"
+    slug = PIECE_WITH_DRAFT
     unchanged = content_store.read_draft(slug)
     with pytest.raises(NothingToCommit):
         content_store.commit_revision(slug, unchanged, message="no change")
@@ -303,7 +325,7 @@ def test_push_noop_without_remote(brain_repo: Path) -> None:
 def test_commit_auto_pushes_when_remote_configured(brain_repo: Path, bare_remote: Path) -> None:
     branch = _push_seed(brain_repo, bare_remote)
     content_store = GitContentStore(str(brain_repo))
-    slug = "token-vs-storage"
+    slug = PIECE_WITH_DRAFT
     original = content_store.read_draft(slug)
     sha = content_store.commit_revision(slug, original + "\n<!-- pushed -->\n", message="rev")
     remote_head = subprocess.run(

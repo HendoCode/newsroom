@@ -17,7 +17,7 @@ from app.models import DocRef, Piece, PieceStage, ReviewRound, ReviewRoundStatus
 from app.repositories import WorkStateStore
 from app.review.docs_client import DocRef as GoogleDocRef
 
-SLUG = "token-vs-storage"
+SLUG = "the-board-on-the-wall"
 
 
 class _FakeDocsClient:

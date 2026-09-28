@@ -40,7 +40,23 @@ async def test_get_voice_pack(git_brain: GitBrain) -> None:
     body = mira.json()
     assert body["voice_guide"] and body["style_guide"] and body["content_lessons"]
     assert body["visual_identity"] is None
+    # The brain is the neutral demo suite: no brand files for the team voice either.
+    assert team.json()["visual_identity"] is None
+    assert team.json()["brand_guidelines"] is None
+
+
+async def test_get_voice_pack_exposes_brand_files_when_the_brain_carries_them(
+    branded_git_brain: GitBrain,
+) -> None:
+    """A branded brain ships ``visual-identity.md`` + ``brand-guidelines.md`` for demo-dana only —
+    the voice-kit screen surfaces them for edit/history (§1.1, D12)."""
+    _attach(branded_git_brain)
+    async with _client() as client:
+        team = await client.get("/api/voices/demo-dana")
+        mira = await client.get("/api/voices/demo-mira")
     assert team.json()["visual_identity"] is not None
+    assert team.json()["brand_guidelines"] is not None
+    assert mira.json()["visual_identity"] is None
 
 
 async def test_get_unknown_voice_404s(git_brain: GitBrain) -> None:

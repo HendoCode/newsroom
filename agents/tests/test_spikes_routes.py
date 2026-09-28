@@ -129,7 +129,7 @@ async def test_pick_creates_piece_and_flips_spike(content_store, git_brain) -> N
             json={
                 "voice": "demo-mira",
                 "owner": "coordinator@example.com",
-                "interviewer_personas": ["ferriss"],
+                "interviewer_personas": ["tactician"],
                 "assigned_expert": "expert@example.com",
             },
         )
@@ -157,7 +157,7 @@ async def test_pick_creates_piece_and_flips_spike(content_store, git_brain) -> N
     interviews = await store.interviews.by_piece(piece_id)
     assert len(interviews) == 1
     assert interviews[0].id == body["interview_id"]
-    assert interviews[0].interviewer_personas == ["ferriss"]
+    assert interviews[0].interviewer_personas == ["tactician"]
     assert interviews[0].assigned_expert == "expert@example.com"
     assert interviews[0].about == spike.headline
 
@@ -181,7 +181,7 @@ async def test_pick_honors_explicit_slug_and_target(content_store, git_brain) ->
                 "voice": "demo-dana",
                 "slug": "custom-slug",
                 "target": "LinkedIn post",
-                "interviewer_personas": ["ferriss"],
+                "interviewer_personas": ["tactician"],
             },
         )
     assert resp.status_code == 201
@@ -400,7 +400,7 @@ async def test_narrative_fast_path_end_to_end_purpose_block_carries_narrative_te
 
         pick_resp = await client.post(
             f"/api/spikes/{spike_id}/pick",
-            json={"voice": "demo-mira", "interviewer_personas": ["ferriss"]},
+            json={"voice": "demo-mira", "interviewer_personas": ["tactician"]},
         )
         assert pick_resp.status_code == 201
         piece_id = pick_resp.json()["piece_id"]

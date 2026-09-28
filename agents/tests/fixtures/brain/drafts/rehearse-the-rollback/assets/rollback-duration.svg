@@ -1,0 +1,16 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 760 220" role="img"
+     aria-label="Timeline comparing the pre-drill rollback with the post-drill rollback">
+  <title>Rollback duration, before and after the drill</title>
+  <desc>Editable source for the figure inlined in draft.html. Fictional demo data: Harborline
+        Freight settlement path, invented durations. Regenerate both together if a number changes.
+        Bar length is proportional to duration, scaled to 700px = 2h40m.</desc>
+  <rect width="760" height="220" fill="#f5f5f3"/>
+  <text x="12" y="28" font-family="ui-sans-serif, system-ui, sans-serif" font-size="13" fill="#5c5c56">before drills — 2h 40m, 6 minutes of settlement events lost</text>
+  <rect x="12" y="40" width="700" height="26" rx="4" fill="#4a5a6a" opacity="0.85"/>
+  <text x="24" y="58" font-family="ui-sans-serif, system-ui, sans-serif" font-size="13" fill="#fdfdfc">redeploy ok · schema incompatible · restore + reconcile</text>
+  <text x="12" y="112" font-family="ui-sans-serif, system-ui, sans-serif" font-size="13" fill="#5c5c56">after 11 drills — 11 minutes, no data loss</text>
+  <rect x="12" y="124" width="48" height="26" rx="4" fill="#4a5a6a"/>
+  <text x="72" y="142" font-family="ui-sans-serif, system-ui, sans-serif" font-size="13" fill="#1c1c1a">flag off → redeploy → data question answered from the runbook</text>
+  <line x1="12" y1="176" x2="712" y2="176" stroke="#dedcd7" stroke-width="1"/>
+  <text x="12" y="196" font-family="ui-sans-serif, system-ui, sans-serif" font-size="12" fill="#5c5c56">Bar length is proportional to duration. Source: drill log and incident record (fictional demo data).</text>
+</svg>

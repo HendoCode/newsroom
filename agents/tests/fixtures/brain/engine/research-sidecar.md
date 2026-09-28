@@ -7,8 +7,9 @@ because its whole job is to serve whatever step is already running.
 ## When it's invoked
 - The user types a research command (see below), OR
 - Mid-interview, the user wants instant depth on something a persona raised, OR
-- The brand-steward or technical-reviewer needs a current fact verified (e.g. a partner
-  product name from a facts file whose last-verified date is old).
+- The technical-reviewer or specificity-auditor needs a current fact verified (e.g. a
+  version number, a pricing figure, or a product name whose last check is old), or the
+  partner-brand-steward is checking a naming trap in partners/<partner>.md.
 
 ## Invocation commands (the user says one of these)
 - "/research <question>"  — go find this now, come back with a short answer.
@@ -20,8 +21,10 @@ because its whole job is to serve whatever step is already running.
    of you know where to come back to. This is the anti-drift rule: research announces
    its own boundaries.
 2. Do the research (web search / the user's connected sources as available).
-3. Return a SHORT, sourced answer — enough to act on, not an essay. If it's a partner
-   fact, note whether it should update partners/<name>.md and its last-verified date.
+3. Return a SHORT, sourced answer — enough to act on, not an essay. If the fact will
+   carry weight in the piece, note that it belongs in drafts/<piece>/sources.md with
+   where it came from and when it was checked. If it's a partner fact, note whether it
+   should update partners/<partner>.md and its last-verified date.
 4. HAND BACK explicitly: "Back to the interview — Q3 was: <restate the question>."
    Resume the exact step and turn you paused. Do not slide into open discussion.
 
