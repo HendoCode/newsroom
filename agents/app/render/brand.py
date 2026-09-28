@@ -97,14 +97,21 @@ async def fetch_logo_data_uri(url: str, *, timeout: float = 15.0) -> str:
 
     D13/Item 5: "fetch-and-inline it as base64 so the artifact stands alone" — the branded HTML/PDF
     must be self-contained/portable, matching the agent's own self-contained-artifact discipline.
+
+    A **blank** URL is not an error: an unbranded brain (the neutral demo suite ships no
+    ``visual-identity.md``, so the derived tokens are plain) simply has no logo, and this returns
+    ``""`` without a network call — the template renders without a logo rather than failing.
     """
     import httpx
+
+    if not url:
+        return ""
 
     try:
         async with httpx.AsyncClient(timeout=timeout, follow_redirects=True) as client:
             resp = await client.get(url)
             resp.raise_for_status()
-    except httpx.HTTPError as exc:
+    except (httpx.HTTPError, httpx.InvalidURL) as exc:
         raise LogoFetchError(f"could not fetch logo from {url!r}: {exc}") from exc
     mime = resp.headers.get("content-type", "image/webp").split(";")[0].strip() or "image/webp"
     encoded = base64.b64encode(resp.content).decode("ascii")

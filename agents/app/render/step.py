@@ -141,7 +141,10 @@ class FinalizeStep(BatchStep):
         tokens, brand_warnings = self._brand_tokens(ctx.brain, piece.voice)
         warnings.extend(brand_warnings)
 
-        template = self.template_store.read()
+        # A brain with no branded template (the neutral demo brain) degrades to the built-in plain
+        # template + a warning rather than failing the job (same posture as the brand tokens above).
+        template, template_warnings = self.template_store.read_or_plain()
+        warnings.extend(template_warnings)
         source_revision = piece.latest_revision or _fallback_revision(ctx.content, slug)
         rendered_at = datetime.now(UTC).isoformat()
 
