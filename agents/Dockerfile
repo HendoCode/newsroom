@@ -23,18 +23,37 @@ WORKDIR /app
 # whenever it was cut, so a rebuild without this ships known-fixed OS CVEs unnecessarily. It cannot
 # clear Debian "no fix available" CVEs (those need a base-OS bump, blocked here by the Playwright /
 # bookworm pin above) — only everything that already has a patched version.
-RUN apt-get update && apt-get -y upgrade \
+#
+# Optional Debian mirror (e.g. a LAN apt cache), passed from compose `build.args`: a base URL that
+# replaces `http://deb.debian.org` in the image's deb822 sources (so it must serve /debian and
+# /debian-security beneath it). The original sources are kept aside and restored after the last
+# apt use (the Playwright step below), so the shipped image never points at a build-time mirror.
+# Unset/empty (the default) leaves the sources untouched.
+ARG APT_MIRROR=
+RUN if [ -n "$APT_MIRROR" ]; then \
+      cp /etc/apt/sources.list.d/debian.sources /tmp/debian.sources.orig \
+      && sed -i "s|http://deb.debian.org|${APT_MIRROR%/}|g" /etc/apt/sources.list.d/debian.sources; \
+    fi \
+    && apt-get update && apt-get -y upgrade \
     && apt-get install -y --no-install-recommends git openssh-client \
     && rm -rf /var/lib/apt/lists/*
 
 # Install deps first for layer caching.
 COPY requirements.txt ./
-RUN pip install --no-cache-dir -r requirements.txt
+# Optional PyPI mirror (e.g. a LAN package cache), passed from compose `build.args`. Unset/empty
+# (the default) means public PyPI; pip ignores an empty PIP_INDEX_URL.
+ARG PIP_INDEX_URL=
+RUN pip install --no-cache-dir ${PIP_INDEX_URL:+--index-url "$PIP_INDEX_URL"} -r requirements.txt
 
 # Playwright's own Chromium download, plus its OS-level dependencies (--with-deps), for the
 # finalize PDF format (app/render/pdf.py's ChromiumPdfRenderer). Without this the import there
 # guards cleanly (HTML/Doc formats still work) but PDF raises PdfRenderError on every render.
-RUN playwright install --with-deps chromium
+# --with-deps runs apt-get, so it also goes through APT_MIRROR; restore the original sources after.
+RUN playwright install --with-deps chromium \
+    && rm -rf /var/lib/apt/lists/* \
+    && if [ -f /tmp/debian.sources.orig ]; then \
+      mv /tmp/debian.sources.orig /etc/apt/sources.list.d/debian.sources; \
+    fi
 
 # App source.
 COPY pyproject.toml ./

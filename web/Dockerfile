@@ -5,7 +5,11 @@
 FROM node:22-alpine AS deps
 WORKDIR /app
 COPY package.json package-lock.json ./
-RUN npm ci
+# Optional npm registry mirror (e.g. a LAN package cache), passed from compose `build.args`.
+# Unset/empty (the default) means the public registry. npm rewrites the lockfile's
+# registry.npmjs.org `resolved` URLs to the configured registry (replace-registry-host=npmjs).
+ARG NPM_REGISTRY=
+RUN npm ci ${NPM_REGISTRY:+--registry="$NPM_REGISTRY"}
 
 FROM node:22-alpine AS builder
 WORKDIR /app

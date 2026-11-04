@@ -27,6 +27,9 @@ services:
   web:
     build:
       context: ./web
+      args:
+        # Optional npm registry mirror for `npm ci` (set in .env); empty = public registry.
+        NPM_REGISTRY: ${NPM_REGISTRY:-}
     environment:
       # Server-side-only address of the agents service. Uses the internal compose network +
       # fixed internal port, so it is identical across all isolated instances.
@@ -80,6 +83,11 @@ services:
   agents:
     build:
       context: ./agents
+      args:
+        # Optional PyPI index mirror for `pip install` (set in .env); empty = public PyPI.
+        PIP_INDEX_URL: ${PIP_INDEX_URL:-}
+        # Optional Debian mirror base URL replacing http://deb.debian.org for apt-get (set in .env).
+        APT_MIRROR: ${APT_MIRROR:-}
     environment:
       ENVIRONMENT: ${ENVIRONMENT:-development}
       # Provider keys are injected here SERVER-SIDE ONLY (never client-exposed). Empty by
