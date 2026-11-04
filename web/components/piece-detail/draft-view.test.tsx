@@ -68,7 +68,7 @@ describe("DraftView", () => {
     render(<DraftView draftHtml={DRAFT_HTML} revision="abc123" />);
     const heading = screen.getByRole("heading", { name: /why data-centre diversification matters/i });
     const preview = heading.closest("div");
-    // The mocked next/font/google (vitest.setup.ts) echoes back the requested `variable` name —
+    // The mocked next/font/local (vitest.setup.ts) echoes back the requested `variable` name —
     // asserting it here proves this component asked for its OWN preview-scoped variable, not the
     // chrome's, so the two can never collide or drift together.
     expect(preview?.className).toMatch(/mock-var--preview-font-serif/);

@@ -88,6 +88,8 @@ services:
         PIP_INDEX_URL: ${PIP_INDEX_URL:-}
         # Optional Debian mirror base URL replacing http://deb.debian.org for apt-get (set in .env).
         APT_MIRROR: ${APT_MIRROR:-}
+        # Optional mirror of Playwright's browser CDN (becomes PLAYWRIGHT_DOWNLOAD_HOST).
+        PLAYWRIGHT_DOWNLOAD_MIRROR: ${PLAYWRIGHT_DOWNLOAD_MIRROR:-}
     environment:
       ENVIRONMENT: ${ENVIRONMENT:-development}
       # Provider keys are injected here SERVER-SIDE ONLY (never client-exposed). Empty by
