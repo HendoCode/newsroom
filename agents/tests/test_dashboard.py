@@ -62,9 +62,9 @@ def test_seed_covers_every_predicate_signal() -> None:
 
 
 def test_seed_titles_are_real_titles_not_slugs() -> None:
-    """Placeholder pieces must not show their slug as the title (cmw-boss-facing-presentation,
+    """Placeholder pieces must not show their slug as the title (presentation-polish,
     MEDIUM): every seeded piece carries a human title distinct from its slug/id — a
-    slug-shaped title reads as unfinished data to a boss seeing the app for the first time."""
+    slug-shaped title reads as unfinished data to a first-time viewer seeing the app for the first time."""
     items = build_queue(seed_work_state(VIEWER))
     for item in items:
         if item.kind != "piece":
@@ -113,7 +113,7 @@ async def test_build_queue_joins_over_real_store(store: WorkStateStore) -> None:
     assert card.council_aggregate == 8.5
     assert card.open_gaps == 3
     assert [oi.expert for oi in card.open_interviews] == ["b@example.com"]
-    # staleness triage (cmw-staleness-timestamps): both timestamps carried through to the card.
+    # staleness triage: both timestamps carried through to the card.
     assert piece.last_human_touch_at is not None
     assert card.updated_at == piece.updated_at
     assert card.last_human_touch_at == piece.last_human_touch_at

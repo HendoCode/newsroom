@@ -75,7 +75,7 @@ async def test_mint_internal_keeps_editorial_block_and_has_no_warnings(store, co
     assert result.round.doc.share_mode == ShareMode.internal
     html_sent = docs.created[0][1]
     assert 'class="editorial"' in html_sent
-    assert "cmw-draft-banner" not in html_sent
+    assert "newsroom-draft-banner" not in html_sent
 
     updated = await store.pieces.get(piece.id)
     assert updated.current_review_round_id == result.round.id
@@ -136,7 +136,7 @@ async def test_mint_shares_per_reviewer_email(store, content_store):
 
     await service.mint(piece.id, reviewer_emails=["a@x.com", "b@x.com"])
 
-    # "writer", not "commenter" (cmw-reviewer-can-edit-doc) — reviewers edit the Doc directly.
+    # "writer", not "commenter" — reviewers edit the Doc directly.
     assert docs.shared[0] == ("doc-1", ["a@x.com", "b@x.com"], "writer")
 
 
@@ -184,7 +184,7 @@ async def test_mint_unknown_piece_raises_key_error(store, content_store):
         await service.mint("does-not-exist")
 
 
-# --- cmw-drive-piece-folders ------------------------------------------------------------------
+# --- drive-piece-folders ------------------------------------------------------------------
 
 
 class FakeDriveClient:

@@ -1,7 +1,7 @@
 import type { MetaCommand, RespondResult } from "@/lib/interviews/types";
 
 /**
- * The D6 bounded op set, exactly as the composer surfaces it as chips (cmw-ui-wireframes screen 3;
+ * The D6 bounded op set, exactly as the composer surfaces it as chips (UI wireframes screen 3;
  * open-decisions D6): every free-form submission classifies into one of these four — never a
  * fifth, and a novel meta-command is still "meta-command" with a recorded note, never dropped.
  */

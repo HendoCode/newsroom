@@ -1,4 +1,4 @@
-"""Structural HTML block extraction tests (cmw-reviewer-can-edit-doc / decision-structure-
+"""Structural HTML block extraction tests (reviewer-can-edit-doc / decision-structure-
 intake.md). Covers the two things established empirically against a real Google Doc (see the PR
 description for the full transcript): headings survive as real ``<h1>``-``<h6>`` tags either way,
 while bold/italic/underline round-trip through Docs as inline CSS on a ``<span>``, never as
@@ -131,7 +131,7 @@ def test_heading_label():
     assert heading_label("h6") == "Heading 6"
 
 
-# --- cmw-phantom-edits-from-doc-roundtrip: Google always wraps a heading's ENTIRE text in a bold
+# --- phantom-edits-from-doc-roundtrip: Google always wraps a heading's ENTIRE text in a bold
 # span on export, whether or not anyone touched it — that must never register as an emphasis edit,
 # while a genuine partial-bold (or any italic/underline) within a heading still must ---------------
 
@@ -187,7 +187,7 @@ def test_paragraph_wide_bold_is_never_suppressed():
 def test_extract_blocks_is_lenient_on_real_googles_export_shape():
     """A trimmed real fragment captured from Drive's text/html export (see the PR description) —
     inline styles, an id on a reviewer-added heading, an &nbsp; artifact — must parse cleanly. Both
-    headings here carry Google's own whole-heading bold wrapping (cmw-phantom-edits-from-doc-
+    headings here carry Google's own whole-heading bold wrapping (phantom-edits-from-doc-
     roundtrip) — confirming the emphasis suppression fires on this exact real shape, not just the
     synthetic fixtures above."""
     html = (

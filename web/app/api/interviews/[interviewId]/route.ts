@@ -3,7 +3,7 @@ import { NextResponse } from "next/server";
 import { AgentsRequestError, fetchInterview } from "@/lib/agents-client";
 
 /**
- * BFF route for the interview surface (cmw-ui-wireframes screen 3) — reads one Interview's
+ * BFF route for the interview surface — reads one Interview's
  * turn-taking state. Same forward-the-real-status convention as `/api/pieces/[pieceId]` (a genuine
  * 404 should render the page's not-found state, not a generic error banner).
  */

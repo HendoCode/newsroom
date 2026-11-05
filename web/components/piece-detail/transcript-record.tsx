@@ -16,7 +16,7 @@ import type { InterviewRecord } from "@/lib/pieces/types";
  * (`spike-kickoff.tsx`) is out of view — a pause or a completion otherwise leaves it unreachable.
  * Genuinely read-only: no edit/recap handlers exist on this component at all, unlike the
  * interactive interview surface (`transcript-panel.tsx`), so there is no control to hide, only
- * one to omit. Hendo's call (2026-08-08): a still-open interview legitimately stays resumable at
+ * one to omit. The product owner's call (2026-08-08): a still-open interview legitimately stays resumable at
  * that interactive surface (a "Resume interview" link), but a `complete` one must never be — so
  * only `status === "open"` interviews get that link.
  *
@@ -33,7 +33,7 @@ import type { InterviewRecord } from "@/lib/pieces/types";
  * per-turn interview attribution could nest turns under their round without restructuring this
  * component.
  *
- * Each turn's answer is rendered by `TurnAnswer` below (cmw-modal-long-text-elsewhere), which
+ * Each turn's answer is rendered by `TurnAnswer` below, which
  * reuses `components/ui/modal.tsx`'s `Modal` — the same clamp-then-modal pattern `DraftView`
  * established — once an answer is genuinely long (`lib/interviews/answer-length.ts`).
  */
@@ -45,7 +45,7 @@ export function TranscriptRecord({
   interviews: InterviewRecord[];
   turns: TranscriptTurn[];
   /** The Spike this piece was picked from, if any — when a piece genuinely has zero Interviews
-   * (a piece created before cmw-piece-interviewing-without-interview closed that gap, since a
+   * (a piece created before piece-interviewing-without-interview closed that gap, since a
    * fresh pick now opens one atomically), this is the only route back to the kickoff screen that
    * can open one: piece-detail itself has no interview-creation control of its own. */
   originSpikeId?: string | null;
@@ -124,7 +124,7 @@ export function TranscriptRecord({
 
 /**
  * A turn's answer, clamped to 3 lines with a "Read full answer" modal once it's long — this is
- * the exact gap Hendo hit personally ("a modal popup of the complete text" for a long
+ * the exact gap the product owner hit personally ("a modal popup of the complete text" for a long
  * research-derived answer). Matches `DraftView`'s clamp-first pattern: a short answer (the common
  * case) renders in full with no button at all, never hidden behind a click by default.
  */

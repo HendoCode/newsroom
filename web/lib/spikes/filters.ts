@@ -1,5 +1,5 @@
 /**
- * The Spikes & Vault filter model (D15; cmw-ui-wireframes screen 5).
+ * The Spikes & Vault filter model (D15).
  *
  * TWO layers of filtering over ONE shared pool, mirroring the dashboard's `lib/dashboard/filters.ts`
  * architecture:

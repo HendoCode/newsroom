@@ -59,7 +59,7 @@ _VALID_COMMIT_IDEA_BODY = {
 
 
 # Verbatim JSON body ``OperatorDesk.handleCommitIdea`` constructs and POSTs to
-# ``/api/content-workflow/submit`` (web/app/content-machine/operator-desk.tsx).
+# ``/api/content-workflow/submit`` (the operator desk component in the web app).
 def _operator_desk_submit_body(email: str = "test@example.com", idea_id: str = "idea-1") -> dict:
     actor = {"subject_id": email, "email": email, "display_name": email}
     return {
@@ -526,7 +526,7 @@ def test_authorize_release_wire_round_trip_mints_a_numbered_release() -> None:
         app.state.content_workflow = None
 
 
-# --- authority + quality waiver wire round trips (cmw-authority-model-impl) ------------------
+# --- authority + quality waiver wire round trips ------------------
 
 
 def _declare_input_sufficient_wire_body(project_id: str, version: int) -> dict:

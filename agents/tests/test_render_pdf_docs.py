@@ -54,7 +54,7 @@ def _fake_token_exchange(request: httpx.Request) -> httpx.Response | None:
 async def test_create_doc_from_html_with_no_parent_omits_parents_but_still_sends_supports_all_drives(
     monkeypatch: pytest.MonkeyPatch,
 ) -> None:
-    """Pre-cmw-drive-piece-folders behavior: no ``parents`` in the metadata — the Doc lands at the
+    """Pre-drive-piece-folders behavior: no ``parents`` in the metadata — the Doc lands at the
     Drive root, exactly as before this ticket. ``supportsAllDrives=true`` is sent unconditionally
     (documented as a no-op for a plain My Drive file) rather than branching on ``parent_id``."""
     requests: list[httpx.Request] = []
@@ -83,7 +83,7 @@ async def test_create_doc_from_html_with_no_parent_omits_parents_but_still_sends
 async def test_create_doc_from_html_with_a_parent_sets_parents_and_supports_all_drives(
     monkeypatch: pytest.MonkeyPatch,
 ) -> None:
-    """cmw-drive-piece-folders: a ``parent_id`` puts the Doc in the piece's Shared Drive folder —
+    """drive-piece-folders: a ``parent_id`` puts the Doc in the piece's Shared Drive folder —
     confirmed live against a real Shared Drive during this ticket's verification that this needs
     ``supportsAllDrives=true`` (not assumed from the API reference alone)."""
     requests: list[httpx.Request] = []

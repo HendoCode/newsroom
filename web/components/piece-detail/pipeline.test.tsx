@@ -47,7 +47,7 @@ afterEach(() => {
   vi.unstubAllGlobals();
 });
 
-describe("Pipeline — the rail and the CTA, folded into one block (cmw-pipeline-depiction-design)", () => {
+describe("Pipeline — the rail and the CTA, folded into one block", () => {
   it("posts the enough-input trigger, then refetches and reports the refreshed piece", async () => {
     const refreshed = piece({ stage: "council" });
     const fetchMock = vi.fn(async (input: RequestInfo | URL, init?: RequestInit) => {

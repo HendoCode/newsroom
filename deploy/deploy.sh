@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# Deploy wrapper for the CMW AWS POC (infra/aws-poc) — makes the security gate a hard
+# Deploy wrapper for the Newsroom AWS POC (infra/aws-poc) — makes the security gate a hard
 # precondition for `tofu apply`. See deploy/README.md for the full design.
 #
 # There is no documented apply path that skips deploy/security-gate.sh: this script runs the gate

@@ -7,7 +7,7 @@ import type { SpikeStatus } from "@/lib/spikes/types";
 import { spikeStatusLabel } from "@/lib/spikes/format";
 
 /**
- * The D15 filter bar (creator · topic · date · status) + convergence sort (cmw-ui-wireframes
+ * The D15 filter bar (creator · topic · date · status) + convergence sort (UI wireframes
  * screen 5) — one reusable {@link FilterState} applied on top of the active status tab. Same
  * native-`<select>` recipe as the dashboard's `FilterBar`.
  */

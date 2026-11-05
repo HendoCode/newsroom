@@ -1,4 +1,4 @@
-"""LLM provider layer (open-decisions Item 1; cmw-context-assembly report).
+"""LLM provider layer (open-decisions Item 1).
 
 The shared layer every pipeline step calls: a swappable :class:`LLMProvider` seam over direct
 first-party Anthropic (:class:`AnthropicLLMProvider`), the per-step model-tiering map (D14/§3),

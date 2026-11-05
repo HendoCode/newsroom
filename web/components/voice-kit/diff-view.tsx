@@ -4,7 +4,7 @@ import { cn } from "@/lib/utils";
 import { diffLines } from "@/lib/voice-kit/diff";
 
 /** Renders a unified line diff — shared by the editor pane's "Diff vs current" and the version
- * history's "Compare" (cmw-ui-wireframes screen 11). */
+ * history's "Compare". */
 export function DiffView({ before, after }: { before: string; after: string }) {
   const lines = diffLines(before, after);
   return (

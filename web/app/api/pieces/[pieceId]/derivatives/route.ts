@@ -2,7 +2,7 @@ import { NextResponse } from "next/server";
 
 import { AgentsRequestError, createDerivative, fetchDerivatives } from "@/lib/agents-client";
 
-/** BFF for derivative child artifacts of an anchor piece (cmw-lesson-lineage-impl). */
+/** BFF for derivative child artifacts of an anchor piece. */
 export const dynamic = "force-dynamic";
 
 function errorResponse(error: unknown) {

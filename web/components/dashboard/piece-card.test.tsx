@@ -84,7 +84,7 @@ describe("PieceCard — the per-item Archive action (triage at scale)", () => {
   });
 });
 
-describe("PieceCard — staleness triage (cmw-staleness-timestamps)", () => {
+describe("PieceCard — staleness triage", () => {
   const NOW = new Date("2026-08-11T12:00:00.000Z");
 
   it("shows both updated and human-touch relative times, in the always-visible collapsed line", () => {

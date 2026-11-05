@@ -8,7 +8,7 @@ import type { ReviewRoundRecord } from "@/lib/pieces/types";
  * `app.review.routing.route_non_fix_items`). Always visible on piece-detail, not gated behind the
  * review-round screen — a piece that has moved past `review` keeps this history in view.
  *
- * Deliberately no clamp/modal here (cmw-modal-long-text-elsewhere): each line is a templated
+ * Deliberately no clamp/modal here: each line is a templated
  * sentence built around `raw.ask.strip()[:_ASK_PREVIEW]` (`app/review/routing.py`,
  * `_ASK_PREVIEW = 80`) — capped by construction to roughly a sentence, never free-form long-form
  * content the way a transcript answer or a council editor's note is. A modal here would add an

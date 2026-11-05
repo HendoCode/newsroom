@@ -1,6 +1,6 @@
 """Durable public storage for published outputs (finalized → published, §1.19-exception).
 
-Hendo's settled v1 call: a plain, publicly-readable S3 bucket — no signed URLs, no unguessable
+The product owner's settled v1 call: a plain, publicly-readable S3 bucket — no signed URLs, no unguessable
 keys, no access-control layer (those were explicitly ruled out; the bucket policy is the only
 gate, and it's public-read by design, see ``infra/aws-poc/publish_bucket.tf``). Callers are
 responsible for the immutable-key discipline (a fresh key per publish, never overwriting one in

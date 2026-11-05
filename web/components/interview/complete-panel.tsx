@@ -4,7 +4,7 @@ import { Button } from "@/components/ui/button";
 import type { InterviewStatus } from "@/lib/interviews/types";
 
 /**
- * "Mark interview complete" (cmw-ui-wireframes screen 3; D16a): a SIGNAL for the piece owner/
+ * "Mark interview complete" (D16a): a SIGNAL for the piece owner/
  * coordinator, never the draft trigger. Multiple interviews can feed one piece; only a human with
  * authority over the piece presses "enough input" (see the piece-detail "Enough input" → draft
  * card) to actually advance it.

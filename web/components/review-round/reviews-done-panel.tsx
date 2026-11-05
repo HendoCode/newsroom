@@ -9,7 +9,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import type { ReviewPreviewResult } from "@/lib/review-round/types";
 
 /**
- * The assisted "reviews done" ingest preview + confirm (cmw-ui-wireframes screen 04;
+ * The assisted "reviews done" ingest preview + confirm (UI wireframes screen 04;
  * open-decisions Item 7): the human declares reviews done, but ONLY after seeing exactly what
  * will fold in — samples of the actual comment/edit text, not just a count. "Confirm — reviews
  * done" is disabled until a preview has successfully loaded, so there is no path to a blind fire.

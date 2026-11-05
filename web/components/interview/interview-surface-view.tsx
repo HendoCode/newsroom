@@ -28,12 +28,12 @@ async function parseError(res: Response): Promise<string> {
 }
 
 /**
- * The interview surface (cmw-ui-wireframes screen 3) — the interviewee view driving the merged
+ * The interview surface — the interviewee view driving the merged
  * interview engine (D5-context-assembly §5) entirely through the `web/` BFF. Holds the Interview
  * and the sacred transcript as client state so a turn (ask → answer → recap, or a
  * research/meta/tangent branch) can update the screen in place without a full reload.
  *
- * Focused interview mode (cmw-interview-focused-mode): single-column, mobile-first — the question
+ * Focused interview mode: single-column, mobile-first — the question
  * (ConversationPanel) + the composer + the sacred transcript, plus the kept affordances (the
  * assignment banner, Edit + Recap on each turn, skip-without-pending-question, mark-complete,
  * and the stop-for-the-day / where-are-we session controls). The persona roster panel

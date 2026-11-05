@@ -15,7 +15,7 @@ import { DEFAULT_FINALIZE_FORMATS, type FinalizeFormat } from "@/lib/finalize/ty
 import type { PieceDetail } from "@/lib/pieces/types";
 
 /**
- * The finalize/outputs screen (cmw-ui-wireframes screen 10; use case J; D13/Item 5): select output
+ * The finalize/outputs screen (use case J; D13/Item 5): select output
  * formats, review the warn-not-block pre-finalize checks, fire Finalize (source revision +
  * template version get recorded by the finalize step), and browse the outputs list — the final
  * Google Doc of record plus the branded HTML/PDF renders.
@@ -29,7 +29,7 @@ export function FinalizeView({ initial }: { initial: PieceDetail }) {
   const [selected, setSelected] = React.useState<FinalizeFormat[]>([...DEFAULT_FINALIZE_FORMATS]);
   const [submitting, setSubmitting] = React.useState(false);
   const [error, setError] = React.useState<string | null>(null);
-  // Explicit success readout (cmw-boss-facing-presentation, MEDIUM): the finalize POST blocks
+  // Explicit success readout: the finalize POST blocks
   // until the render job finishes — name the outcome rather than leaving it to inference.
   const [success, setSuccess] = React.useState<string | null>(null);
 

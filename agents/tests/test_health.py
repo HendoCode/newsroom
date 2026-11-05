@@ -50,7 +50,7 @@ def test_status_reports_seams() -> None:
 
 
 def test_status_reports_mongo_ready_when_url_present(monkeypatch: pytest.MonkeyPatch) -> None:
-    monkeypatch.setenv("MONGO_URL", "mongodb://mongo:27017/content_machine")
+    monkeypatch.setenv("MONGO_URL", "mongodb://mongo:27017/newsroom")
     get_settings.cache_clear()
     body = client.get("/api/status").json()
     assert body["mongo_configured"] is True
@@ -60,7 +60,7 @@ def test_status_reports_llm_ready_when_key_present(monkeypatch: pytest.MonkeyPat
     # Live readiness requires both a configured backend and a real provider object. The
     # object is only constructed in the Mongo-configured lifespan branch, so we need a fresh
     # TestClient after setting the env vars (changing env does not re-run the lifespan).
-    monkeypatch.setenv("MONGO_URL", "mongodb://mongo:27017/content_machine")
+    monkeypatch.setenv("MONGO_URL", "mongodb://mongo:27017/newsroom")
     monkeypatch.setenv("LLM_BACKEND", "anthropic")
     monkeypatch.setenv("ANTHROPIC_API_KEY", "test-key")
     get_settings.cache_clear()
@@ -83,7 +83,7 @@ def test_status_never_leaks_secrets(monkeypatch: pytest.MonkeyPatch) -> None:
 def test_build_returns_baked_metadata_or_safe_fallback() -> None:
     """The /build route returns only build identity (baked at image build via Dockerfile ARG).
     In source tree (no baked file) it safely falls back; in a real image the baked JSON is served.
-    Local verification that would catch missing metadata: `docker build --build-arg BUILD_COMMIT=$(git rev-parse HEAD) -t cmw-agents-test ./agents && docker run --rm cmw-agents-test cat /app/cmw-build.json`
+    Local verification that would catch missing metadata: `docker build --build-arg BUILD_COMMIT=$(git rev-parse HEAD) -t newsroom-agents-test ./agents && docker run --rm newsroom-agents-test cat /app/newsroom-build.json`
     """
     resp = client.get("/build")
     assert resp.status_code == 200

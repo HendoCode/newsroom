@@ -10,7 +10,7 @@ import type { RespondResult } from "@/lib/interviews/types";
 import { cn } from "@/lib/utils";
 
 /**
- * The Voice/Type composer (cmw-ui-wireframes screen 3): free-form input that the engine classifies
+ * The Voice/Type composer: free-form input that the engine classifies
  * (Sonnet, D6) into a bounded op set, surfaced here as chips. "Voice" reserves the mic affordance
  * for the interviewee's own OS/keyboard dictation (open question B's recommended zero-integration
  * default) — the app only ever receives text either way; there is no in-app audio capture.

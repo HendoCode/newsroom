@@ -32,7 +32,7 @@ function emptyPack(slug: string): VoicePack {
 }
 
 /**
- * The voice-kit screen (cmw-ui-wireframes screen 11; D12): voice selector, pack file list, the
+ * The voice-kit screen (D12): voice selector, pack file list, the
  * markdown view/edit/commit/diff pane, Git version history + rollback, and the per-voice
  * proposed-lessons accept/edit/reject gate. Everything reads/writes through the BFF proxy routes
  * under `/api/voices/*` and `/api/lessons/*` — this component holds only UI/orchestration state.

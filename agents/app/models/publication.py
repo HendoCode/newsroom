@@ -1,4 +1,4 @@
-"""Publication Releases + trivial-edit waivers (cmw-release-semantics-impl).
+"""Publication Releases + trivial-edit waivers.
 
 A Piece reaching ``released`` is the terminal *stage*. What actually shipped is a separate,
 repeatable, **immutable numbered Publication Release**. Re-authorizing never overwrites a prior

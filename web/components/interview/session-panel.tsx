@@ -3,7 +3,7 @@ import { Loader2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
 /**
- * Session controls (cmw-ui-wireframes screen 3): "stop for the day" (a D6 meta-command that
+ * Session controls: "stop for the day" (a D6 meta-command that
  * delegates to the piece machine's pause, resumable at this exact turn) and a "where are we?"
  * reorient — both routed through the real classifier like everything else here, so they're gated
  * on a question being active the same way the persona panel's add/drop is.

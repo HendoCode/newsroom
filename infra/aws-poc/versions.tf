@@ -21,7 +21,7 @@ terraform {
   # (Terraform's own limitation) — the bucket blocks all public access and requires TLS in
   # transit. See README — "State".
   backend "s3" {
-    bucket       = "cmw-aws-poc-tofu-state-<AWS_ACCOUNT_ID>"
+    bucket       = "newsroom-aws-poc-tofu-state-<AWS_ACCOUNT_ID>"
     key          = "aws-poc/terraform.tfstate"
     region       = "us-east-1"
     encrypt      = true

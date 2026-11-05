@@ -1,4 +1,4 @@
-"""Brain-draft visibility sync (cmw-brain-pieces-visibility): brain-authored ``drafts/<slug>/``
+"""Brain-draft visibility sync: brain-authored ``drafts/<slug>/``
 folders become real Pieces.
 
 Covers the core sync (identity lifted from piece.md/meta.json, stage ``review``, the

@@ -8,16 +8,16 @@ This file is the project's committed home for project-intrinsic agent knowledge:
 
 - **A missing `drafts/<slug>/transcript.md` used to leak a raw `FileNotFoundError` straight
   through as a job's failure message, from three separate call sites, and it looked
-  unrecoverable but wasn't** (`cmw-incorporate-missing-transcript` fixed incorporate;
-  `cmw-unguarded-transcript-reads` fixed draft/council after that PR's own "not reachable in
-  practice" judgment on those two turned out wrong — Hendo hit the draft one live within the same
+  unrecoverable but wasn't** (`incorporate-missing-transcript` fixed incorporate;
+  `unguarded-transcript-reads` fixed draft/council after that PR's own "not reachable in
+  practice" judgment on those two turned out wrong — the product owner hit the draft one live within the same
   day, pressing "enough input" on a piece with no transcript). `app/review/rewrite.py`'s
   `rewrite_revision`, `app/orchestration/draft_step.py`'s `DraftStep.run`, and
   `app/orchestration/council_step.py`'s `CouncilStep.run` all read the transcript via
   `PromptAssembler.transcript_block` unguarded (unlike `sources_block`, already wrapped in
   `except OSError: pass` since sources.md is genuinely optional) — a piece that skipped the
   interview stage (e.g. seeded directly into `review`/`council` with hand-written draft prose, as
-  both a live deployed piece and Hendo's local repro were) has no transcript.md, and the read
+  both a live deployed piece and the product owner's local repro were) has no transcript.md, and the read
   raised the bare `"[Errno 2] No such file or directory: ..."` straight through as the job's
   error message. All three now raise a `PermanentStepError` naming the piece/file and telling a
   human what to do, in one consistent wording (`draft_step._require_transcript`, shared by
@@ -36,7 +36,7 @@ This file is the project's committed home for project-intrinsic agent knowledge:
   needed. In every case `retryable=False` is correct (retrying the identical job changes nothing)
   and no piece is ever wedged.
 
-- **Fixed (`cmw-phantom-edits-from-doc-roundtrip`): a review Doc "not touched in any way" was
+- **Fixed: a review Doc "not touched in any way" was
   reporting phantom inline edits — one per heading, plus one on external rounds — because Google's
   own HTML-to-Docs conversion adds markup our diff read as reviewer action.** Two distinct,
   pre-existing artefacts, both confirmed live (real `createDocFromHTML` mint + real `text/html`

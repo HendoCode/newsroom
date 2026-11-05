@@ -1,4 +1,4 @@
-"""Read-time interpretation of a piece folder's ``piece.md`` (cmw-brain-pieces-visibility).
+"""Read-time interpretation of a piece folder's ``piece.md``.
 
 ``piece.md`` is the brain-authored metadata/status file at ``drafts/<slug>/piece.md``. The webapp
 itself NEVER writes it (``GitContentStore`` commits only ``draft.html``/``sources.md``/assets) — it

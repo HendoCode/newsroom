@@ -13,7 +13,7 @@ import type { EvidenceCitation, EvidenceSource } from "@/lib/pieces/types";
 import { cn } from "@/lib/utils";
 
 // The content preview below must render the reader-facing brand identity (visual-identity.md)
-// regardless of how the app's own chrome is re-skinned (cmw-app-chrome-reskin-fix) — loaded here
+// regardless of how the app's own chrome is re-skinned — loaded here
 // independently of app/layout.tsx's own chrome fonts, so swapping the chrome's --font-serif/
 // --font-sans (or the fonts layout.tsx imports for them) can never affect this preview. Paired
 // with the frozen, non-token `.piece-content-preview` CSS block in app/globals.css.
@@ -35,7 +35,7 @@ const previewSans = localFont({
 const PREVIEW_CLASS = "piece-content-preview max-w-none rounded-lg border p-6 text-sm leading-relaxed";
 
 // Roughly "longer than a substantial LinkedIn post" — under this, a tweet/LinkedIn-post-sized
-// piece renders in full with no clamp/modal at all (Hendo: small content must not look broken or
+// piece renders in full with no clamp/modal at all (the product owner: small content must not look broken or
 // empty); over it, a long/complex piece clamps to a fixed height with a modal to read the rest
 // (the actual "giant page" problem). The section itself is always expanded when content exists.
 const LONG_CONTENT_CHARS = 2000;
@@ -54,9 +54,9 @@ const CLAMP_HEIGHT_PX = 420;
  * user input), rendered inline so the actual authored HTML (headings, figures, inlined SVG) reads
  * as prose rather than an opaque blob.
  *
- * Owns its own `CollapsibleSection` (cmw-piece-detail-collapsible) rather than being wrapped by
+ * Owns its own `CollapsibleSection` rather than being wrapped by
  * one in `piece-detail-view.tsx`. Content that exists is ALWAYS expanded on landing
- * (cmw-piece-draft-visibility) — a collapsed card titled only with a git SHA made users wonder
+ * — a collapsed card titled only with a git SHA made users wonder
  * whether a draft even existed (live: the Amazon Quick + Hendo brain-synced brief, and every
  * other in-progress piece). Length still decides clamp-vs-full inside the body (short pieces
  * render in full; long ones clamp with a modal), never whether the body is shown at all. The
@@ -124,7 +124,7 @@ export function DraftView({
   return (
     <CollapsibleSection
       title="Current content"
-      // Always expanded on landing when content exists (cmw-piece-draft-visibility). Length only
+      // Always expanded on landing when content exists. Length only
       // decides clamp-vs-full inside DraftBody — collapsing hid the piece itself behind a SHA.
       defaultExpanded
       pinned={
@@ -167,7 +167,7 @@ export function DraftView({
 
 /**
  * The actual `draft.html` body — full inline for a short/tweet-sized piece, clamped to a fixed
- * height with a fade + "Read full draft" modal for anything longer (cmw-piece-detail-collapsible:
+ * height with a fade + "Read full draft" modal for anything longer (piece-detail-collapsible:
  * "modal pop-ups for long-form content"). `isLong` is computed once by the caller from the same
  * plain-text length; it only decides clamp-vs-full here, never whether the section is shown.
  *

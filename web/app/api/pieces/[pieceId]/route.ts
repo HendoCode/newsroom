@@ -4,7 +4,7 @@ import { AgentsRequestError, fetchPieceDetail } from "@/lib/agents-client";
 import { getCurrentUser } from "@/lib/session";
 
 /**
- * BFF route for the piece-detail screen (cmw-ui-wireframes screen 2; Item 2).
+ * BFF route for the piece-detail screen (Item 2).
  *
  * Same shape as `/api/dashboard`: `web/` holds no work-state and runs no orchestration (D5), so
  * this just reads the agents data layer over REST. Unlike the dashboard proxy, the underlying

@@ -41,7 +41,7 @@ rebuild/restart. `get_secrets_provider(...)` is `@lru_cache`d per config tuple (
 back to `""` on `SecretNotFoundError`, matching the pre-shim empty-string defaults) instead of
 being plain pydantic-settings fields. Every other config value (service identity, Mongo db name,
 lake/embedding backend, brain root path, etc.) is unaffected — those aren't secrets.
-`brain_repo_url`/`brain_deploy_key` back the `cmw-brain-split` ticket's brain-as-clone bootstrap
+`brain_repo_url`/`brain_deploy_key` back the `brain-split` ticket's brain-as-clone bootstrap
 (`app.git.ensure_brain_available`) — `brain_deploy_key` resolves `BRAIN_DEPLOY_KEY`, an SSH
 deploy-key private key (repo-scoped, read-write — see `app/git/ssh_auth.py`), which replaced an
 earlier classic-PAT/HTTPS credential (`BRAIN_GIT_TOKEN`) for least-privilege machine push access.

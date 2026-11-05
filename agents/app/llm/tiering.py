@@ -1,4 +1,4 @@
-"""Per-step model-tiering map (D14; cmw-context-assembly report §3, §12).
+"""Per-step model-tiering map (D14; §12).
 
 D14 fixes **Opus 4.8 for draft/council/lessons** and **Sonnet 5 for classification/light
 steps**. The context report resolves the two steps D14 does not name (Oracle rank, interview

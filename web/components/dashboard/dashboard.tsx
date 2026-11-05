@@ -22,7 +22,7 @@ import { relativeTime } from "@/lib/format/relative-time";
 import { cn } from "@/lib/utils";
 
 /**
- * The dashboard, redesigned as the operator desk (Concept A, cmw-evolution-ux-audit report §6/§7,
+ * The dashboard, redesigned as the operator desk (Concept A, evolution-ux-audit report §6/§7,
  * captain-approved 2026-08-31): ONE shared queue rendered as THREE honest sections —
  *
  *  - **Inbox** — only real human-actionable decisions, grouped by the decision itself, built on

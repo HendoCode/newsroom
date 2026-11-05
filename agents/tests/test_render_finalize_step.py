@@ -55,7 +55,7 @@ class FakeDocsClient:
 
 
 class FakeDriveClient:
-    """cmw-drive-piece-folders: a fake DriveFolderClient — real Drive request-shape coverage
+    """drive-piece-folders: a fake DriveFolderClient — real Drive request-shape coverage
     lives in test_drive_http_client.py; this only proves FinalizeStep calls it correctly."""
 
     def __init__(self) -> None:
@@ -287,7 +287,7 @@ async def test_unknown_format_is_rejected(
         await step.run(_ctx(piece, store, git_brain, content_store, formats=["epub"]))
 
 
-# --- cmw-drive-piece-folders: the piece's Shared Drive folder ------------------------------
+# --- drive-piece-folders: the piece's Shared Drive folder ------------------------------
 
 
 @pytest.mark.asyncio

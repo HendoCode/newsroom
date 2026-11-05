@@ -1,6 +1,6 @@
 import type { PieceDetail } from "@/lib/pieces/types";
 
-/** The at-a-glance panel (cmw-ui-wireframes screen 2): GAPs/clearances, courtesy cost, assigned
+/** The at-a-glance panel: GAPs/clearances, courtesy cost, assigned
  * experts, and partners touched — all attribution/informational, never a permission gate. */
 export function AtAGlance({ piece }: { piece: PieceDetail }) {
   return (

@@ -1,4 +1,4 @@
-"""Dashboard read-model: the shared work queue (Item 3, cmw-open-decisions §Item-3).
+"""Dashboard read-model: the shared work queue (Item 3).
 
 Assembles denormalized :class:`~app.schemas.QueueItem` cards from the work-state entities so the
 Next.js BFF can render the dashboard and compute the flat, attribution-only "needs my action"
@@ -268,7 +268,7 @@ def seed_work_state(viewer: str | None = None) -> WorkStateCollections:
 
     )
     # 6 · published + owner=you  → NOT in-flight, NOT needs-my-action: the terminal state a
-    #     published piece reaches (Hendo's dashboard fix — this must never appear as in-flight).
+    #     published piece reaches.
     launch_recap = piece(
         slug="q3-launch-recap",
         title="Q3 launch recap",

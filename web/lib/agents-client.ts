@@ -272,7 +272,7 @@ export function fetchReviewPreview(pieceId: string): Promise<ReviewPreviewResult
 }
 
 /** List every review round for a piece, ascending — the round is the primary REST resource
- * (cmw-review-round-ux-impl), the Doc is a child link inside each round. */
+ *, the Doc is a child link inside each round. */
 export function fetchReviewRounds(pieceId: string): Promise<ReviewRoundListResponse> {
   return getJson<ReviewRoundListResponse>(
     `/api/pieces/${encodeURIComponent(pieceId)}/review/rounds`,
@@ -508,7 +508,7 @@ export function pickSpike(spikeId: string, input: PickSpikeInput): Promise<PickS
   );
 }
 
-/** The "new piece from my own idea" fast path (cmw-narrative-first-entry-point): mint a Spike
+/** The "new piece from my own idea" fast path: mint a Spike
  * straight from a Narrative, no Oracle ranking run, no ranked-spikes review table. */
 export function mintSpikeFromNarrative(
   input: MintSpikeFromNarrativeInput,
@@ -523,7 +523,7 @@ export function createNarrative(input: NarrativeCreateInput): Promise<Narrative>
 }
 
 /** Read a Narrative back — the ONLY way to see a spoken narrative's full `seed_text` again once
- * the Radar page it was typed on has moved on (cmw-first-run-ux-batch item 6). `agents/` already
+ * the Radar page it was typed on has moved on. `agents/` already
  * exposes `GET /api/narratives/{id}`; this was the missing web/ half. */
 export function fetchNarrative(narrativeId: string): Promise<Narrative> {
   return getJson<Narrative>(`/api/narratives/${encodeURIComponent(narrativeId)}`);

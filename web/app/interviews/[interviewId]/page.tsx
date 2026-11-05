@@ -11,14 +11,14 @@ import {
 import { requireUser } from "@/lib/session";
 
 /**
- * The interview surface (cmw-ui-wireframes screen 3) — the SSO-gated expert deep link
+ * The interview surface — the SSO-gated expert deep link
  * (docs/design.md D10, use case C) an assigned interviewee opens, mobile-friendly since it's
  * commonly opened from a shared Slack link on a phone. Auth-gated like every screen (middleware +
  * `requireUser()`); drives the merged interview engine (serial personas, D6 classification, the
  * sacred transcript, the research sidecar, and the recap) entirely through the BFF client — never
  * reimplementing engine logic here.
  *
- * Focused interview mode (cmw-interview-focused-mode): this route mounts into `InterviewShell`
+ * Focused interview mode: this route mounts into `InterviewShell`
  * instead of `AppShell` — the interviewee is an external expert mid-question, not an operator
  * browsing the app, so the Dashboard/Spikes/Sources/Voice-kits nav chrome is dropped entirely
  * (and so is the D6 doctrine prose in the composer, see `components/interview/composer.tsx`).

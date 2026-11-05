@@ -1,7 +1,7 @@
 """HTTP surface for the review round-trip (open-decisions Item 7; domain model §1.14/§1.15).
 
 ReviewRound is the primary REST resource here — the Google Doc is a child link on each round
-(``DocRef``, carried inside ``ReviewRoundOut``), never the top-level affordance (cmw-review-round-ux-impl).
+(``DocRef``, carried inside ``ReviewRoundOut``), never the top-level affordance.
 
 - ``GET /api/pieces/{piece_id}/review/rounds`` — list every round for a piece (the primary
   read path the UI mounts from).
@@ -120,7 +120,7 @@ def _docs_client(request: Request) -> ReviewDocsClient | None:
 def _drive_client(request: Request) -> HttpDriveFolderClient:
     """``app.state.review_drive_client`` if a test attached one (mirrors ``_docs_client``);
     otherwise the same OAuth grant, wrapped with the folder/upload calls
-    (cmw-drive-named-folder-scoping). Credential checks stay lazy (``_require_creds`` at call time) —
+   . Credential checks stay lazy (``_require_creds`` at call time) —
     only ``GOOGLE_DRIVE_ROOT_FOLDER_NAME`` gates whether this is ever actually called at all."""
     attached = getattr(request.app.state, "review_drive_client", None)
     if attached is not None:
@@ -199,7 +199,7 @@ async def preview(piece_id: str, deps: Deps, request: Request) -> ReviewPreviewR
     )
 
 
-# --- ReviewRound as the primary REST resource (cmw-review-round-ux-impl) ---
+# --- ReviewRound as the primary REST resource ---
 # The Google Doc is a child link inside each round (ReviewRoundOut.doc_url), never the
 # top-level affordance. These two endpoints make the round the first-class resource the
 # UI mounts from, rather than relying on the piece-detail response's embedded rounds.

@@ -4,7 +4,7 @@ import { AgentsRequestError, finalizePiece } from "@/lib/agents-client";
 import { getCurrentUser } from "@/lib/session";
 
 /**
- * BFF route for the finalize/outputs screen's Finalize action (cmw-ui-wireframes screen 10; use
+ * BFF route for the finalize/outputs screen's Finalize action (UI wireframes screen 10; use
  * case J). Distinct from the generic `/api/pieces/[pieceId]/trigger` route because this is the one
  * trigger whose body carries more than plain attribution — a selectable subset of output formats
  * (D13/Item 5) — so it gets its own BFF route rather than overloading the generic trigger body.

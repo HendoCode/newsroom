@@ -14,7 +14,7 @@ afterEach(() => {
   pushMock.mockClear();
 });
 
-describe("NewPieceFromIdea — the narrative-first fast path (Option B, cmw-narrative-first-entry-point)", () => {
+describe("NewPieceFromIdea — the narrative-first fast path (Option B)", () => {
   it("mints a Narrative then a Spike (no Oracle run) and navigates straight to that spike's kickoff page", async () => {
     const fetchMock = vi.fn().mockImplementation((url: string, init?: RequestInit) => {
       if (url === "/api/narratives") {

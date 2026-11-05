@@ -24,7 +24,7 @@ export const config = {
   //  - /api/auth/*   → NextAuth's own OAuth/session endpoints (must stay reachable to sign in).
   //  - /api/health   → the container healthcheck hits this unauthenticated (docker-compose.yml).
   //  - /api/build    → public build-commit metadata (no auth, like health).
-  //  - /.well-known/cmw-build.json → static baked build metadata (no auth, like health).
+  //  - /.well-known/newsroom-build.json → static baked build metadata (no auth, like health).
   //  - Next.js internals and static assets, and the favicon.
-  matcher: ["/((?!api/auth|api/health|api/build|\.well-known/cmw-build\.json|_next/static|_next/image|favicon.ico).*)"],
+  matcher: ["/(.*)"],
 };

@@ -109,7 +109,7 @@ describe("auth.ts", () => {
 
   it("falls back to the fixed POC secret when NEXTAUTH_SECRET is unset", async () => {
     const config = await getConfigFn()(undefined);
-    expect(config.secret).toBe("cmw-poc-identity-login-not-a-real-secret");
+    expect(config.secret).toBe("newsroom-poc-identity-login-not-a-real-secret");
   });
 
   it("falls back to the POC secret when NEXTAUTH_SECRET resolves to a blank value", async () => {
@@ -119,7 +119,7 @@ describe("auth.ts", () => {
     // rather than a raw process.env read.
     vi.stubEnv("NEXTAUTH_SECRET", "");
     const config = await getConfigFn()(undefined);
-    expect(config.secret).toBe("cmw-poc-identity-login-not-a-real-secret");
+    expect(config.secret).toBe("newsroom-poc-identity-login-not-a-real-secret");
   });
 
   it("falls through to AUTH_SECRET when NEXTAUTH_SECRET is blank but AUTH_SECRET is real", async () => {
@@ -311,7 +311,7 @@ describe("signIn callback — realistic Google profile shapes (closes the fixtur
   });
 
   it("documents current strict-boolean behavior for a non-boolean truthy email_verified (defense-in-depth only — the real ID-token decode path above guarantees this can't occur in production)", async () => {
-    // Gift for cmw-email-verified-check-review, not acted on here: this fixture requires an
+    // Gift for email-verified-check-review, not acted on here: this fixture requires an
     // unsafe cast because a real Google ID token cannot produce this shape (see realGoogleProfile's
     // doc comment) — but the TS type alone no longer prevents expressing it, which is the fixture
     // gap this task was asked to close. Today's `profile?.email_verified !== true` (auth.ts:106)

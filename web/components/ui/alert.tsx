@@ -5,7 +5,7 @@ import { cva, type VariantProps } from "class-variance-authority";
 import { cn } from "@/lib/utils";
 
 /**
- * The one error/warning/success/info banner every screen should use (cmw-first-run-ux-batch item
+ * The one error/warning/success/info banner every screen should use (first-run-ux-batch item
  * 1) — variants against SEMANTIC TOKENS only (bg-destructive, bg-warning, …), matching the
  * button/badge convention. Before this, ~16 call sites hand-rolled `<p role="alert" ...>`/
  * `<div role="alert" ...>` with drifting classNames (some with no border/bg at all) — this

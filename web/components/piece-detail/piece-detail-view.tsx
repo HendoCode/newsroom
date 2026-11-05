@@ -31,18 +31,18 @@ import type { PieceDetail } from "@/lib/pieces/types";
 import { cn } from "@/lib/utils";
 
 /**
- * The piece-detail screen (cmw-ui-wireframes screen 2 + cmw-pipeline-depiction-design): header,
+ * The piece-detail screen: header,
  * the unified `Pipeline` block (rail + stage-contextual CTA + failure/decision state, see that
  * component's doc), a split body (semantic draft + editorial block / council record / interview
  * transcript on the left; at-a-glance and the activity/between-rounds logs on the right).
  * Post-publish, a tablist (Outputs / Derivatives) sits between the Pipeline and that body so
- * ship is no longer the last beat in the IA (cmw-repurposing-derivatives-ia).
+ * ship is no longer the last beat in the IA.
  *
  * Holds the piece as client state so firing a trigger (inside `Pipeline`) can refresh the whole
  * screen in place — a batch chain (e.g. drafting → council → review) can advance several stages in
  * one call, so a full refetch after the POST is simpler and more honest than patching fields.
  *
- * **Collapsible-by-default (cmw-piece-detail-collapsible)**: this page accumulated a Card per task
+ * **Collapsible-by-default**: this page accumulated a Card per task
  * (draft, council, transcript, at-a-glance, two audit logs, a static reference table) — fine one
  * at a time, unscannable stacked. The Pipeline block never gets a collapse control at all (the
  * page's one hard requirement: current stage + next action must be obvious with nothing
@@ -55,7 +55,7 @@ import { cn } from "@/lib/utils";
  * `CollapsibleSection` (components/ui/collapsible-section.tsx, PR #89's `ExpandToggle` idiom
  * generalized from a list row to a whole Card), each with a `summary` that keeps its headline
  * fact scannable even collapsed. `DraftView` is always expanded on landing when content exists
- * (cmw-piece-draft-visibility) — length only clamps the body, never hides it behind a collapsed card.
+ * — length only clamps the body, never hides it behind a collapsed card.
  */
 export function PieceDetailView({
   initial,
@@ -146,7 +146,7 @@ export function PieceDetailView({
               </Badge>
             ) : null}
             {/* Placeholder provenance survives the click-through from a seeded list
-                (cmw-boss-facing-presentation, HIGH); the "how do I make this real?" link is
+               ; the "how do I make this real?" link is
                 part of the badge itself. */}
             {piece.seeded ? <SeededDataBadge seeded /> : null}
             <ReviewRoundSummary piece={piece} />
@@ -178,7 +178,7 @@ export function PieceDetailView({
                 </Link>
               </>
             ) : null}
-            {/* Staleness triage (cmw-staleness-timestamps): `updated` is "any write, including a
+            {/* Staleness triage: `updated` is "any write, including a
                 machine-only batch job"; `last action` is "a person actually acted on this" — never
                 conflate the two, or the field lies about a job completion being a human touch.
                 Each fact is its own `<span>` (unlike the plain-text facts above) so it renders as
@@ -220,7 +220,7 @@ export function PieceDetailView({
 
       {/* The Pipeline block is the one thing this whole page exists to answer — "what stage is
           this at, what do I do next" (rail + CTA + any failure/decision state, all one block per
-          cmw-pipeline-depiction-design) — so it never gets a collapse control; everything else on
+          pipeline-depiction-design) — so it never gets a collapse control; everything else on
           this page defaults collapsed or adapts to content size (see each section below), never
           the other way round. */}
       <Pipeline piece={piece} onUpdated={setPiece} interviewerPersonas={interviewerPersonas} />
@@ -298,7 +298,7 @@ export function PieceDetailView({
           </Card>
 
           {/* Everything below is reference/history — useful when drilling in, never needed to
-              answer "what's next" — so it collapses by default (Hendo: collapsible elements that
+              answer "what's next" — so it collapses by default (the product owner: collapsible elements that
               start that way), with a summary line that keeps the headline fact scannable anyway.
               The stage → primary action reference now lives inside the Pipeline block itself
               (its own collapsed-by-default sub-section), not as a separate card here. */}

@@ -3,7 +3,7 @@ import { NextResponse } from "next/server";
 import { AgentsRequestError, decideLessonsBatch } from "@/lib/agents-client";
 import { getCurrentUser } from "@/lib/session";
 
-/** BFF route for voice-kit batch accept/reject (cmw-lesson-lineage-impl). */
+/** BFF route for voice-kit batch accept/reject. */
 export const dynamic = "force-dynamic";
 
 function errorResponse(error: unknown) {

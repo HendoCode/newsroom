@@ -14,7 +14,7 @@
 # Only `edge` publishes a host port, matching the security group's single open ingress rule:
 # web/agents/mongo are reachable only over the internal compose network, never the host.
 
-name: cmw-poc
+name: newsroom-poc
 
 services:
   web:
@@ -66,7 +66,7 @@ services:
       AWS_DEFAULT_REGION: ${aws_region}
       # No bind-mounted host clone here (unlike local dev's docker-compose.yml): every
       # GitBrain/GitContentStore commit auto-pushes to BRAIN_REPO_URL's remote (best-effort;
-      # cmw-brain-split's GitRepo.commit), so the durable copy of any edit is the GitHub repo, not
+      # brain-split's GitRepo.commit), so the durable copy of any edit is the GitHub repo, not
       # this container's filesystem — a plain in-container path re-clones correctly on every
       # restart via app.git.ensure_brain_available (main.py's lifespan). Left unset in SSM
       # (brain_repo_url_placeholder's default), this just no-ops exactly like local dev with no
@@ -104,7 +104,7 @@ services:
 
   mongo:
     # Pinned to an explicit patch tag, not the floating `mongo:7`, so a redeploy can't silently
-    # pull a different image (P0 hardening, cmw-security-p0). Bump this deliberately to the latest
+    # pull a different image (P0 hardening). Bump this deliberately to the latest
     # 7.0.x patch; Mongo publishes no host port (internal compose network only), so its CVE
     # surface is not internet-reachable.
     image: mongo:7.0.40

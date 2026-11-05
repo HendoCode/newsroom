@@ -90,7 +90,7 @@ describe("SpikeKickoff — the pick → assign → interviewer-set → share-lin
         });
       }
       // A piece created via `pick` already has its Interview open
-      // (cmw-piece-interviewing-without-interview) — the kickoff screen still checks, the same
+      // — the kickoff screen still checks, the same
       // way it would for a revisited piece, rather than assuming.
       if (url === "/api/pieces/piece-1") {
         return Promise.resolve({
@@ -267,7 +267,7 @@ describe("SpikeKickoff — the pick → assign → interviewer-set → share-lin
   });
 });
 
-describe("SpikeKickoff — brain unavailable (cmw-boss-facing-presentation, CRITICAL)", () => {
+describe("SpikeKickoff — brain unavailable", () => {
   it("shows the unified brain-unavailable banner instead of 'no voices available'", () => {
     render(<SpikeKickoff spike={spike()} voices={[]} personas={PERSONAS} />);
     expect(screen.queryByText("no voices available")).not.toBeInTheDocument();

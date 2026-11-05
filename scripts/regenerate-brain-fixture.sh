@@ -35,17 +35,17 @@ mkdir -p "${FIXTURE_DIR}"
 # rsync, not cp -R: cleanly excludes .git so the fixture stays a plain snapshot, no nested repo.
 rsync -a --exclude='.git' "${TMP}/" "${FIXTURE_DIR}/"
 
-CMW_BRAIN_FIXTURE_DIR="${FIXTURE_DIR}" CMW_BRAIN_FIXTURE_REPO="${REPO_URL}" CMW_BRAIN_FIXTURE_REF="${REF}" python3 - <<'PY'
+BRAIN_FIXTURE_DIR="${FIXTURE_DIR}" BRAIN_FIXTURE_REPO="${REPO_URL}" BRAIN_FIXTURE_REF="${REF}" python3 - <<'PY'
 import json
 import os
 from pathlib import Path
 
-target = Path(os.environ["CMW_BRAIN_FIXTURE_DIR"]) / ".fixture-source.json"
+target = Path(os.environ["BRAIN_FIXTURE_DIR"]) / ".fixture-source.json"
 target.write_text(
     json.dumps(
         {
-            "repo": os.environ["CMW_BRAIN_FIXTURE_REPO"],
-            "ref": os.environ["CMW_BRAIN_FIXTURE_REF"],
+            "repo": os.environ["BRAIN_FIXTURE_REPO"],
+            "ref": os.environ["BRAIN_FIXTURE_REF"],
         },
         indent=2,
     )

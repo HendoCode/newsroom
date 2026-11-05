@@ -1,5 +1,5 @@
 /**
- * Pre-finalize checks (cmw-ui-wireframes screen 10) — always WARN, never block (§5 flexibility
+ * Pre-finalize checks — always WARN, never block (§5 flexibility
  * principle). Open GAPs/clearances are listed so the human sees what every output strips before
  * rendering, but nothing here disables the Finalize action.
  */

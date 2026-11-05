@@ -1,5 +1,5 @@
 /**
- * The non-blocking "courtesy note" predicate (D12; cmw-ui-wireframes screen 11): any employee may
+ * The non-blocking "courtesy note" predicate (D12): any employee may
  * edit any voice kit — this never gates anything, it only decides whether to show a heads-up that
  * you're editing someone else's kit. `demo-dana` is shared by everyone, so it never triggers the
  * note.

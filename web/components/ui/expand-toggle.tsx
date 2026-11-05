@@ -4,7 +4,7 @@ import { ChevronDown, ChevronRight } from "lucide-react";
 import { cn } from "@/lib/utils";
 
 /**
- * The ONE collapsed-row / expand-on-click affordance for this app's list surfaces (Hendo,
+ * The ONE collapsed-row / expand-on-click affordance for this app's list surfaces (the product owner,
  * 2026-08-10 — the dashboard queue and the source registry table are "the sole authoritative
  * 'where do I find X again' surface," so their rows must stay a line or two at scale, with detail
  * revealed on demand rather than always rendered). Both `PieceCard` and `SourcesTable` use this

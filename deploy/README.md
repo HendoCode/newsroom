@@ -23,7 +23,7 @@ leaked credential doesn't have a "low severity" version.
 
 1. **Images (CVE)** — `trivy image --severity CRITICAL --ignorefile agents/.trivyignore` against
    the two real ECR images the deploy pulls:
-   `<AWS_ACCOUNT_ID>.dkr.ecr.us-east-1.amazonaws.com/cmw-poc-{web,agents}`. Defaults to the `:latest`
+   `<AWS_ACCOUNT_ID>.dkr.ecr.us-east-1.amazonaws.com/newsroom-poc-{web,agents}`. Defaults to the `:latest`
    tag (what `infra/aws-poc`'s deploy actually pulls — see its README's "Redeploying just an
    app-code change"); pass a plain tag or a `sha256:...` digest as `$1` to scan a specific build
    instead:
@@ -93,15 +93,15 @@ Terraform, and this repo's real tracked tree — nothing mocked.
 **Full run against `:latest` (what a real deploy would pull today):**
 
 ```
-==> image: cmw-poc-web:latest
-==> image: cmw-poc-agents:latest
+==> image: newsroom-poc-web:latest
+==> image: newsroom-poc-agents:latest
 ==> iac: infra/aws-poc
 ==> iac: infra/aws-poc-state-backend
 ==> secrets: tracked tree
 
 ================ Security gate summary (severity: CRITICAL-only, secrets: any) ================
-FAIL  image: cmw-poc-web:latest  (exit 1)
-PASS  image: cmw-poc-agents:latest
+FAIL  image: newsroom-poc-web:latest  (exit 1)
+PASS  image: newsroom-poc-agents:latest
 PASS  iac: infra/aws-poc
 PASS  iac: infra/aws-poc-state-backend
 PASS  secrets: tracked tree
@@ -111,7 +111,7 @@ ignore entry (agents/.trivyignore for images, infra/aws-poc/.trivyignore for IaC
 accepted risk, then re-run.
 ```
 
-**This is a real, current finding, not a fabricated demo**: `cmw-poc-web:latest` has one unignored
+**This is a real, current finding, not a fabricated demo**: `newsroom-poc-web:latest` has one unignored
 CRITICAL — `CVE-2026-59873` (tar: node-tar DoS via crafted gzip bomb) in the `tar` package bundled
 inside `npm` itself, in the image's Node.js base layer (`usr/local/lib/node_modules/npm/...`), not
 in this app's own code. It has a fix upstream (7.5.19; installed is 7.5.11). An older tagged build
@@ -126,7 +126,7 @@ apply.
 
 ```
 $ trivy image --severity CRITICAL --exit-code 1 --ignorefile agents/.trivyignore \
-    <AWS_ACCOUNT_ID>.dkr.ecr.us-east-1.amazonaws.com/cmw-poc-agents:latest
+    <AWS_ACCOUNT_ID>.dkr.ecr.us-east-1.amazonaws.com/newsroom-poc-agents:latest
 ... exit=0, 0 unignored CRITICALs
 ```
 
@@ -145,9 +145,9 @@ $ echo $?
 ```
 $ ./deploy/security-gate.sh this-tag-does-not-exist-xyz
 ...
-FAIL  image: cmw-poc-web:this-tag-does-not-exist-xyz  (exit 1)
+FAIL  image: newsroom-poc-web:this-tag-does-not-exist-xyz  (exit 1)
   MANIFEST_UNKNOWN: Requested image not found
-FAIL  image: cmw-poc-agents:this-tag-does-not-exist-xyz  (exit 1)
+FAIL  image: newsroom-poc-agents:this-tag-does-not-exist-xyz  (exit 1)
   MANIFEST_UNKNOWN: Requested image not found
 ...
 RESULT: FAIL

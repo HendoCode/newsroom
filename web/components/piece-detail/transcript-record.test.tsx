@@ -36,7 +36,7 @@ describe("TranscriptRecord", () => {
     expect(screen.queryByRole("link", { name: /open the kickoff screen/i })).not.toBeInTheDocument();
   });
 
-  it("routes back to the kickoff screen when a piece has zero interviews but a known origin spike (cmw-piece-interviewing-without-interview: the only route back for a piece stuck this way)", () => {
+  it("routes back to the kickoff screen when a piece has zero interviews but a known origin spike", () => {
     render(<TranscriptRecord interviews={[]} turns={[]} originSpikeId="spike-1" />);
     const link = screen.getByRole("link", { name: /open the kickoff screen/i });
     expect(link).toHaveAttribute("href", "/spikes/spike-1");
@@ -123,7 +123,7 @@ describe("TranscriptRecord", () => {
     expect(screen.queryByRole("button", { name: /read full answer/i })).not.toBeInTheDocument();
   });
 
-  it("clamps a genuinely long research-derived answer with a modal for the full text (Hendo's ask: 'a modal popup of the complete text')", () => {
+  it("clamps a genuinely long research-derived answer with a modal for the full text", () => {
     const longAnswer = Array.from(
       { length: 60 },
       (_, i) => `Sentence ${i} of a long research-derived answer that keeps going.`,

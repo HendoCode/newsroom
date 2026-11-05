@@ -15,7 +15,7 @@ import {
 import type { Spike } from "@/lib/spikes/types";
 
 /**
- * The spike table (cmw-ui-wireframes screen 5): headline, convergence (bar + number), maps-to,
+ * The spike table: headline, convergence (bar + number), maps-to,
  * outcome, creator · origin, status, and a per-row primary action. Ownership is attribution, not
  * a lock (D15) — the row action is offered regardless of who created the spike.
  */
@@ -30,7 +30,7 @@ export function SpikesTable({
   onSelect: (id: string) => void;
   /** The Voice the caller last ran (e.g. the Radar's own selector) — carried onto "Pick &amp;
    * assign" as `?voice=` so kickoff defaults to it instead of the brain's first voice
-   * alphabetically (cmw-first-run-ux-batch item 7). Omitted where there's no such context (e.g.
+   * alphabetically. Omitted where there's no such context (e.g.
    * the plain Spikes &amp; Vault browser). */
   voiceHint?: string;
 }) {

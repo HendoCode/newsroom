@@ -15,7 +15,7 @@ import type { Lesson, VoiceCommit, VoicePack } from "@/lib/voice-kit/types";
 const DEFAULT_FILE = "voice_guide";
 
 /**
- * The voice-kit screen (cmw-ui-wireframes screen 11; D12): view, edit, and roll back the
+ * The voice-kit screen (D12): view, edit, and roll back the
  * Git-backed voice packs, and run the proposed-lessons accept/edit/reject gate. Mounts into the
  * app shell exactly like `/sources`. Reads through the BFF client (server-only) — if the agents
  * service or the Git brain is unreachable we still render the shell rather than erroring the
@@ -41,7 +41,7 @@ export default async function VoiceKitPage() {
             accept/edit/reject gate — once the brain is reachable.
           </p>
           {/* The unified root-cause banner every brain-dependent surface shares
-              (cmw-boss-facing-presentation, CRITICAL) — this screen's original copy was the
+              — this screen's original copy was the
               canonical phrasing the banner carries. */}
           <div className="max-w-2xl">
             <BrainUnavailableBanner subject="No voice packs" />

@@ -34,7 +34,7 @@ def get_database(
     """Return the logical work-state database.
 
     If the connection string already names a default database (as the compose URL does:
-    ``mongodb://mongo:27017/content_machine``), honor it; otherwise fall back to
+    ``mongodb://mongo:27017/newsroom``), honor it; otherwise fall back to
     ``settings.mongo_db_name``.
     """
     settings = settings or get_settings()

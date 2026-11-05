@@ -9,7 +9,7 @@ import type { Interview, RespondResult, TranscriptTurn } from "@/lib/interviews/
 const RECENT_TURNS = 3;
 
 /**
- * The center one-question-per-turn conversation (cmw-ui-wireframes screen 3): recent history,
+ * The center one-question-per-turn conversation: recent history,
  * the active persona's current question ("your turn"), and — once answered — the machine's
  * "here's what I heard" recap as a read-only confirmation view over the interviewee's own words,
  * never a replacement for them (D16b). Research/meta/tangent results render as their own inline

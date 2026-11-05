@@ -4,7 +4,7 @@ import { AgentsRequestError, openInterview } from "@/lib/agents-client";
 
 /**
  * BFF route opening an Interview session on a piece (D5-context-assembly §5) — kickoff steps 3-5
- * (cmw-ui-wireframes screen 6): assign the expert, hand it the agent's pre-selected interviewer
+ *: assign the expert, hand it the agent's pre-selected interviewer
  * personas, and hand back the interview id the kickoff screen turns into a shareable
  * `/interviews/{id}` link. The interview-taking surface itself is a separate, later ticket.
  */

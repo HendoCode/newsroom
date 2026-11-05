@@ -9,10 +9,10 @@ incorporate-edits. Opus 4.8 (✓ D14 "incorporate-edits is a batch Opus step";
     T1 (per-piece): the CURRENT revision (edited in place, not rebuilt — "edit the HTML, don't
                   rebuild it", 3-revision-loop.md) + the sacred transcript (still the source for
                   anything new the rewrite adds) + sources.md when present. For a brain-authored
-                  piece with no transcript (``brain_synced``, cmw-brain-pieces-visibility — a
+                  piece with no transcript (``brain_synced``, brain-pieces-visibility — a
                   legitimate review-stage state since that fix, not an impossible one): the shared
                   invent-nothing grounding block (``PromptAssembler.
-                  grounding_block_without_transcript``, cmw-lessons-loop Ship 1) substitutes for
+                  grounding_block_without_transcript``, lessons-loop Ship 1) substitutes for
                   the transcript, and the revision read falls back piece.md-content-first the
                   same way mint does — never a permanent failure.
     T2 (variable): only the classified editorial-fix items — info-gaps/clearances/out-of-scope
@@ -110,9 +110,9 @@ async def rewrite_revision(
     try:
         transcript_block = assembler.transcript_block(piece.slug)
     except OSError:
-        # No transcript.md — a brain-authored piece (``brain_synced``, cmw-brain-pieces-visibility)
+        # No transcript.md — a brain-authored piece (``brain_synced``)
         # reaches review with no interview transcript by design, and this used to raise a
-        # PermanentStepError that wedged reviews-done for every such piece (cmw-lessons-loop
+        # PermanentStepError that wedged reviews-done for every such piece (lessons-loop
         # Ship 1). Ground the rewrite instead: the existing revision (draft.html preferred,
         # piece.md content fallback via the shared piece_md helper, the same seam mint uses) +
         # sources.md (inside the grounding block) + an explicit invent-nothing discipline —

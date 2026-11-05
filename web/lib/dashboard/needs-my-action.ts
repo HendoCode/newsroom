@@ -1,5 +1,5 @@
 /**
- * The "needs my action" predicate (cmw-open-decisions report §Item-3, the settled predicate).
+ * The "needs my action" predicate (the settled predicate).
  *
  * This is an ATTRIBUTION-DRIVEN convenience filter, **never a permission gate** (§1.17, flat
  * authorization). It answers only "did this land on *my* plate?" by comparing the signed-in user's

@@ -1,4 +1,4 @@
-# Per-piece Google Drive folders under one named My-Drive root (cmw-drive-named-folder-scoping)
+# Per-piece Google Drive folders under one named My-Drive root
 
 Every Google artifact a piece produces — each review-round Doc (`app.review.mint`), the finalized
 clean Doc + branded HTML/PDF (`app.render.step`), and publish's own re-rendered copies
@@ -32,7 +32,7 @@ went through it before the folder work existed.
       Published/                     # only once the piece has been published at least once
         <published Doc>
         branded.html                 # publish's own fresh re-render — NEVER the finalize files above,
-        branded.pdf                  #   moved or re-parented (Hendo's call: the folder should show
+        branded.pdf                  #   moved or re-parented (the product owner's call: the folder should show
                                       #   both what was finalized and what actually shipped)
 ```
 
@@ -72,7 +72,7 @@ accepted scopes for `files.create`), not assumed. If a future scope requirement 
 that is loud enough to need re-consent + a re-minted refresh token — see that PR's description for
 how it was verified.
 
-## What a future unshare (cmw-unpublish-piece) needs to know
+## What a future unshare needs to know
 
 Unpublish is expected to unshare the piece's Drive folder, resiliently. The folder work deliberately
 left that implementation for later, but shaped the state it depends on:

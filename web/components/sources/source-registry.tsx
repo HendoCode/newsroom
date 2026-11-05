@@ -21,14 +21,14 @@ type FormTarget = "new" | Source;
 type ActivePanel = "source" | "clip";
 
 /**
- * The source registry (Item 6 / D8; cmw-ui-wireframes screen 7): manage what the Oracle reads.
+ * The source registry (Item 6 / D8): manage what the Oracle reads.
  * Default lookback window + on-demand "Refresh sources now" + "+ Add source"; the sources table
  * (kind · classification · config · server-side credential · last refreshed · enable · edit); a
  * Green-connector add/edit panel; and the credential-free LinkedIn/X clip-in form.
  *
  * **The add/edit panel and the clip-in panel are mutually exclusive** (`activePanel`) — before
  * this they rendered side by side unconditionally, which read as "I might use either or both in
- * the same movement" with no signal about how they relate (Hendo, 2026-08-10, the third distinct
+ * the same movement" with no signal about how they relate (the product owner, 2026-08-10, the third distinct
  * complaint about this screen after PR #83's vanishing-source and silent-save fixes). Two clearly
  * labeled toolbar buttons ("+ Add source" vs "Clip in a LinkedIn/X post") make the choice explicit
  * BEFORE either form renders, rather than merging them into one kind-aware form: registering a
@@ -49,7 +49,7 @@ export function SourceRegistry({ initial }: { initial: SourceListResponse }) {
   // Per-source errors from the LAST refresh — the connectors' refresh entrypoint deliberately
   // reports a bad source inline rather than as an HTTP error (warns, doesn't block, §5), but until
   // this the UI only ever showed an aggregate "(N warned)" count with no way to see which source
-  // or why (cmw-first-run-ux-batch item 2). Keyed by source id; cleared at the start of each run.
+  // or why. Keyed by source id; cleared at the start of each run.
   const [refreshErrors, setRefreshErrors] = React.useState<Record<string, string>>({});
   const [formTarget, setFormTarget] = React.useState<FormTarget>("new");
   // Which of the two panels is showing — never both (see the module docstring above).
@@ -62,7 +62,7 @@ export function SourceRegistry({ initial }: { initial: SourceListResponse }) {
   // form's `key` below so a save that returns to the SAME target ("new" -> "new", the common
   // add-a-source case) still forces a remount, not just a target *change*. Without this, saving
   // while the form was already on "new" left the just-submitted values sitting in the fields with
-  // no visible reset (cmw-source-registry-ux item 2 — reproduced live: the row landed in the
+  // no visible reset (source-registry-ux item 2 — reproduced live: the row landed in the
   // table but the form below looked untouched, inviting a duplicate submit).
   const [formResetKey, setFormResetKey] = React.useState(0);
   const [saving, setSaving] = React.useState(false);
@@ -241,7 +241,7 @@ export function SourceRegistry({ initial }: { initial: SourceListResponse }) {
     setSaveMessage(null);
     setActivePanel("source");
     setFormTarget(source);
-    // Fixes cmw-source-edit-button-scroll: this used to leave the form off-screen with no scroll,
+    // Fixes source-edit-button-scroll: this used to leave the form off-screen with no scroll,
     // exactly like "+ Add source" did before PR #83 fixed that button's own case.
     formSectionRef.current?.scrollIntoView({ behavior: "smooth", block: "start" });
   }

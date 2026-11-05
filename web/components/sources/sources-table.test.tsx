@@ -42,7 +42,7 @@ describe("SourcesTable", () => {
     expect(screen.getByText("LinkedIn / X clips")).toBeInTheDocument();
     expect(screen.getByText("read-as-needed")).toBeInTheDocument();
 
-    // Collapsed by default (row density at scale, cmw-list-density-and-source-forms) — the detail
+    // Collapsed by default (row density at scale) — the detail
     // fields aren't in the document at all until expanded.
     expect(screen.queryByText("2h ago")).not.toBeInTheDocument();
     expect(screen.queryByText("3 folder IDs")).not.toBeInTheDocument();

@@ -4,7 +4,7 @@ import { AgentsRequestError, pickSpike } from "@/lib/agents-client";
 import { getCurrentUser } from "@/lib/session";
 
 /**
- * BFF route for the pick -> create-piece hand-off (use case C; cmw-ui-wireframes screen 6 steps
+ * BFF route for the pick -> create-piece hand-off (use case C; UI wireframes screen 6 steps
  * 1-2). `owner` is attribution, not a permission field (§1.17) — defaults to the signed-in user
  * server-side when the client didn't set one, same convention as the source registry's `POST`.
  */

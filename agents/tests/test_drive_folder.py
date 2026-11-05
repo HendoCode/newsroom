@@ -1,5 +1,4 @@
-"""PieceDriveFolders: named-root resolution + idempotent per-piece folder + Published/ subfolder
-(cmw-drive-named-folder-scoping).
+"""PieceDriveFolders: named-root resolution + idempotent per-piece folder + Published/ subfolder.
 
 Drive itself is faked — these tests cover the resolution/gating/lookup logic that's independent of
 the real API (covered instead by test_drive_http_client.py's request-shape tests and the original

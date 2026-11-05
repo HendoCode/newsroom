@@ -6,7 +6,7 @@ import { AgentsRequestError, fetchPieceDetail } from "@/lib/agents-client";
 import { requireUser } from "@/lib/session";
 
 /**
- * Finalize / outputs (cmw-ui-wireframes screen 10; use case J; D13/open-decisions Item 5): select
+ * Finalize / outputs (use case J; D13/open-decisions Item 5): select
  * output formats, review the warn-not-block pre-finalize checks, and fire the finalize step —
  * mounted from the piece-detail screen's "Finalize" secondary action (distinct from "Reviews
  * done", Item 7). Same fetch/auth pattern as `/pieces/[pieceId]`: read-only server fetch through

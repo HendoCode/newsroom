@@ -35,7 +35,7 @@ WORKDIR /app
 # `ssh` binary GIT_SSH_COMMAND invokes when a BRAIN_DEPLOY_KEY is configured (app/git/ssh_auth.py).
 #
 # `apt-get upgrade` pulls Debian's latest security-patched versions of every base-image package at
-# build time (P0 security hardening, cmw-security-p0): the pinned base digest freezes packages at
+# build time (P0 security hardening): the pinned base digest freezes packages at
 # whenever it was cut, so a rebuild without this ships known-fixed OS CVEs unnecessarily. It cannot
 # clear Debian "no fix available" CVEs (those need a base-OS bump, blocked here by the Playwright /
 # bookworm pin above) — only everything that already has a patched version. The apt cache mounts
@@ -117,7 +117,7 @@ RUN printf '{"component":"agents","commit":"%s","shortCommit":"%s","builtAt":"%s
       "$BUILD_COMMIT" \
       "$(echo "$BUILD_COMMIT" | cut -c1-7)" \
       "$(date -u +%Y-%m-%dT%H:%M:%SZ)" \
-    > /app/cmw-build.json
+    > /app/newsroom-build.json
 
 EXPOSE 8000
 

@@ -11,10 +11,10 @@ import { Alert } from "@/components/ui/alert";
  * banner's "how do I fix this" affordance always lands on the real setup doc.
  */
 export const BRAIN_SETUP_DOCS_HREF =
-  "https://github.com/HendoCode/content-machine/blob/main/docs/local-dev.md#git-brain-voice-kit-lessons-interview";
+  "https://github.com/HendoCode/newsroom/blob/main/docs/local-dev.md#git-brain-voice-kit-lessons-interview";
 
 /**
- * The unified "Brain unavailable" banner (cmw-boss-facing-presentation, CRITICAL).
+ * The unified "Brain unavailable" banner.
  *
  * Every surface that depends on the Git brain — the kickoff voice + persona selectors, the Radar
  * voice selector, the voice-kit screen, and the interview deep link — degrades to THIS one banner

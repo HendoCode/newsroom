@@ -38,7 +38,7 @@ async def test_real_mongo_roundtrip() -> None:
         client.close()
         pytest.skip(f"no MongoDB reachable at {MONGO_URL}")
 
-    db_name = f"cmw_test_{new_id()}"  # unique db so parallel instances never collide
+    db_name = f"newsroom_test_{new_id()}"  # unique db so parallel instances never collide
     db = client[db_name]
     try:
         store = WorkStateStore(db)

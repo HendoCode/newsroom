@@ -1,4 +1,4 @@
-"""Brain drafts view (cmw-drafts-view): read-only reading surface for brain-authored drafts.
+"""Brain drafts view: read-only reading surface for brain-authored drafts.
 
 Covers ``GET /api/brain/drafts`` (list) and ``GET /api/brain/drafts/{slug}`` (read), plus the
 additive Google-Doc link lookup when a matching synced Piece exists. Uses the fixture-brain temp

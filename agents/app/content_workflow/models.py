@@ -591,7 +591,7 @@ class ProjectPiece(MongoModel):
     destination: str
     source_anchor_revision_id: str | None = None
     # Child of the anchor by default; promoted to a top-level Piece only when the derivative
-    # needs its own owner/review/publish state (cmw-lesson-lineage-impl). Ignored on anchors.
+    # needs its own owner/review/publish state. Ignored on anchors.
     lineage: DerivativeLineage = DerivativeLineage.child
     promoted_piece_id: str | None = None
     disposition: Disposition = Disposition.active

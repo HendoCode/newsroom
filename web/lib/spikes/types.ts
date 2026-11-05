@@ -1,5 +1,5 @@
 /**
- * Spikes & Vault domain types (domain model §1.6/§1.7; D15; cmw-ui-wireframes screen 5).
+ * Spikes & Vault domain types (domain model §1.6/§1.7; D15).
  *
  * Mirror the agents `/api/spikes` wire contract 1:1 (snake_case), matching the `lib/sources/types.ts`
  * / `lib/dashboard/types.ts` convention — no mapping layer.
@@ -45,7 +45,7 @@ export interface SpikeListResponse {
 }
 
 /** Kickoff steps 1-2 (screen 6): pick the spike, create its Piece, AND open its first Interview,
- * all in one all-or-nothing call (cmw-piece-interviewing-without-interview) — a piece must never
+ * all in one all-or-nothing call — a piece must never
  * sit in `interviewing` with no Interview to conduct. */
 export interface PickSpikeInput {
   voice: string;
@@ -65,7 +65,7 @@ export interface PickSpikeResponse {
   interview_id: string;
 }
 
-/** The "new piece from my own idea" fast path (Option B, cmw-narrative-first-entry-point): mint
+/** The "new piece from my own idea" fast path (Option B): mint
  * a Spike straight from an existing Narrative, skipping the Oracle ranking run and the
  * ranked-spikes review table. `creator` defaults server-side to the signed-in user. */
 export interface MintSpikeFromNarrativeInput {

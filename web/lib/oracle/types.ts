@@ -1,6 +1,6 @@
 /**
  * Oracle run domain types (domain model §1.8; D7) — the on-demand run entrypoint
- * (cmw-ui-wireframes screen 8). Mirror the agents `/api/oracle/run` wire contract 1:1.
+ *. Mirror the agents `/api/oracle/run` wire contract 1:1.
  */
 
 /** Entry A (open scan, pure convergence) vs Entry B (a Narrative biases ranking). */

@@ -15,8 +15,8 @@ import {
 } from "@/lib/pieces/derivatives";
 
 /**
- * Target-IA Derivatives surface (cmw-repurposing-derivatives-ia + cmw-lesson-lineage-impl +
- * cmw-derivative-quality-bar-impl).
+ * Target-IA Derivatives surface (repurposing-derivatives-ia + lesson-lineage-impl +
+ * derivative-quality-bar-impl).
  *
  * Child artifacts of the anchor by default. Promoted to a top-level piece only when a
  * derivative needs its own owner/review/publish state. Commission records the child (native

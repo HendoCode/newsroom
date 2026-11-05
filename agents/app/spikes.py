@@ -8,8 +8,7 @@ back to the same seed spikes ``app.dashboard.seed_work_state`` already builds fo
 
 ``POST /api/spikes/{id}/pick`` is the use-case-C hand-off (wireframe screen 6, steps 1-2): pick a
 spike, create its Piece at stage ``interviewing`` (Oracle already scaffolds pieces there — this
-mirrors that), AND open its first Interview — all in one all-or-nothing call
-(cmw-piece-interviewing-without-interview). Before this, piece-creation and interview-creation
+mirrors that), AND open its first Interview — all in one all-or-nothing call. Before this, piece-creation and interview-creation
 were two separate steps (this endpoint, then a later ``POST /api/pieces/{id}/interviews`` "generate
 link" click from ``spike-kickoff.tsx``) — a piece that never got its link generated sat in
 ``interviewing`` with zero Interviews to conduct, a state genuinely indistinguishable (from the
@@ -150,7 +149,7 @@ async def get_spike(spike_id: str, request: Request) -> SpikeOut:
 async def mint_spike_from_narrative(
     req: MintSpikeFromNarrativeRequest, request: Request
 ) -> SpikeOut:
-    """The "new piece from my own idea" fast path (Option B, cmw-narrative-first-entry-point):
+    """The "new piece from my own idea" fast path (Option B):
     mint a Spike directly from a Narrative, with no Oracle ranking run and no ranked-spikes
     review table hop — the caller goes straight from this call to `POST /{id}/pick`. See
     `MintSpikeFromNarrativeRequest`'s docstring for why the Spike itself is non-negotiable even
@@ -180,7 +179,7 @@ async def pick_spike(spike_id: str, req: PickSpikeRequest, request: Request) -> 
 
     Every field needed to open the Interview is validated (non-empty, real persona names) BEFORE
     the Piece is written, so a bad request never leaves a half-created piece behind — the exact
-    defect this endpoint exists to prevent (cmw-piece-interviewing-without-interview).
+    defect this endpoint exists to prevent.
     """
     store = _require_store(request)
     engine = _require_engine(request)

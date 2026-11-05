@@ -43,7 +43,7 @@ class SshDeployKey:
     """
 
     def __init__(self, private_key: str) -> None:
-        self._dir = Path(tempfile.mkdtemp(prefix="cmw-brain-deploy-key-"))
+        self._dir = Path(tempfile.mkdtemp(prefix="newsroom-brain-deploy-key-"))
         atexit.register(shutil.rmtree, self._dir, ignore_errors=True)
 
         self.key_path = self._dir / "id_deploy_key"

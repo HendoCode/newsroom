@@ -101,7 +101,7 @@ def _docs_client(request: Request) -> ReviewDocsClient:
 def _drive_client(request: Request) -> HttpDriveFolderClient:
     """``app.state.publish_drive_client`` if a test attached one (mirrors ``_docs_client``);
     otherwise the same OAuth grant, wrapped with the folder/upload calls
-    (cmw-drive-named-folder-scoping). Credential checks stay lazy — only
+   . Credential checks stay lazy — only
     ``GOOGLE_DRIVE_ROOT_FOLDER_NAME`` gates whether this is ever actually called at all."""
     attached = getattr(request.app.state, "publish_drive_client", None)
     if attached is not None:

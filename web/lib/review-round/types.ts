@@ -1,5 +1,5 @@
 /**
- * The dedicated review-round screen (cmw-ui-wireframes screen 04; D4/D11; open-decisions Item 7).
+ * The dedicated review-round screen (D4/D11; open-decisions Item 7).
  * Mirrors the agents `POST/GET /api/pieces/{id}/review/{mint,preview}` wire contract 1:1
  * (`agents/app/review/routes.py`), matching the piece-detail convention of no mapping layer.
  */
@@ -49,7 +49,7 @@ export interface ReviewPreviewResult {
 }
 
 /** Mirrors agents `ReviewRoundListResponse` (`agents/app/review/routes.py`) — the round is the
- * primary REST resource (cmw-review-round-ux-impl), the Doc is a child link inside each round. */
+ * primary REST resource, the Doc is a child link inside each round. */
 export interface ReviewRoundListResponse {
   rounds: ReviewRoundOut[];
 }

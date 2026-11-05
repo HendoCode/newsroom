@@ -14,8 +14,8 @@
 resource "aws_wafv2_web_acl" "cloudfront" {
   provider = aws.us_east_1
 
-  name        = "cmw-poc-cloudfront"
-  description = "cmw AWS POC edge WAF: AWS managed rule groups + a per-IP rate limit, scoped to the CloudFront distribution fronting the app."
+  name        = "newsroom-poc-cloudfront"
+  description = "Newsroom AWS POC edge WAF: AWS managed rule groups + a per-IP rate limit, scoped to the CloudFront distribution fronting the app."
   scope       = "CLOUDFRONT"
 
   default_action {
@@ -42,7 +42,7 @@ resource "aws_wafv2_web_acl" "cloudfront" {
 
     visibility_config {
       cloudwatch_metrics_enabled = true
-      metric_name                = "cmw-poc-common-rule-set"
+      metric_name                = "newsroom-poc-common-rule-set"
       sampled_requests_enabled   = true
     }
   }
@@ -64,7 +64,7 @@ resource "aws_wafv2_web_acl" "cloudfront" {
 
     visibility_config {
       cloudwatch_metrics_enabled = true
-      metric_name                = "cmw-poc-known-bad-inputs"
+      metric_name                = "newsroom-poc-known-bad-inputs"
       sampled_requests_enabled   = true
     }
   }
@@ -88,7 +88,7 @@ resource "aws_wafv2_web_acl" "cloudfront" {
 
     visibility_config {
       cloudwatch_metrics_enabled = true
-      metric_name                = "cmw-poc-ip-reputation"
+      metric_name                = "newsroom-poc-ip-reputation"
       sampled_requests_enabled   = true
     }
   }
@@ -114,18 +114,18 @@ resource "aws_wafv2_web_acl" "cloudfront" {
 
     visibility_config {
       cloudwatch_metrics_enabled = true
-      metric_name                = "cmw-poc-rate-limit"
+      metric_name                = "newsroom-poc-rate-limit"
       sampled_requests_enabled   = true
     }
   }
 
   visibility_config {
     cloudwatch_metrics_enabled = true
-    metric_name                = "cmw-poc-web-acl"
+    metric_name                = "newsroom-poc-web-acl"
     sampled_requests_enabled   = true
   }
 
   tags = {
-    Name = "cmw-poc"
+    Name = "newsroom-poc"
   }
 }

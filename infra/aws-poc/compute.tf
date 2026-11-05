@@ -5,8 +5,8 @@ data "aws_subnet" "selected" {
 }
 
 locals {
-  app_dir          = "/opt/cmw-poc"
-  mongo_mount_path = "/mnt/cmw-poc-mongo-data"
+  app_dir          = "/opt/newsroom-poc"
+  mongo_mount_path = "/mnt/newsroom-poc-mongo-data"
 }
 
 resource "aws_instance" "app" {
@@ -70,7 +70,7 @@ resource "aws_instance" "app" {
   })
 
   tags = {
-    Name = "cmw-poc"
+    Name = "newsroom-poc"
   }
 
   # user_data_replace_on_change = true forces replacement (not in-place attribute update) when
@@ -98,7 +98,7 @@ resource "aws_ebs_volume" "mongo_data" {
   encrypted         = true
 
   tags = {
-    Name = "cmw-poc-mongo-data"
+    Name = "newsroom-poc-mongo-data"
   }
 
   lifecycle {

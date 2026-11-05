@@ -7,8 +7,8 @@ import { cn } from "@/lib/utils";
 const CLUSTER_ORDER: readonly StageCluster[] = ["intake", "loop", "ship"];
 
 /**
- * The dashboard queue's compact echo of the piece-detail Pipeline rail (cmw-pipeline-depiction-
- * design decision C, refined live by Hendo — not a plain dot-meter: "having the dots connected by
+ * The dashboard queue's compact echo of the piece-detail Pipeline rail (pipeline-depiction-
+ * design decision C, refined live by the product owner — not a plain dot-meter: "having the dots connected by
  * horizontal lines would help"). Three short segments for the SAME intake/loop/ship grouping the
  * full rail uses (`lib/pieces/stage.ts`'s `STAGE_CLUSTER`), joined by connecting lines, so a card
  * shows "how far through the whole pipeline," not just "where," without the ~40px-per-row cost a

@@ -8,7 +8,7 @@ import { Input } from "@/components/ui/input";
 import type { ReleaseGateView } from "@/lib/content-workflow/types";
 
 /**
- * AuthorizeRelease surface (cmw-release-semantics-impl). The machine never publishes; this is
+ * AuthorizeRelease surface. The machine never publishes; this is
  * the explicit human action. Authority-model (queued) will gate WHO may submit — this form only
  * records the actor and posts the command.
  *

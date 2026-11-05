@@ -4,7 +4,7 @@ import { AgentsRequestError, createSource, fetchSources } from "@/lib/agents-cli
 import { getCurrentUser } from "@/lib/session";
 
 /**
- * BFF routes for the source registry (Item 6 / D8; cmw-ui-wireframes screen 7).
+ * BFF routes for the source registry (Item 6 / D8).
  *
  * `web/` holds no work-state and runs no orchestration (D5) — both handlers proxy straight to the
  * `agents/` data layer over REST. A non-2xx from agents (400 invariant violation, 503 unconfigured)

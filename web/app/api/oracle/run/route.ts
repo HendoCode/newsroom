@@ -4,7 +4,7 @@ import { AgentsRequestError, runOracle } from "@/lib/agents-client";
 import { getCurrentUser } from "@/lib/session";
 
 /**
- * BFF route for the on-demand Oracle run (§1.8, D7; cmw-ui-wireframes screen 8). `triggered_by`
+ * BFF route for the on-demand Oracle run (§1.8; D7). `triggered_by`
  * is attribution — it becomes the produced spikes' creator — defaulted server-side to the
  * signed-in user, same convention as every other write route here.
  */

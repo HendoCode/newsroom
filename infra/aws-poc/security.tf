@@ -24,8 +24,8 @@ data "aws_ec2_managed_prefix_list" "cloudfront_origin_facing" {
 }
 
 resource "aws_security_group" "app" {
-  name_prefix = "cmw-poc-"
-  description = "cmw AWS POC: edge proxy port only, ingress-wise, restricted to the CloudFront origin-facing prefix list. No SSH (SSM Session Manager only)."
+  name_prefix = "newsroom-poc-"
+  description = "Newsroom AWS POC: edge proxy port only, ingress-wise, restricted to the CloudFront origin-facing prefix list. No SSH (SSM Session Manager only)."
   vpc_id      = data.aws_vpc.default.id
 
   ingress {
@@ -45,7 +45,7 @@ resource "aws_security_group" "app" {
   }
 
   tags = {
-    Name = "cmw-poc"
+    Name = "newsroom-poc"
   }
 
   lifecycle {

@@ -1,5 +1,5 @@
 /**
- * Pure display helpers for the source registry table (cmw-ui-wireframes screen 7). Kept free of
+ * Pure display helpers for the source registry table. Kept free of
  * React/fetch so they're trivially unit-tested, mirroring `lib/dashboard/actions.ts`.
  */
 
@@ -71,7 +71,7 @@ export function relativeRefreshLabel(lastRefreshed: string | null, now: Date): s
  * A pasted Google Drive folder LINK (what a normal business user actually has in hand — the
  * address bar URL, not the bare id buried inside it) is not what `folder_ids` needs on the wire:
  * the connector passes it verbatim into a Drive API query (`'<folder_id>' in parents`), so a full
- * URL there matches nothing (cmw-first-run-ux-batch item 3 — reproduced live, this is exactly
+ * URL there matches nothing (first-run-ux-batch item 3 — reproduced live, this is exactly
  * what happened). Recognized shapes: `.../drive/folders/<id>`, `.../drive/u/0/folders/<id>`,
  * `.../open?id=<id>`, `...?resourcekey=...`. Falls through to the trimmed input unchanged for a
  * bare id (or anything else) — never silently drops what the user typed.

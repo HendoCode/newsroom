@@ -69,7 +69,7 @@ class FinalizeOutputs:
     branded_html: str | None = None
     pdf_bytes: bytes | None = None
     doc: DocRef | None = None
-    # The Drive-side copies of the same html/pdf (cmw-drive-piece-folders) — `None` whenever no
+    # The Drive-side copies of the same html/pdf — `None` whenever no
     # Shared Drive folder is configured/available, exactly like `doc` is `None` when "doc" wasn't
     # requested or the Docs client is unset.
     drive_html: DriveFileRef | None = None
@@ -94,7 +94,7 @@ class FinalizeStep(BatchStep):
         self.pdf_renderer = pdf_renderer
         self.docs_client = docs_client
         self.default_formats = default_formats
-        # cmw-drive-named-folder-scoping: both default to "unconfigured" (no drive_client, blank
+        # drive-named-folder-scoping: both default to "unconfigured" (no drive_client, blank
         # name), which makes every call below a no-op — the exact pre-ticket behavior.
         self.drive_client = drive_client
         self.root_folder_name = root_folder_name
@@ -162,7 +162,7 @@ class FinalizeStep(BatchStep):
             rendered_at=rendered_at,
         )
 
-        # cmw-drive-named-folder-scoping: a no-op (`None`) unless GOOGLE_DRIVE_ROOT_FOLDER_NAME is
+        # drive-named-folder-scoping: a no-op (`None`) unless GOOGLE_DRIVE_ROOT_FOLDER_NAME is
         # configured — constructed fresh per run since FinalizeStep, unlike
         # ReviewMintService/PublishService, is built once at boot with no `store` available yet
         # (only `ctx.store`, per run).
@@ -266,7 +266,7 @@ class FinalizeStep(BatchStep):
                 except DocsExportError as exc:
                     warnings.append(f"doc skipped: {exc}")
 
-        # cmw-drive-piece-folders: real, unconverted text/html/application/pdf uploads into the
+        # drive-piece-folders: real, unconverted text/html/application/pdf uploads into the
         # piece's folder — a no-op whenever no folder is available (Shared Drive unconfigured) or
         # no drive_client was wired. A failed upload warns and skips, same "one output's failure
         # completes-with-gap" discipline as pdf/doc above — the render itself already succeeded.

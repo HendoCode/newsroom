@@ -13,7 +13,7 @@
 // through the login form itself, so there is nothing it protects yet. Falling back to a fixed
 // value (rather than requiring env setup) is what lets the POC boot with zero configuration; a
 // real `NEXTAUTH_SECRET` can still be supplied to override it.
-export const POC_FALLBACK_SECRET = "cmw-poc-identity-login-not-a-real-secret";
+export const POC_FALLBACK_SECRET = "newsroom-poc-identity-login-not-a-real-secret";
 
 export function resolveAuthSecret(env: {
   NEXTAUTH_SECRET?: string;

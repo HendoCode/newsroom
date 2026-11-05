@@ -1,4 +1,4 @@
-"""Draft step tests (engine/2-draft.md; cmw-context-assembly report §6).
+"""Draft step tests (engine/2-draft.md).
 
 Covers, per the acceptance criteria:
 - context assembly reads the full verbatim transcript (never summarized), the voice pack in
@@ -223,7 +223,7 @@ async def test_draft_step_happy_path_commits_revision_and_mirrors_gaps(
     assert all("cache_control" not in b for b in call["system"])
 
 
-# --- purpose block (cmw-draft-ignores-originating-narrative): the piece's PURPOSE, distinct ---
+# --- purpose block: the piece's PURPOSE, distinct ---
 # --- from its EVIDENCE (the transcript) — the originating Spike/Narrative + intent must reach --
 # --- the model, not just be stored on the Piece. This is exactly what the live bug missed. ----
 
@@ -269,7 +269,7 @@ async def test_purpose_block_includes_spike_narrative_rationale_and_intent(store
 
 
 async def test_purpose_block_coherent_for_narrative_spike_with_no_rank_rationale(store):
-    """cmw-narrative-first-entry-point's fast path mints a Spike straight from a Narrative with
+    """narrative-first-entry-point's fast path mints a Spike straight from a Narrative with
     no Oracle ranking run — `rank_rationale`/`convergence_note`/`convergence_score` are all
     legitimately null (nothing ranked it). The block must still be coherent: the narrative's own
     seed text carries the purpose, and the "why this was picked"/convergence lines must simply be
@@ -639,7 +639,7 @@ async def test_draft_step_plugs_into_state_machine_and_advances_to_council(
 async def test_draft_step_missing_transcript_raises_legible_precondition_error(
     store, git_brain, content_store
 ):
-    """Reproduces the live defect (cmw-unguarded-transcript-reads): Hendo pressed "enough input"
+    """Reproduces the live defect: the product owner pressed "enough input"
     on a piece with no interview transcript and got a raw filesystem error. PR #82 fixed the
     identical unguarded read in incorporate's rewrite and flagged this exact call site as "not
     reachable in practice" — wrong, since a real "enough input" press reaches it directly. Must

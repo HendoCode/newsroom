@@ -11,9 +11,9 @@ import { configSummary, credentialLabel, kindLabel, relativeRefreshLabel } from 
 import type { Source } from "@/lib/sources/types";
 
 /**
- * The registry table (cmw-ui-wireframes screen 7). Collapsed to a line or two per row by default —
+ * The registry table. Collapsed to a line or two per row by default —
  * name · kind · classification · on/off · edit — with config/credential/last-refreshed behind the
- * shared `ExpandToggle` (Hendo, 2026-08-10: this table is the authoritative "where do I find a
+ * shared `ExpandToggle` (the product owner, 2026-08-10: this table is the authoritative "where do I find a
  * source again" surface, and needs to stay scannable once dozens of sources pile in, not just at
  * today's handful). A refresh error stays ALWAYS visible under its row regardless of expand state
  * — warn-not-block (§5) means that error must never be one click away from disappearing. Includes
@@ -35,7 +35,7 @@ export function SourcesTable({
   togglingId: string | null;
   /** Per-source error from the LAST "Refresh sources now" run, keyed by source id — the
    * connectors' refresh is warn-not-block (§5), so this is the only place a bad source's actual
-   * error is visible at all (cmw-first-run-ux-batch item 2). */
+   * error is visible at all. */
   refreshErrors?: Record<string, string>;
 }) {
   return (

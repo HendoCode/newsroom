@@ -3,7 +3,7 @@ import { preFinalizeChecks } from "@/lib/finalize/checks";
 import type { PieceDetail } from "@/lib/pieces/types";
 
 /**
- * Pre-finalize checks (cmw-ui-wireframes screen 10) — WARN, never block (§5 flexibility
+ * Pre-finalize checks — WARN, never block (§5 flexibility
  * principle). Every output strips the editorial/GAP block (the same shared routine external-share
  * will reuse), so open GAPs/clearances are surfaced here rather than hidden by the strip.
  */

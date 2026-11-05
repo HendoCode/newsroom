@@ -4,7 +4,7 @@ import { cn } from "@/lib/utils";
 
 // shadcn/ui textarea — token-driven surface (bg-background / border-input / ring-ring), the
 // multiline sibling of `components/ui/input.tsx`. Same recipe and disabled-treatment discipline
-// as `Input`/`Button` (a flat "muted" collapse, not a translucent fade — cmw-interactive-state-
+// as `Input`/`Button` (a flat "muted" collapse, not a translucent fade — interactive-state-
 // affordance), so the two text fields render as one family.
 const TextArea = React.forwardRef<
   HTMLTextAreaElement,

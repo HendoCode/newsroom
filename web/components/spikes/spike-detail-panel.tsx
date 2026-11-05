@@ -6,7 +6,7 @@ import { convergenceLabel, originLabel } from "@/lib/spikes/format";
 import type { Spike } from "@/lib/spikes/types";
 
 /**
- * The selected-spike detail (cmw-ui-wireframes screen 5): rank rationale, convergence note, and
+ * The selected-spike detail: rank rationale, convergence note, and
  * source/origin, plus the primary hand-off action. Ownership is attribution, not a lock (D15).
  */
 export function SpikeDetailPanel({ spike }: { spike: Spike }) {

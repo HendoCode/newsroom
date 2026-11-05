@@ -99,7 +99,7 @@ class _BedrockStream(LLMStream):
             def _emit_metric() -> None:
                 try:
                     self._cw_client.put_metric_data(
-                        Namespace="CMW/Bedrock",
+                        Namespace="Newsroom/Bedrock",
                         MetricData=[
                             {
                                 "MetricName": "InferenceCostUSD",

@@ -397,7 +397,7 @@ async def test_a_failing_pdf_renderer_warns_and_still_publishes(
     assert result.piece.published_pdf_url is None
 
 
-# --- cmw-drive-piece-folders --------------------------------------------------------------------
+# --- drive-piece-folders --------------------------------------------------------------------
 
 
 class FakeDriveClient:

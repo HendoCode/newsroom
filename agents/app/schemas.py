@@ -136,7 +136,7 @@ class QueueItem(BaseModel):
     lessons_proposed: int = 0
     spike_assigned: bool = False  # a picked spike that already has an assigned expert / piece
 
-    # Staleness triage (cmw-staleness-timestamps): `updated_at` is the last write of ANY kind
+    # Staleness triage: `updated_at` is the last write of ANY kind
     # (including a batch job completing, with no human involved); `last_human_touch_at` is the
     # narrower "a person actually acted on this" signal (see `app.orchestration.machine`/
     # `app.interview.engine` for exactly what counts). Spikes have no human-touch tracking (the
@@ -144,7 +144,7 @@ class QueueItem(BaseModel):
     updated_at: datetime | None = None
     last_human_touch_at: datetime | None = None
 
-    # Provenance (cmw-brain-pieces-visibility): True when this card's Piece was registered from
+    # Provenance: True when this card's Piece was registered from
     # a brain-authored drafts/ folder by the brain-draft sync (app.brain_sync) rather than
     # created through the pipeline. Always False for spike cards.
     brain_synced: bool = False
@@ -391,7 +391,7 @@ class SourceDeleteResponse(BaseModel):
     deleted: bool
 
 
-# --- Piece detail read-model (screen 2, cmw-ui-wireframes) --------------------------------------
+# --- Piece detail read-model (screen 2) --------------------------------------
 #
 # One piece across its whole lifecycle: work-state joined with the Git-content draft (the semantic
 # draft.html, editorial block INCLUDED — this view is where GAPs/clearances are meant to be seen,
@@ -443,7 +443,7 @@ class DocRefOut(BaseModel):
 
 
 class DriveFileRefOut(BaseModel):
-    """An ordinary Drive file (branded HTML/PDF, cmw-drive-piece-folders) — link/metadata only, no
+    """An ordinary Drive file (branded HTML/PDF) — link/metadata only, no
     ``share_mode`` (unlike ``DocRefOut``): visibility comes from Shared Drive membership or the
     folder, not a per-file share grant."""
 
@@ -548,7 +548,7 @@ class SpikeListResponse(BaseModel):
 
 class PickSpikeRequest(BaseModel):
     """Kickoff steps 1-2 (screen 6): pick the spike, create its Piece, AND open its first
-    Interview — all in one all-or-nothing call (cmw-piece-interviewing-without-interview). A piece
+    Interview — all in one all-or-nothing call. A piece
     must never sit in `interviewing` with no Interview to conduct: that used to be two separate
     steps (create the piece, then a later "generate link" click), and a piece that never got its
     link generated was indistinguishable from a genuinely broken one. The spike's own
@@ -575,7 +575,7 @@ class PickSpikeResponse(BaseModel):
 
 
 class MintSpikeFromNarrativeRequest(BaseModel):
-    """The "new piece from my own idea" fast path (Option B, cmw-narrative-first-entry-point):
+    """The "new piece from my own idea" fast path (Option B):
     mint a Spike straight from an existing Narrative with no Oracle ranking run, skipping the
     ranked-spikes review table entirely. Still produces a real, persisted, `origin.kind=narrative`
     Spike — the input `DraftStep._purpose_block` needs to hydrate a piece's purpose; a spike-less
@@ -622,7 +622,7 @@ class PieceDetailResponse(BaseModel):
     open_clearances: int = 0
     latest_revision: str | None = None
 
-    # Staleness triage (cmw-staleness-timestamps) — same two-timestamp distinction as
+    # Staleness triage — same two-timestamp distinction as
     # `QueueItem` above: `updated_at` is "when did anything last write this piece" (any write
     # path, including a machine-only batch job); `last_human_touch_at` is "when did a person last
     # act on it" (a `PieceMachine` human trigger, or answering/editing an interview turn — never a
@@ -644,7 +644,7 @@ class PieceDetailResponse(BaseModel):
     # True when this response was assembled from the built-in seed work-state (same
     # store-or-seed fallback as `/api/dashboard`'s `source` field — no real Mongo document backs
     # this piece). Provenance for the piece-detail screen's "seeded data" badge: clicking through
-    # from a seeded list must not lose the placeholder context (cmw-boss-facing-presentation).
+    # from a seeded list must not lose the placeholder context.
     seeded: bool = False
 
     council: CouncilOut | None = None
@@ -673,7 +673,7 @@ class PieceDetailResponse(BaseModel):
     final_template_version: str | None = None
     final_rendered_at: datetime | None = None
 
-    # Per-piece Google Drive folder (cmw-drive-named-folder-scoping) — `None` until
+    # Per-piece Google Drive folder — `None` until
     # GOOGLE_DRIVE_ROOT_FOLDER_NAME is configured and this piece has produced its first Google
     # artifact.
     # A convenience "open everything for this piece" link (app/drive/folder.py): sharing this one
@@ -697,7 +697,7 @@ class PieceDetailResponse(BaseModel):
     published_doc: DocRefOut | None = None
     published_at: datetime | None = None
     # The same release's Drive-side copies, in the piece folder's `Published/` subfolder
-    # (cmw-drive-piece-folders) — `None` whenever no Shared Drive folder was available at publish
+    # — `None` whenever no Shared Drive folder was available at publish
     # time, exactly like `published_html_url`/`published_pdf_url` are `None` before any publish.
     published_drive_html: DriveFileRefOut | None = None
     published_drive_pdf: DriveFileRefOut | None = None
@@ -707,7 +707,7 @@ class PieceDetailResponse(BaseModel):
     # archived piece (`app.dashboard.build_queue`) — direct-by-id access is unaffected.
     archived_at: datetime | None = None
 
-    # Lineage (cmw-lesson-lineage-impl): set when this Piece was promoted from a child derivative
+    # Lineage: set when this Piece was promoted from a child derivative
     # artifact of another piece. `None` for anchors and pre-lineage pieces. Optional so existing
     # fixtures don't need updating.
     parent_piece_id: str | None = None
@@ -728,7 +728,7 @@ class RecentPiece(BaseModel):
     Deliberately narrower than :class:`QueueItem`: the desk's recent-pieces card needs identity +
     stage + recency, not the dashboard's full join (council aggregate, failed jobs, lessons…).
     `updated_at` is the sort key ("most recently created/active" — every write bumps it, see the
-    cmw-staleness-timestamps notes); `last_human_touch_at` rides along so a UI can prefer the
+    staleness-timestamps notes); `last_human_touch_at` rides along so a UI can prefer the
     human signal when it has one, same pairing as `QueueItem`.
     """
 
@@ -810,7 +810,7 @@ class VoiceFileRollbackRequest(BaseModel):
     actor_name: str | None = None
 
 
-# --- Brain drafts view (cmw-drafts-view) -------------------------------------------------------
+# --- Brain drafts view -------------------------------------------------------
 #
 # Read-only reading surface for brain-authored ``drafts/<slug>/`` content — live from Git,
 # additive to the existing Google-Doc review/finalize flow.

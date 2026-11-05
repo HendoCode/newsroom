@@ -9,7 +9,7 @@ import type { PieceDetail } from "@/lib/pieces/types";
  * `agents/app/publish/README.md`). Unlike the disposable finalize render (`OutputsList`, only
  * reachable from `review`), these are real, permanent links, always shown here on piece-detail
  * (the one screen that stays reachable regardless of stage) rather than gated to a stage-specific
- * secondary action — this is the actual surface for Hendo's "a piece needs a way to be done" ask.
+ * secondary action — this is the actual surface for the product owner's "a piece needs a way to be done" ask.
  * Renders nothing until the piece has published at least once (`published_release > 0`); since
  * `published` is terminal, that is equivalent to `piece.stage === "published"`.
  */
@@ -41,7 +41,7 @@ export function PublishedOutputs({ piece }: { piece: PieceDetail }) {
           <OutputRow label="Branded HTML (S3)" url={piece.published_html_url} />
           <OutputRow label="PDF (S3)" url={piece.published_pdf_url} />
           <OutputRow label="Published Google Doc" url={docUrl} />
-          {/* Drive-side copies, in the piece folder's Published/ subfolder (cmw-drive-piece-folders)
+          {/* Drive-side copies, in the piece folder's Published/ subfolder
               — parallel to S3 above, present only once GOOGLE_SHARED_DRIVE_ID was configured. */}
           <OutputRow label="Branded HTML (Drive)" url={piece.published_drive_html?.url ?? null} />
           <OutputRow label="PDF (Drive)" url={piece.published_drive_pdf?.url ?? null} />

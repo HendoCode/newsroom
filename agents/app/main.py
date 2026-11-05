@@ -268,7 +268,7 @@ async def lifespan(app: FastAPI):
 
         wf_store = MongoWorkflowState(database)
         app.state.content_workflow = ContentWorkflow(wf_store)
-        # Brain-draft visibility auto-discovery (cmw-brain-pieces-visibility): idempotently
+        # Brain-draft visibility auto-discovery: idempotently
         # register brain-authored draft folders (`drafts/<slug>/` the brain wrote on its own,
         # never through this pipeline) as Pieces, so the site's piece lists show them with zero
         # operator steps — a deploy/restart alone makes them visible. Runs ONLY when both Mongo
@@ -337,11 +337,11 @@ app.include_router(review_router)
 # closes the terminal transition. 503 until Mongo/Git are configured, or until Google Docs
 # credentials / PUBLISHED_ASSETS_BUCKET are set — see app/publish/README.md.
 app.include_router(publish_router)
-# Brain-draft visibility (cmw-brain-pieces-visibility): POST /api/brain/sync registers
+# Brain-draft visibility: POST /api/brain/sync registers
 # brain-authored drafts/<slug>/ folders as Pieces so the site's piece lists can see them; the
 # piece-list endpoints additionally run the same idempotent sync lazily (see app.brain_sync).
 app.include_router(brain_sync_router)
-# Brain drafts view (cmw-drafts-view): read-only reading surface for brain-authored
+# Brain drafts view: read-only reading surface for brain-authored
 # drafts/<slug>/ content, additive to the Google-Doc review/finalize flow. Needs only Git.
 app.include_router(drafts_router)
 # Spikes & Vault (§1.6/§1.7, D15): list the pool + pick-a-spike -> create-piece hand-off (use case
@@ -359,7 +359,7 @@ app.include_router(personas_router)
 # visibility flag orthogonal to the stage machine, legal regardless of the piece's current stage.
 # 503 until Mongo is configured.
 app.include_router(pieces_router)
-# Derivative lineage (cmw-lesson-lineage-impl): child artifacts of an anchor, promoted to a
+# Derivative lineage: child artifacts of an anchor, promoted to a
 # top-level Piece only when they need their own owner/review/publish state. 503 until Mongo.
 app.include_router(derivatives_router)
 # Thin submit/inspect adapters over ContentWorkflow (vertical tracer only).
@@ -378,7 +378,7 @@ def build_info() -> dict:
     Returns only non-sensitive fields; never reads env, config, or other internals.
     """
     try:
-        with open("/app/cmw-build.json") as f:
+        with open("/app/newsroom-build.json") as f:
             return json.load(f)
     except Exception:
         return {"component": "agents", "commit": "unknown", "shortCommit": "unknown", "builtAt": None}
@@ -485,7 +485,7 @@ async def brain_pull() -> BrainPullResponse:
         app.state.brain_availability = replace(current, error=str(exc))
         raise HTTPException(status_code=502, detail=f"brain pull failed: {exc}") from exc
     app.state.brain_availability = replace(current, error=None)
-    # Brain-draft visibility (cmw-brain-pieces-visibility): a pull may have brought NEW
+    # Brain-draft visibility: a pull may have brought NEW
     # brain-authored draft folders in — re-run the idempotent piece sync so they become visible
     # without waiting for a restart (boot is the other sync point). Best-effort: a sync hiccup
     # must not fail an otherwise-successful pull (the pull itself is the action this endpoint
@@ -535,7 +535,7 @@ async def dashboard(viewer: str | None = None) -> DashboardResponse:
 
 @app.get("/api/pieces/{piece_id}", response_model=PieceDetailResponse, tags=["pieces"])
 async def piece_detail(piece_id: str, viewer: str | None = None) -> PieceDetailResponse:
-    """One piece across its whole lifecycle (cmw-ui-wireframes screen 2) — the piece-detail BFF
+    """One piece across its whole lifecycle — the piece-detail BFF
     reads this. Same store-or-seed fallback as ``/api/dashboard``, so a piece card's link target
     always resolves: the seed's deterministic slug-derived ids match across independent calls.
     """

@@ -1,4 +1,4 @@
-"""Council step (engine/3-revision-loop.md; cmw-context-assembly report §7) — bounded autonomy.
+"""Council step (engine/3-revision-loop.md) — bounded autonomy.
 
 Scores the current revision, then autonomously revises up to a configured ceiling, stopping
 when any of the following is true:
@@ -424,7 +424,7 @@ class CouncilStep(BatchStep):
         if purpose:
             t1.append(purpose)
         t1.append(html)
-        # Transcript-optional since cmw-lessons-loop Ship 1: a brain-authored (brain_synced)
+        # Transcript-optional since lessons-loop Ship 1: a brain-authored (brain_synced)
         # piece has no transcript by design, so this grounds in the revision being scored (already
         # in T1 above) + sources.md with an explicit invent-nothing block instead of failing.
         t1.append(_transcript_or_grounding(assembler, piece))

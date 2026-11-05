@@ -117,7 +117,7 @@ services:
       # creates/finds it itself under the drive.file scope; NOT a secret.
       GOOGLE_DRIVE_ROOT_FOLDER_NAME: ${GOOGLE_DRIVE_ROOT_FOLDER_NAME:-}
       # Points at this instance's own mongo over the internal network (fixed internal port).
-      MONGO_URL: mongodb://mongo:27017/content_machine
+      MONGO_URL: mongodb://mongo:27017/newsroom
       # Git brain (HendoCode/masthead), bind-mounted below at a fixed in-container
       # path — set BRAIN_REPO_URL (+ BRAIN_DEPLOY_KEY if the mount is empty and needs an
       # authenticated SSH clone) in a git-ignored .env to populate it on first boot. Left unset,

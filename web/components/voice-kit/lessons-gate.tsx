@@ -9,8 +9,8 @@ import { applyLessonRule } from "@/lib/voice-kit/lesson-preview";
 import type { Lesson } from "@/lib/voice-kit/types";
 
 /**
- * The proposed-lessons gate (cmw-ui-wireframes screen 11; D12; domain model §1.18;
- * cmw-lesson-lineage-impl): the machine proposes lessons by diffing final vs. published; a human
+ * The proposed-lessons gate (UI wireframes screen 11; D12; domain model §1.18;
+ * lesson-lineage-impl): the machine proposes lessons by diffing final vs. published; a human
  * accepts/edits/rejects **in one click**, or in a batch. Each row previews the Git diff of the
  * rule about to land in `content-lessons.md`. The machine never self-commits — only `onAccept`
  * reaches Git.

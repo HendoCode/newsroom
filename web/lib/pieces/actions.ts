@@ -1,5 +1,5 @@
 /**
- * Stage-contextual actions for the piece-detail screen (cmw-ui-wireframes screen 2): the "Next
+ * Stage-contextual actions for the piece-detail screen: the "Next
  * action" card (one PRIMARY action per state — the requirement Item 2 and the brief both call
  * out) plus the small set of secondary actions the wireframe keeps visually distinct ("Reviews
  * done" vs "Finalize" must never be conflated, Item 7; pause is always a secondary control, never
@@ -33,7 +33,7 @@ export type SecondaryAction =
   | { kind: "link"; href: string; label: string; description: string }
   | { kind: "open-interview-round"; label: string; description: string; roundNumber: number };
 
-/** The stage→action reference table (cmw-ui-wireframes screen 2 right panel) — informational,
+/** The stage→action reference table — informational,
  * distinct from the single "Next action" primary button below. */
 export const STAGE_ACTION_REFERENCE: Record<PieceStage, string> = {
   interviewing: "Open interview / “Enough input” → draft",
@@ -101,7 +101,7 @@ export function nextAction(piece: PieceDetail): NextAction {
       };
     case "finalized": {
       // `publish` (finalized → published) is the primary action here — it's the actual exit from
-      // "in flight" (Hendo's complaint this stage exists to fix). `capture-lessons` moves to
+      // "in flight". `capture-lessons` moves to
       // secondaryActions below: it's independent of publishing, not a prerequisite (see
       // agents/app/models/piece.py's ALLOWED_TRANSITIONS comment) — either order is legal.
       //
@@ -229,7 +229,7 @@ export function secondaryActions(piece: PieceDetail): SecondaryAction[] {
   }
   if (piece.stage === "review") {
     // route_to_interview (agents/app/orchestration/machine.py) is legal only from council/review
-    // — Hendo's deliberate entry point, chosen over the transient `drafting` stage so this can
+    // — the product owner's deliberate entry point, chosen over the transient `drafting` stage so this can
     // never interrupt a running batch job. Every earlier round's transcript turns stay intact:
     // Interview sessions are additive on one piece-scoped transcript (§5-Q1), never replaced.
     const roundNumber = piece.interviews.length + 1;

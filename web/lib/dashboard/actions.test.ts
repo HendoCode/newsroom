@@ -30,7 +30,7 @@ function spike(overrides: Partial<QueueItem> = {}): QueueItem {
   };
 }
 
-describe("primaryAction — the spike-card label (Hendo: an already-picked spike must not read as unpicked)", () => {
+describe("primaryAction — the spike-card label", () => {
   it("offers 'Assign expert & kick off' for a spike nobody has picked yet", () => {
     const item = spike({ spike_status: "proposed", spike_assigned: false });
     expect(primaryAction(item, null, null).label).toBe("Assign expert & kick off");

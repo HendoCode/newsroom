@@ -5,7 +5,7 @@ import { getCurrentUser } from "@/lib/session";
 
 /**
  * BFF route for creating a Narrative (§1.5) — the audience/angle-intent seed Oracle Entry B runs
- * against (cmw-ui-wireframes screen 8). `author` is attribution, defaulted server-side to the
+ * against. `author` is attribution, defaulted server-side to the
  * signed-in user, same convention as the source registry's `POST`.
  */
 export const dynamic = "force-dynamic";

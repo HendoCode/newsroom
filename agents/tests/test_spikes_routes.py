@@ -3,7 +3,7 @@
 Drives ``GET/POST /api/spikes...`` over ASGI with an in-memory store attached to ``app.state``,
 proving the store-vs-seed fallback (matching the dashboard's seed spikes), the pick -> create-piece
 -> open-interview hand-off (including the intent carry-forward, the spike flip to `picked`, and the
-atomic Interview open — cmw-piece-interviewing-without-interview), the 409 on re-picking an
+atomic Interview open — piece-interviewing-without-interview), the 409 on re-picking an
 already-picked spike, the 404 on an unknown spike, and the 503-when-unconfigured guard. No Mongo
 server, no network.
 
@@ -283,7 +283,7 @@ async def test_pick_503_when_unconfigured() -> None:
     assert listed.json()["source"] == "seed"
 
 
-# --- mint-from-narrative (Option B fast path, cmw-narrative-first-entry-point): a "new piece ----
+# --- mint-from-narrative (Option B fast path): a "new piece ----
 # --- from my own idea" entry that skips the Oracle ranking run and the ranked-spikes review -----
 # --- table, but must still mint a real narrative-origin Spike (see MintSpikeFromNarrativeRequest's
 # --- docstring for why: DraftStep._purpose_block has no purpose block at all without one). -------

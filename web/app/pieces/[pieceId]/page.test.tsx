@@ -112,7 +112,7 @@ afterEach(() => {
   fetchPersonas.mockResolvedValue({ personas: [] });
 });
 
-describe("PieceDetailPage — surfacing the originating narrative (cmw-archive-piece)", () => {
+describe("PieceDetailPage — surfacing the originating narrative", () => {
   it("resolves origin_spike_id -> a narrative-origin spike and renders the narrative reveal", async () => {
     fetchPieceDetail.mockResolvedValue(piece({ origin_spike_id: "spike-1" }));
     fetchSpike.mockResolvedValue(spike());
@@ -154,7 +154,7 @@ describe("PieceDetailPage — surfacing the originating narrative (cmw-archive-p
   });
 });
 
-describe("PieceDetailPage — staleness triage (cmw-staleness-timestamps)", () => {
+describe("PieceDetailPage — staleness triage", () => {
   it("shows both updated and human-touch relative times in the header meta line", async () => {
     const now = new Date();
     fetchPieceDetail.mockResolvedValue(

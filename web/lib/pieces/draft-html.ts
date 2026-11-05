@@ -2,7 +2,7 @@
  * Splits a semantic `draft.html` document (domain model §1.10/§1.11) into the publishable body and
  * its trailing `<section class="editorial">` block — the thing external-share (D11) and finalize
  * (D13) both strip via one shared routine, and the thing this screen shows as a visible, labeled
- * sub-section (cmw-ui-wireframes screen 2 UX decision #3) rather than hiding it inside the raw doc.
+ * sub-section rather than hiding it inside the raw doc.
  *
  * `draft.html` is a full, self-contained document (`<html><body>…</body></html>`); regex extraction
  * (not a DOM parser) keeps this usable on both the server and the client with no new dependency —
@@ -44,7 +44,7 @@ export function plainText(html: string): string {
  * Plain-text length of an HTML fragment (tags stripped, whitespace collapsed) — used to decide
  * whether a piece's content is "tweet/LinkedIn-post sized" (show in full) or genuinely long-form
  * (clamp + a modal to read the rest). Collapse-vs-expand of the section itself is no longer
- * driven by this: content that exists is always shown on landing (cmw-piece-draft-visibility).
+ * driven by this: content that exists is always shown on landing.
  * Deliberately crude (regex, not a DOM parser — same tradeoff `parseDraftHtml` already makes)
  * since it only needs to be a rough size signal, not an exact character count.
  */

@@ -16,11 +16,11 @@ import { humanTouchStaleness } from "@/lib/format/staleness";
 import { cn } from "@/lib/utils";
 
 /**
- * The queue's piece/spike card (cmw-ui-wireframes screen 1). This is the SHARED card component the
+ * The queue's piece/spike card. This is the SHARED card component the
  * later piece-detail / spikes screens will reuse — kept free of tab/filter concerns so it drops
  * into any list. Collapsed by default to a line or two — title/badges + a compact meta strip —
  * with the "why here" reasoning and the full failed-job explanation behind an `ExpandToggle`
- * (Hendo, 2026-08-10: this queue is "the only list of these kinds of things anywhere," so it has
+ * (the product owner, 2026-08-10: this queue is "the only list of these kinds of things anywhere," so it has
  * to stay scannable once real usage piles in many rows, not just look fine with a handful).
  * Attribution only — no field here gates anything (§1.17). Fully token-driven.
  */
@@ -176,7 +176,7 @@ export function PieceCard({
                   open GAPs <b className="text-foreground">{item.open_gaps}</b>
                 </span>
               ) : null}
-              {/* Staleness triage (cmw-staleness-timestamps): `updated` is "any write, including a
+              {/* Staleness triage: `updated` is "any write, including a
                   machine-only batch job"; `human` is "a person actually acted on this" — never
                   conflate the two, or the field lies about a job completion being a human touch.
                   `human` only exists for pieces (spikes carry no human-touch tracking). */}

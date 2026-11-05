@@ -1,8 +1,8 @@
-"""Council step tests (engine/3-revision-loop.md; cmw-context-assembly report §7).
+"""Council step tests (engine/3-revision-loop.md).
 
 Covers, per the acceptance criteria:
 - editor selection: mandatory editors always, one partner-brand-steward per external partner
-  (Hendo excluded — the home company is never an external partner), the round's
+ , the round's
   explicit ``Job.council_fit_editors`` (unknown names dropped, not rejected);
 - context assembly: the shared cached prefix (framing + voice pack + partner files + the exact
   revision scored + the full transcript), one cache breakpoint, reused by every editor;
@@ -623,7 +623,7 @@ async def test_council_step_shared_prefix_has_one_cache_breakpoint_and_full_tran
 async def test_council_step_without_transcript_grounds_in_revision_and_sources(
     store, git_brain, content_store
 ):
-    """cmw-lessons-loop Ship 1 regression: a brain-authored (brain_synced) piece has no
+    """lessons-loop Ship 1 regression: a brain-authored (brain_synced) piece has no
     transcript by design, and this guard used to raise a PermanentStepError that failed the
     re-council chained after every reviews-done — permanently, for every brain-authored piece.
     The council shared prefix must instead carry the shared invent-nothing grounding block
@@ -679,7 +679,7 @@ async def test_council_step_without_transcript_grounds_in_revision_and_sources(
 
 
 async def test_council_step_shared_prefix_includes_the_purpose_block(store, git_brain, content_store):
-    """Sibling check to the draft step's fix (cmw-draft-ignores-originating-narrative): a council
+    """Sibling check to the draft step's fix: a council
     that only ever saw the transcript would score a confidently-written wrong-subject draft as
     perfectly good, since it has no way to know what the piece was supposed to be about. Reuses
     ``DraftStep._purpose_block`` verbatim (not reimplemented) — see council_step.py's module
@@ -822,9 +822,9 @@ async def test_council_step_requires_a_committed_revision(store, git_brain, cont
 async def test_council_step_without_transcript_no_longer_raises(
     store, git_brain, content_store
 ):
-    """cmw-lessons-loop Ship 1 regression: this used to raise a legible `PermanentStepError` for
-    a piece with a committed draft revision but no transcript.md (the cmw-unguarded-transcript-
-    reads fix added that raise when the state looked impossible). Since cmw-brain-pieces-
+    """lessons-loop Ship 1 regression: this used to raise a legible `PermanentStepError` for
+    a piece with a committed draft revision but no transcript.md (the unguarded-transcript-
+    reads fix added that raise when the state looked impossible). Since brain-pieces-
     visibility made brain-authored pieces first-class, a review-stage piece LEGITIMATELY has no
     transcript, and that raise permanently wedged reviews-done (and the re-council chained after
     it) for every brain-authored piece — all 11 minted pieces on live. The council must now
@@ -899,7 +899,7 @@ class _SeedDraftNoTranscriptStep(BatchStep):
 async def test_council_step_without_transcript_completes_chain_to_review(
     store, git_brain, content_store
 ):
-    """End-to-end (cmw-lessons-loop Ship 1) through the real PieceMachine/JobRunner: a piece that
+    """End-to-end through the real PieceMachine/JobRunner: a piece that
     reaches council with a committed draft revision but NO transcript (the brain-authored
     shape — this test's own `_SeedDraftNoTranscriptStep` stand-in reproduces it) must complete the
     chain and advance to `review`, not flag back to `interviewing`. The old raise here was exactly
@@ -979,7 +979,7 @@ async def test_council_step_failure_flags_piece_without_rolling_back_content(
     assert failures[0].error is not None and failures[0].error.code == "council_parse_error"
 
 
-# --- quality-waiver policy overrides (cmw-authority-model-impl) -----------------------------
+# --- quality-waiver policy overrides -----------------------------
 
 
 class _FakeWorkflowState:

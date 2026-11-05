@@ -1,4 +1,4 @@
-"""A plain Drive file pointer (cmw-drive-piece-folders).
+"""A plain Drive file pointer.
 
 Distinct from `app.models.review_round.DocRef`: that shape carries a Google Doc's `share_mode`,
 which doesn't apply to an ordinary uploaded file (a branded HTML/PDF upload, never converted to a

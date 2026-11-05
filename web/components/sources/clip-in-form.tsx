@@ -16,7 +16,7 @@ function todayIso(now: Date): string {
 }
 
 /**
- * The credential-free LinkedIn/X clip-in form (D8; cmw-ui-wireframes screen 7): paste text/URL +
+ * The credential-free LinkedIn/X clip-in form (D8): paste text/URL +
  * source person/account + date + tags → straight to the content lake, `read-as-needed`. There is
  * no fetch, no scraper, and nothing to authenticate — the only sanctioned LinkedIn/X path.
  */

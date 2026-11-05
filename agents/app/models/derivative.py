@@ -1,4 +1,4 @@
-"""Derivative artifacts (cmw-lesson-lineage-impl).
+"""Derivative artifacts.
 
 A native-format follow-on of an anchor piece (LinkedIn post, X thread, newsletter, …). **Child
 of the anchor by default** — not a top-level Piece, so it has no owner/review/publish state of

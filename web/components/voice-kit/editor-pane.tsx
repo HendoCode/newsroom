@@ -9,7 +9,7 @@ import { TextArea } from "@/components/ui/textarea";
 import { hasChanges } from "@/lib/voice-kit/diff";
 
 /**
- * The markdown view/edit pane (cmw-ui-wireframes screen 11): a View/Edit toggle, a diff against
+ * The markdown view/edit pane: a View/Edit toggle, a diff against
  * the currently-committed content, and Commit change / Cancel. Keep this component keyed by
  * `${voice}-${fileKey}` in the parent so switching voice/file remounts it with fresh state rather
  * than needing effects to resync (the same recipe as `SourceForm`'s keyed remount).

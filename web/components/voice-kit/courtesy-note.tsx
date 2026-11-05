@@ -1,6 +1,6 @@
 "use client";
 
-/** The non-blocking "courtesy note" (D12; cmw-ui-wireframes screen 11): a heads-up, never a gate,
+/** The non-blocking "courtesy note" (D12): a heads-up, never a gate,
  * shown when editing a voice that isn't the signed-in user's own. */
 export function CourtesyNote({ voice }: { voice: string }) {
   return (

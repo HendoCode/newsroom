@@ -1,4 +1,4 @@
-"""Regression guard for cmw-phantom-edits-from-doc-roundtrip, built from REAL Google Docs.
+"""Regression guard for phantom-edits-from-doc-roundtrip, built from REAL Google Docs.
 
 A green test suite never caught any of the three prior defects in this exact area (see
 'newsroom' CLAUDE.md's draft-step/heading-bold/banner sharp-edge entries) — each was
@@ -11,7 +11,7 @@ ticket (via `createDocFromHTML` + a real `text/html` export — the exact calls
 - `fixtures/review/draft.html` — a `draft.html`-shaped revision with three heading levels, an
   editorial block, and no emphasis anywhere (mirrors a fresh, never-reviewed piece).
 - `fixtures/review/doc_export_{internal,external}_untouched.html` — that revision minted via
-  `render_for_share_mode`, then exported immediately with ZERO human edits. This is Hendo's exact
+  `render_for_share_mode`, then exported immediately with ZERO human edits. This is the product owner's exact
   repro ("the minted doc has not been touched by me in any way, shape, or form") and reproduced,
   pre-fix, the reported phantom emphasis edits (headings) and, on the external side, the phantom
   "reviewer added the DRAFT banner" item.
@@ -48,7 +48,7 @@ def _diff_against_export(raw_draft: str, export_html: str, share_mode: ShareMode
 
 
 def test_untouched_internal_doc_reports_zero_edits():
-    """Hendo's exact repro: mint, never touch it, collect. Must report zero — before this fix, a
+    """The product owner's exact repro: mint, never touch it, collect. Must report zero — before this fix, a
     real internal-round Doc like this one reported one phantom "emphasized as bold" item per
     heading (three, in this fixture)."""
     raw_draft = _read("draft.html")

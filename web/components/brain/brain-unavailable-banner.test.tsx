@@ -6,7 +6,7 @@ import {
   BrainUnavailableBanner,
 } from "@/components/brain/brain-unavailable-banner";
 
-describe("BrainUnavailableBanner — the unified brain-down message (cmw-boss-facing-presentation)", () => {
+describe("BrainUnavailableBanner — the unified brain-down message", () => {
   it("names the shared root cause with the voice-kit's canonical phrasing", () => {
     render(<BrainUnavailableBanner />);
     expect(screen.getByRole("alert")).toHaveTextContent("Brain unavailable");

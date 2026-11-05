@@ -3,7 +3,7 @@
 # Git/GitHub credential is ever needed on the box.
 
 resource "aws_ecr_repository" "web" {
-  name                 = "cmw-poc-web"
+  name                 = "newsroom-poc-web"
   image_tag_mutability = "MUTABLE"
   # So a plain `tofu destroy` never fails on "repository not empty" — matches the POC's
   # "easy to tear down" bar. The repos themselves cost ~$0.10-0.20/mo if ever left behind.
@@ -15,7 +15,7 @@ resource "aws_ecr_repository" "web" {
 }
 
 resource "aws_ecr_repository" "agents" {
-  name                 = "cmw-poc-agents"
+  name                 = "newsroom-poc-agents"
   image_tag_mutability = "MUTABLE"
   force_delete         = true
 

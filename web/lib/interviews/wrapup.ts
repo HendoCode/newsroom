@@ -1,7 +1,7 @@
 import type { TranscriptTurn } from "@/lib/interviews/types";
 
 /**
- * The v1 wrap-up-nudge trigger (Hendo, 2026-08-10): "I felt that the interviewer would never
+ * The v1 wrap-up-nudge trigger: "I felt that the interviewer would never
  * stop inventing new questions." A simple client-side heuristic — nudge once the active persona
  * has asked {@link WRAPUP_NUDGE_THRESHOLD} questions — standing in for a real assessment against
  * each persona's own "you are done when" criteria (see the interviewer persona docs in the Git

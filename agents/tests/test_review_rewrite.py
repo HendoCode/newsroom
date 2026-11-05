@@ -126,7 +126,7 @@ async def test_rewrite_rejects_inline_gap_marker(git_brain, content_store):
 
 
 async def test_rewrite_without_transcript_grounds_in_revision_and_sources(git_brain, content_store):
-    """cmw-lessons-loop Ship 1 regression: a brain-authored (brain_synced) piece legitimately
+    """lessons-loop Ship 1 regression: a brain-authored (brain_synced) piece legitimately
     has no transcript.md, and this guard used to raise a PermanentStepError that failed
     reviews-done — and therefore the whole doc-to-lessons loop — permanently for every such
     piece (all 11 minted pieces on live when this was found). The rewrite must instead ground in
@@ -189,10 +189,10 @@ async def test_rewrite_without_transcript_or_draft_html_falls_back_to_piece_md(g
 
 
 async def test_rewrite_without_transcript_or_any_content_is_legible_permanent_error(git_brain, content_store):
-    """The surviving hard stop (narrowed by cmw-lessons-loop Ship 1): a piece with no transcript
+    """The surviving hard stop: a piece with no transcript
     AND no readable revision content at all has nothing to ground in — a legible, non-leaking
     precondition failure naming the piece and what's missing (the surviving requirement of the
-    original cmw-incorporate-missing-transcript fix: never a raw `FileNotFoundError` leaking
+    original incorporate-missing-transcript fix: never a raw `FileNotFoundError` leaking
     through as the job's failure message), raised before ever calling the model."""
     piece = Piece(slug="empty-piece", voice="demo-mira")
     provider = RecordingProvider([])

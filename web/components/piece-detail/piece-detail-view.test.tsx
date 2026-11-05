@@ -126,7 +126,7 @@ describe("PieceDetailView — post-publish Derivatives tab", () => {
   });
 });
 
-describe("PieceDetailView — seeded provenance survives the click-through (cmw-boss-facing-presentation, HIGH)", () => {
+describe("PieceDetailView — seeded provenance survives the click-through", () => {
   it("shows the seeded-data badge with a how-to-make-it-real link on a seeded piece", () => {
     render(<PieceDetailView initial={piece({ seeded: true })} initialTurns={[]} />);
     expect(screen.getByTestId("seeded-data-badge")).toHaveTextContent("seeded data");

@@ -8,7 +8,7 @@ import { stageLabel } from "@/lib/dashboard/actions";
 import type { PieceDetail } from "@/lib/pieces/types";
 
 /**
- * The Finalize action panel (cmw-ui-wireframes screen 10): records source revision + template
+ * The Finalize action panel: records source revision + template
  * version so a re-render is reproducible (D13), then fires the `finalizing` batch job. Visually
  * and behaviorally DISTINCT from "Reviews done" (Item 7) — this is the render step, not another
  * review round.

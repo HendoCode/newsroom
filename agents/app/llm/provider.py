@@ -1,7 +1,7 @@
 """The swappable ``LLMProvider`` seam (open-decisions Item 1; context report §14).
 
 Item 1 is settled: **thin, direct first-party Anthropic, behind a swappable interface** so a
-future Hendo / Bedrock implementation drops in without touching callers. This module defines that
+future Bedrock implementation drops in without touching callers. This module defines that
 interface and the wire-neutral value types every implementation and caller share. The Anthropic
 implementation lives in ``anthropic_provider``; a fake used by the pipeline steps' tests and by
 ``council`` lives behind the same ABC.

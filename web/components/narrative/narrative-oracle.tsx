@@ -19,7 +19,7 @@ import type { OracleEntryMode, OracleRunResult } from "@/lib/oracle/types";
 import { cn } from "@/lib/utils";
 
 /**
- * Narrative → Oracle entry (use case B; cmw-ui-wireframes screen 8): two entry cards (A/B), the
+ * Narrative → Oracle entry (use case B): two entry cards (A/B), the
  * narrative composer (audience/angle intent), the Oracle run panel (voice/lookback), and a
  * last-run ranked-spikes preview. One on-demand Oracle, two entry points (D7) — Entry B first
  * creates a Narrative (the audience/angle seed), then runs the Oracle against it; Entry A runs
@@ -215,7 +215,7 @@ export function NarrativeOracle({
             <CardContent className="flex flex-col gap-3">
               {voices.length === 0 ? (
                 // Unified root-cause banner instead of an isolated "no voices available" option
-                // (cmw-boss-facing-presentation, CRITICAL).
+                //.
                 <BrainUnavailableBanner subject="The voice list" />
               ) : (
                 <Field label="Voice" htmlFor="voice">

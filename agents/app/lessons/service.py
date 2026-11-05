@@ -1,4 +1,4 @@
-"""The lessons-loop service (domain model §1.18; D12; cmw-context-assembly report §9).
+"""The lessons-loop service (domain model §1.18; D12).
 
 Runs in the piece's ``lessons`` stage (§1.9 "batch + gate"), built on the merged state machine,
 data layer, and LLM provider:
@@ -8,9 +8,9 @@ data layer, and LLM provider:
    Opus (D14 tier) to propose generalizable per-voice lessons deduped against the voice's existing
    ``content-lessons.md``, and persist them to Mongo as **pending** (:class:`~app.models.Lesson`,
    ``status=proposed``).
-2. :meth:`propose_from_review_edits` (cmw-reviewer-can-edit-doc) — the same proposal machinery,
+2. :meth:`propose_from_review_edits` — the same proposal machinery,
    entered from a **review round**'s diff-detected edits instead of a published/edited final
-   draft. Hendo's decision: "the edit is described to the model, which rewrites it in voice, and
+   draft. The product owner's decision: "the edit is described to the model, which rewrites it in voice, and
    proposes a lesson — today's behaviour plus the lesson." Proposed **immediately**, from
    :class:`~app.review.step.IncorporateStep`, while the piece is still mid-pipeline (``review``/
    ``incorporating``) rather than deferred to the piece's own ``lessons`` stage: the D12
@@ -112,8 +112,8 @@ class LessonsService:
         edits: list[tuple[str, str]],
         budget: RunBudget | None = None,
     ) -> list[Lesson]:
-        """Propose lessons straight from a review round's diff-detected edits (Hendo,
-        cmw-reviewer-can-edit-doc — see the module docstring's item 2 for the full "why now, why
+        """Propose lessons straight from a review round's diff-detected edits (the product owner,
+        reviewer-can-edit-doc — see the module docstring's item 2 for the full "why now, why
         no stage gate" reasoning).
 
         ``edits`` is the round's ``(before, after)`` text pairs for every diff-detected edit that

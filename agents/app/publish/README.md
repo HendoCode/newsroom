@@ -1,7 +1,7 @@
 # Publish / AuthorizeRelease (finalized → released, HITL; immutable numbered Publication Releases)
 
 A piece's original settled state machine ended at `finalized` — distribution was explicitly out of
-scope for v1 (docs/design.md §9). Hendo reversed that: pieces need a way to be genuinely *done*,
+scope for v1 (docs/design.md §9). The product owner reversed that: pieces need a way to be genuinely *done*,
 with durable, public links to their outputs, not just a finished artifact stuck in an app-internal
 stage forever. See `docs/design.md`'s D13 note and `agents/app/models/piece.py`'s
 `ALLOWED_TRANSITIONS` comment for the settled reasoning (terminal, independent of the `lessons`
@@ -22,16 +22,16 @@ gate).
    **immutable, per-publish key** — `published/<slug>/<release>/branded.{html,pdf}`, where
    `release` is `Piece.published_release` incremented before minting the key. A re-publish (new
    render, new template version, whatever) only ever adds a new release; it never touches a prior
-   one, so an already-circulating link keeps resolving. **S3 is unaffected by cmw-drive-piece-
+   one, so an already-circulating link keeps resolving. **S3 is unaffected by drive-piece-
    folders** — it stays the durable, public destination; the Drive folder is a parallel one, not a
    replacement.
-5. (cmw-drive-piece-folders) Also uploads the same two files, unconverted, into the piece's Drive
+5. Also uploads the same two files, unconverted, into the piece's Drive
    folder's `Published/` subfolder — never the finalize step's own originals living in the parent
    folder, moved or re-parented (the folder should honestly show both what was finalized and what
    actually shipped, which can differ). A no-op, and this step behaves exactly as it did before
    that ticket, unless `GOOGLE_DRIVE_ROOT_FOLDER_NAME` is configured — see `app/drive/README.md`.
 6. Mints a fresh Google Doc snapshot of the same content — inside that same `Published/` subfolder
-   when one exists, otherwise at the Drive root exactly as before cmw-drive-piece-folders — and
+   when one exists, otherwise at the Drive root exactly as before drive-piece-folders — and
    shares it anyone-with-the-link/reader (`share_file`, the same call `ReviewMintService`'s
    `ShareMode.external` path uses — but NOT that service itself, which always creates a
    `ReviewRound`; this must never create one). Deliberately skips that path's "DRAFT — not for
@@ -50,7 +50,7 @@ service performs its own fresh render from the same seams instead of trusting th
 
 ## Bucket / access model (deliberately simple, iterable later)
 
-No signed URLs, no unguessable keys, no access-control layer — Hendo's explicit v1 call. The bucket
+No signed URLs, no unguessable keys, no access-control layer — the product owner's explicit v1 call. The bucket
 is generally public by policy (bucket listing off, so it's not a browsable index, but any object's
 plain key resolves for anyone). Tightening this later (signed URLs, a CDN, per-object ACLs) is
 cheap; it just can't un-share a URL already circulating. See `infra/aws-poc/publish_bucket.tf`.
@@ -61,7 +61,7 @@ cheap; it just can't un-share a URL already circulating. See `infra/aws-poc/publ
 resource identifiers) name the bucket `S3PublishStorage` uploads to. Blank bucket → the route 503s
 rather than failing boot (same degrade-gracefully discipline as every other optional subsystem
 here). Google Docs sharing reuses the same `GOOGLE_OAUTH_CLIENT_ID`/`_SECRET`/`_REFRESH_TOKEN` grant
-as finalize/review. `GOOGLE_DRIVE_ROOT_FOLDER_NAME` (cmw-drive-named-folder-scoping, `app/drive/README.md`) gates
+as finalize/review. `GOOGLE_DRIVE_ROOT_FOLDER_NAME` (`app/drive/README.md`) gates
 the `Published/` Drive uploads above — blank, this route's S3/Doc behavior is completely unaffected
 (no 503, since the Drive half was always optional-in-parallel, never a requirement to publish).
 

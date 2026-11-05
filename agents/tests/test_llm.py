@@ -1,4 +1,4 @@
-"""LLM provider layer tests (D14; cmw-context-assembly report §3/§10/§12).
+"""LLM provider layer tests (D14).
 
 Covers, per the acceptance criteria:
 - the per-step tiering map matches the context report,

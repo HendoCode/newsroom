@@ -22,8 +22,8 @@
 # CLI, not in a committed .tfvars.
 
 locals {
-  mongo_root_username = "cmw_app"
-  mongo_url           = "mongodb://${local.mongo_root_username}:${random_password.mongo_root_password.result}@mongo:27017/content_machine?authSource=admin"
+  mongo_root_username = "newsroom_app"
+  mongo_url           = "mongodb://${local.mongo_root_username}:${random_password.mongo_root_password.result}@mongo:27017/newsroom?authSource=admin"
 }
 
 resource "random_password" "nextauth_secret" {

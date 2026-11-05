@@ -1,7 +1,7 @@
 import { relativeTime } from "@/lib/format/relative-time";
 import type { ActivityEntry } from "@/lib/pieces/types";
 
-/** The activity/routing log (cmw-ui-wireframes screen 2): a synthesized, newest-first view over
+/** The activity/routing log: a synthesized, newest-first view over
  * the piece's council/job/review-round/interview records — see `app.piece_detail.build_activity_log`.
  * `now` is captured once by the caller (not read here) so server- and client-rendered output match. */
 export function ActivityLog({ entries, now }: { entries: ActivityEntry[]; now: Date }) {

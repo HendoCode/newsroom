@@ -37,7 +37,7 @@ class GoogleDocsClient(Protocol):
     async def create_doc_from_html(
         self, title: str, html: str, *, description: str = "", parent_id: str | None = None
     ) -> DocRef:
-        """``parent_id`` (cmw-drive-piece-folders), when given, is the piece's Shared Drive
+        """``parent_id``, when given, is the piece's Shared Drive
         folder id — the Doc lands there instead of loose at the Drive root."""
 
 
@@ -98,7 +98,7 @@ class HttpGoogleDocsClient:
         }
         if parent_id:
             metadata["parents"] = [parent_id]
-        boundary = "cmw-finalize-boundary"
+        boundary = "newsroom-finalize-boundary"
         body = (
             f"--{boundary}\r\n"
             "Content-Type: application/json; charset=UTF-8\r\n\r\n"
@@ -113,7 +113,7 @@ class HttpGoogleDocsClient:
             resp = await client.post(
                 self.UPLOAD_URL,
                 # supportsAllDrives=true is required once `parent_id` points into a Shared Drive
-                # (cmw-drive-piece-folders) — harmless/no-op otherwise, so it's always sent rather
+                # — harmless/no-op otherwise, so it's always sent rather
                 # than branching on whether a parent was given (confirmed against the live Drive
                 # API during this ticket's verification, not assumed).
                 params={"uploadType": "multipart", "supportsAllDrives": "true", "fields": "id,webViewLink"},

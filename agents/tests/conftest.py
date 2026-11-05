@@ -34,14 +34,14 @@ FIXTURE_BRAIN = Path(__file__).resolve().parent / "fixtures" / "brain"
 @pytest_asyncio.fixture
 async def store() -> WorkStateStore:
     """A WorkStateStore backed by a fresh in-memory Mongo (isolated per test)."""
-    db = AsyncMongoMockClient()["cmw_test"]
+    db = AsyncMongoMockClient()["newsroom_test"]
     return WorkStateStore(db)
 
 
 @pytest_asyncio.fixture
 async def lake() -> ContentLake:
     """A ContentLake on a fresh in-memory Mongo, local hybrid index + hashing embedder (D9)."""
-    db = AsyncMongoMockClient()["cmw_test"]
+    db = AsyncMongoMockClient()["newsroom_test"]
     return build_content_lake(db)
 
 

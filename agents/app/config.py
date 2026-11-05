@@ -63,7 +63,7 @@ class Settings(BaseSettings):
     # the pricing entry (app/llm/pricing.py) or the cost readout shows 0.0 for it.
     openrouter_default_model_id: str = "z-ai/glm-5"
 
-    # Emit per-call InferenceCostUSD custom metric to CloudWatch (CMW/Bedrock namespace) for the
+    # Emit per-call InferenceCostUSD custom metric to CloudWatch (Newsroom/Bedrock namespace) for the
     # non-technical cost dashboard. Default True so v1 launch has immediate visibility; flip to
     # False in settings to disable without code change (captain requirement that provider behaviour
     # is config, not edit). Research sidecar stays on Anthropic (carve-out) so is excluded; the
@@ -109,7 +109,7 @@ class Settings(BaseSettings):
     # (mongo_url is resolved through the secrets shim — see the property below.)
     # Logical database name inside that instance (the compose URL already carries one; this is
     # the fallback + the knob the repository layer reads). Not a secret — a plain field.
-    mongo_db_name: str = "content_machine"
+    mongo_db_name: str = "newsroom"
 
     # --- Content lake / hybrid index (D9, §6). ---
     # Query backend for the hybrid index. "local" = the dependency-free fallback that runs against
@@ -152,12 +152,12 @@ class Settings(BaseSettings):
 
     # --- Publish (finalized → published HITL button; app/publish/, docs/design.md D13 note). ---
     # NOT secrets — plain resource identifiers, not credentials. The bucket is generally public by
-    # design (Hendo, v1) so there is no access-control value in hiding its name. Blank by default:
+    # design so there is no access-control value in hiding its name. Blank by default:
     # `/api/pieces/{id}/publish` 503s until a captain sets this (see infra/aws-poc/README.md).
     published_assets_bucket: str = ""
     published_assets_region: str = "us-east-1"
 
-    # --- Per-piece Google Drive root folder (cmw-drive-named-folder-scoping; app/drive/). NOT a
+    # --- Per-piece Google Drive root folder (app/drive/). NOT a
     # secret — a plain folder NAME, same pattern as published_assets_bucket above. The app's
     # Google account owns (and, under drive.file scope, is the only thing that can see) this
     # named folder in its personal My Drive; this code finds-or-creates it itself under the

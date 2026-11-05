@@ -9,7 +9,7 @@ import { cn } from "@/lib/utils";
 /**
  * A whole-Card counterpart to `ExpandToggle` (same file's sibling): the identical collapsed-by-
  * default, expand-on-click idiom PR #89 established for list rows (dashboard queue, source
- * registry), generalized to a full page SECTION. Piece detail (cmw-piece-detail-collapsible) is
+ * registry), generalized to a full page SECTION. Piece detail is
  * the first caller — a page with many Cards, each serving a different task, needs most of them
  * collapsed on landing so the ones that actually answer "what stage is this at, what do I do
  * next" aren't buried under reference/history detail. Reuse this for any future page section

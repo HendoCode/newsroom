@@ -1,8 +1,8 @@
-"""Brain drafts view (cmw-drafts-view).
+"""Brain drafts view.
 
 A dedicated, read-only reading surface for brain-authored ``drafts/<slug>/`` content — live
 from the brain clone, additive to the existing Google-Doc review/finalize flow, never a
-replacement. Lists every draft folder and renders each as a clean, boss/customer-appropriate
+replacement. Lists every draft folder and renders each as a clean, customer-appropriate
 page: ``draft.html`` when it exists, otherwise the direct-authored ``piece.md`` markdown section
 rendered to HTML.
 

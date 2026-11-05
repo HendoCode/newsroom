@@ -6,7 +6,7 @@ import { Button } from "@/components/ui/button";
 import type { PieceDetail } from "@/lib/pieces/types";
 
 /**
- * ReviewRound as the primary UI object (cmw-review-round-ux-impl): the current round is the
+ * ReviewRound as the primary UI object: the current round is the
  * card, the Google Doc is a child "Open Doc" link inside it — the reverse of the old
  * ``ReviewDocLink`` component, which treated the Doc as the primary affordance.
  *

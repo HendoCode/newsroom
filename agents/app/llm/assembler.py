@@ -127,10 +127,10 @@ class PromptAssembler:
         return self.content.read_sources(slug)
 
     def grounding_block_without_transcript(self, slug: str) -> str:
-        """Transcript-optional grounding (cmw-lessons-loop Ship 1) — the shared substitute for
+        """Transcript-optional grounding — the shared substitute for
         :meth:`transcript_block` when a brain-authored piece legitimately has no transcript.
 
-        Since ``cmw-brain-pieces-visibility`` made brain-authored drafts first-class Pieces,
+        Since ``brain-pieces-visibility`` made brain-authored drafts first-class Pieces,
         a review-stage piece can legitimately have no ``transcript.md`` (``brain_synced``
         pieces land at ``review`` directly, by design). The transcript guards in incorporate's
         rewrite and the council shared prefix used to treat that as an impossible state and

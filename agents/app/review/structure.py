@@ -1,7 +1,7 @@
-"""Structural HTML block extraction for review-round edits (cmw-reviewer-can-edit-doc /
+"""Structural HTML block extraction for review-round edits (reviewer-can-edit-doc /
 decision-structure-intake.md).
 
-Hendo, having actually reviewed a real Doc: "The review-edits should intake new paragraph breaks
+The product owner, having actually reviewed a real Doc: "The review-edits should intake new paragraph breaks
 as relevant, and major things like adding a new header or section; and also using of bold,
 underline, italics, etc. The styling of the review doc is not important — however stating that a
 new paragraph is a header and then some body text follows it is important."
@@ -21,7 +21,7 @@ not assumed:
 - ``<h1>``-``<h6>`` round-trip as real ``<h1>``-``<h6>`` tags on **both** sides — an app-uploaded
   heading and a heading a reviewer adds via Format > Paragraph styles are indistinguishable in the
   export: both are Google's native paragraph ``namedStyleType`` (``HEADING_1``..``HEADING_6``),
-  surfaced as the same tag either way. Hendo's "looked different than the gdoc defaults"
+  surfaced as the same tag either way. The product owner's "looked different than the gdoc defaults"
   observation is explained by inline CSS from the uploaded HTML surviving *on* those real heading
   tags, not by them being fake/styled-paragraph headings.
 - Bold/italic/underline do **not** round-trip as ``<b>``/``<i>``/``<u>`` (or ``<strong>``/``<em>``)
@@ -41,14 +41,14 @@ not assumed:
   marker left to find them by. This is why the diff base for an internal round (whose Doc
   genuinely keeps those child elements) cannot be produced by a class-based strip on the exported
   side — :mod:`app.review.collect` instead reconstructs the correct diff base on the *Git* side
-  via :func:`app.review.mint.render_for_share_mode` (cmw-internal-round-editorial-diff-asymmetry).
+  via :func:`app.review.mint.render_for_share_mode`.
 - **Every ``<h1>``-``<h6>`` comes back from a round trip with its entire text wrapped in a bold
-  span that Google's own renderer adds — on every heading, touched or not** (cmw-phantom-edits-
+  span that Google's own renderer adds — on every heading, touched or not** (phantom-edits-
   from-doc-roundtrip). Confirmed live against a fresh, never-opened Doc: both the heading tag
   itself and an inner ``<span>`` around its full text carry ``font-weight:700``, while sibling
   ``<p>`` blocks come back ``font-weight:400`` (never bold) unless something genuinely bolded
   them. This made a plain, untouched mint report one phantom "reviewer emphasized as bold" item
-  per heading, scaling with the piece — Hendo's exact repro (a Doc "not touched in any way"
+  per heading, scaling with the piece — the product owner's exact repro (a Doc "not touched in any way"
   reporting nine inline edits, every one emphasis-related). :meth:`Block.emphasis` suppresses the
   ``bold`` flag for a heading block specifically when its *entire* text is uniformly bold (the
   shape Google's own rendering always produces) — a real kind change (paragraph → heading) is
@@ -60,7 +60,7 @@ not assumed:
   Italic/underline on a heading are never suppressed either — Google does not auto-apply either to
   headings, so both remain full signal.
 
-Scope, deliberately: block kinds are ``h1``-``h6`` and ``p`` only — matching what Hendo actually
+Scope, deliberately: block kinds are ``h1``-``h6`` and ``p`` only — matching what the product owner actually
 named (headings, paragraphs, emphasis). Lists/tables/blockquotes are not block-level here; that is
 a real but separate extension, not folded into this ticket (see the PR description).
 """

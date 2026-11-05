@@ -1,4 +1,4 @@
-"""Draft step (engine/2-draft.md; cmw-context-assembly report §6) — the highest-nuance step.
+"""Draft step (engine/2-draft.md) — the highest-nuance step.
 
 Turns a piece's interview transcript into a semantic ``draft.html`` revision. Plugs into the
 batch-step seam (:mod:`app.orchestration.steps`) for ``JobType.draft``: on success it commits a
@@ -8,7 +8,7 @@ advances drafting → council. On failure it raises so the job runner / machine'
 path takes over — this module never touches piece stage and never writes a half-finished
 revision (D4/D16b).
 
-Context assembly (cmw-context-assembly report §6), via the shared :class:`~app.llm.PromptAssembler`:
+Context assembly, via the shared :class:`~app.llm.PromptAssembler`:
 
     T0 (stable): engine/2-draft.md + the active voice pack in override order (guide → style →
         lessons — lessons OVERRIDE the guide on conflict, §6d①) + the partner fact files for
@@ -24,7 +24,7 @@ Context assembly (cmw-context-assembly report §6), via the shared :class:`~app.
         does) reply with a chat-formatted multi-file dump instead of the bare HTML
         ``result.text`` is assumed to be.
 
-**Purpose vs. evidence (cmw-draft-ignores-originating-narrative fix, 2026-08-10).** The
+**Purpose vs. evidence.** The
 transcript is the piece's *evidence* — engine/2-draft.md is explicit that every claim must trace
 back to it. But nothing previously carried the piece's *purpose*: the originating Spike
 (``Piece.origin_spike_id`` — never read here before this fix) and the audience/angle intent it
@@ -102,9 +102,9 @@ def _require_transcript(assembler: PromptAssembler, piece: Piece, *, cannot: str
 
     Used ONLY by the draft step now: a draft genuinely cannot be written without source
     material, so a missing transcript remains a hard precondition there. The rewrite and
-    council guards this once shared wording with (``cmw-incorporate-missing-transcript``, PR
-    #82) no longer raise — a brain-authored piece (``brain_synced``, cmw-brain-pieces-visibility)
-    legitimately has no transcript, so since cmw-lessons-loop Ship 1 they ground via
+    council guards this once shared wording with (``incorporate-missing-transcript``, PR
+    #82) no longer raise — a brain-authored piece (``brain_synced``)
+    legitimately has no transcript, so since lessons-loop Ship 1 they ground via
     :func:`_transcript_or_grounding` / ``PromptAssembler.grounding_block_without_transcript``
     instead. Keeping the explanation legible (never a raw ``FileNotFoundError`` leaking through)
     is the surviving requirement from that original fix.
@@ -123,7 +123,7 @@ def _require_transcript(assembler: PromptAssembler, piece: Piece, *, cannot: str
 
 def _transcript_or_grounding(assembler: PromptAssembler, piece: Piece) -> str:
     """The transcript block, or — for a brain-authored piece with no transcript — the shared
-    invent-nothing grounding block (cmw-lessons-loop Ship 1).
+    invent-nothing grounding block.
 
     The council shared prefix uses this in place of ``_require_transcript``: unlike the draft
     step (which genuinely cannot run without source material), a council scoring pass always

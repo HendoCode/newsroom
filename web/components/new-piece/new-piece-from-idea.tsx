@@ -13,7 +13,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { BrainUnavailableBanner } from "@/components/brain/brain-unavailable-banner";
 
 /**
- * "New piece from my own idea" (Option B, cmw-narrative-first-entry-point) — the front door for
+ * "New piece from my own idea" (Option B) — the front door for
  * "I already know what I want to write," separate from "Run the Radar" (`/narrative`). Speaks a
  * narrative and mints its Spike directly (`POST /api/spikes/from-narrative` — no Oracle ranking
  * run), then lands straight on that spike's own 5-step kickoff page (`/spikes/[spikeId]`) —
@@ -146,7 +146,7 @@ export function NewPieceFromIdea({
           </div>
           {voices.length === 0 ? (
             // Unified root-cause banner instead of an isolated "no voices available" option
-            // (cmw-boss-facing-presentation, CRITICAL).
+            //.
             <BrainUnavailableBanner subject="The voice list" />
           ) : (
             <Field label="Voice" htmlFor="new-piece-voice">

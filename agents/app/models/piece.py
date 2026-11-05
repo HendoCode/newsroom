@@ -108,7 +108,7 @@ class Piece(MongoModel):
     content_project_id: str | None = None
     role: PieceRole | None = None
     # Set when this Piece was *promoted* from a child derivative artifact of another piece
-    # (cmw-lesson-lineage-impl). Child artifacts are NOT Pieces — they live on the anchor until
+    #. Child artifacts are NOT Pieces — they live on the anchor until
     # they need their own owner/review/publish state. `None` for anchors and pre-lineage pieces.
     parent_piece_id: str | None = None
     slug: str  # identity (from the origin spike headline); backed by this Mongo id
@@ -140,7 +140,7 @@ class Piece(MongoModel):
     open_clearances: int = 0
 
 
-    # Staleness triage (cmw-staleness-timestamps): `updated_at` (inherited from `MongoModel`)
+    # Staleness triage: `updated_at` (inherited from `MongoModel`)
     # already answers "when did anything last write this piece" — every batch job, cost charge,
     # and stage move already bumps it. That is a MACHINE signal: a job completing an hour ago
     # updates it even if no human has looked at the piece in weeks. `last_human_touch_at` is the
@@ -161,7 +161,7 @@ class Piece(MongoModel):
     final_template_version: str | None = None
     final_rendered_at: datetime | None = None
 
-    # Per-piece Google Drive folder (cmw-drive-named-folder-scoping): every Google artifact this
+    # Per-piece Google Drive folder: every Google artifact this
     # piece produces — review-round Docs, the finalized Doc, and the branded HTML/PDF as ordinary
     # uploaded files — lands in the named My-Drive root's per-piece folder, so sharing that
     # folder gives a reviewer everything for the piece. `None` until GOOGLE_DRIVE_ROOT_FOLDER_NAME
@@ -170,7 +170,7 @@ class Piece(MongoModel):
     # every later finalize/review-mint/publish (never a second folder for the same piece).
     drive_folder_id: str | None = None
     drive_folder_url: str | None = None
-    # The `Published/` subfolder (holding publish's own re-rendered copies, Hendo's call — never
+    # The `Published/` subfolder (holding publish's own re-rendered copies, the product owner's call — never
     # the finalize originals above, moved or re-parented). Same idempotent-by-pointer discipline.
     drive_published_folder_id: str | None = None
 
@@ -207,7 +207,7 @@ class Piece(MongoModel):
     # excludes an archived piece.
     archived_at: datetime | None = None
 
-    # Provenance flag (cmw-brain-pieces-visibility): True when this Mongo record was minted by
+    # Provenance flag: True when this Mongo record was minted by
     # the brain-draft sync (`app.brain_sync`) to complete the composite for a brain-authored
     # draft folder (`drafts/<slug>/` written by the brain, never through this pipeline — no
     # interview/council/revisions). Purely informational: it changes no behavior, and pieces the

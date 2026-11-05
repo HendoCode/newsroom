@@ -7,11 +7,9 @@ LLM doing the heavy lifting and a human holding the wheel at every gate.
 
 ## Origin
 
-This was originally built as an internal tool for an AI company, and has since been
-reworked into an open-sourced personal project. It was built solo, with the heavy lifting
-done alongside an AI agent crew (Firstmate). The code here is the clean-room result of that
-journey: a working system, not a demo, but honest about being a one-person project rather
-than a corporate product.
+This is an open-source personal project. It was built solo, with the heavy lifting done
+alongside AI coding agents: a working system, not a demo, but honest about being a
+one-person project rather than a corporate product.
 
 ## What it is
 

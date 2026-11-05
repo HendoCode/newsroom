@@ -3,7 +3,7 @@ import { NextResponse } from "next/server";
 import { AgentsRequestError, fetchReviewRounds } from "@/lib/agents-client";
 
 /**
- * BFF route: list every review round for a piece (cmw-review-round-ux-impl). The round is the
+ * BFF route: list every review round for a piece. The round is the
  * primary REST resource — the Doc is a child link inside each round. Read-only proxy; no body
  * validation needed.
  */

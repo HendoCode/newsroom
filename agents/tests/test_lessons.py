@@ -1,4 +1,4 @@
-"""Lessons-loop service tests (D12; domain model §1.18; cmw-context-assembly report §9).
+"""Lessons-loop service tests (D12; domain model §1.18).
 
 Covers, per the acceptance criteria:
 - the structural final-vs-published diff (via git, not the model);
@@ -266,7 +266,7 @@ async def test_propose_without_provider_raises():
         await service.propose("p1", published_content="x")
 
 
-# --- LessonsService.propose_from_review_edits (cmw-reviewer-can-edit-doc) ---------------------
+# --- LessonsService.propose_from_review_edits ---------------------
 
 
 async def test_propose_from_review_edits_persists_deduped_lessons(

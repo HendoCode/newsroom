@@ -1,4 +1,4 @@
-"""HttpDriveFolderClient credential guard + real-request-shape tests (cmw-drive-piece-folders).
+"""HttpDriveFolderClient credential guard + real-request-shape tests.
 
 Same MockTransport discipline as test_review_docs_client.py: assert on the real outgoing request
 (method/path/query params/body) rather than a stubbed return value — the level of test that would

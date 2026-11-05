@@ -9,7 +9,7 @@ import type { CommandKind } from "./types";
  * Ground truth is the backend enum's *values* (the kebab-case wire format), copied verbatim —
  * never read back from `./types.ts`, which is the file that drifted in PR #120.
  *
- * This is the enforcement the `cmw-fix-workflow-contract-drift` sharp edge (root AGENTS.md) said
+ * This is the enforcement the `fix-workflow-contract-drift` sharp edge (root AGENTS.md) said
  * was missing: "nothing currently enforces this contract stays in sync". A future change to
  * either enum that touches only one side fails `npm run typecheck` here — vitest alone does NOT
  * type-check, so the canary's value lives in `web/package.json`'s `typecheck` script.

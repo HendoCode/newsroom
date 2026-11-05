@@ -82,7 +82,7 @@ describe("NarrativeOracle — Entry A/B → Oracle run → ranked spikes preview
     fireEvent.click(screen.getByRole("button", { name: /run radar/i }));
 
     await waitFor(() => expect(fetchMock).toHaveBeenCalledTimes(3));
-    // The explicit success readout (cmw-boss-facing-presentation, MEDIUM) names the outcome.
+    // The explicit success readout names the outcome.
     expect(await screen.findByText(/radar run complete — job job-123/i)).toBeInTheDocument();
     expect(screen.getByText("Token cost vs. storage cost, drawn to scale")).toBeInTheDocument();
   });
@@ -137,7 +137,7 @@ describe("NarrativeOracle — Entry A/B → Oracle run → ranked spikes preview
   });
 });
 
-describe("NarrativeOracle — brain unavailable (cmw-boss-facing-presentation, CRITICAL)", () => {
+describe("NarrativeOracle — brain unavailable", () => {
   it("shows the unified brain-unavailable banner instead of 'no voices available'", () => {
     render(<NarrativeOracle voices={[]} authorEmail="you@example.com" />);
     expect(screen.queryByText("no voices available")).not.toBeInTheDocument();

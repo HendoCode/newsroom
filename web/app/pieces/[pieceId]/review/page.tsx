@@ -6,7 +6,7 @@ import { AgentsRequestError, fetchPieceDetail } from "@/lib/agents-client";
 import { requireUser } from "@/lib/session";
 
 /**
- * The review-round screen (cmw-ui-wireframes screen 04; D4/D11; open-decisions Item 7): mint an
+ * The review-round screen (D4/D11; open-decisions Item 7): mint an
  * internal/external Doc from the current revision, preview what a "reviews done" would fold in,
  * and only then confirm — mounted from the piece-detail screen's review-stage primary action
  * (a LINK, never a blind trigger; distinct from "Finalize", Item 7). Same fetch/auth pattern as

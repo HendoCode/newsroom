@@ -1,6 +1,6 @@
 /**
- * Dashboard domain types — the shared work-queue model (docs/design.md §3; cmw-open-decisions
- * report §Item-3; cmw-ui-wireframes screen 1).
+ * Dashboard domain types — the shared work-queue model (docs/design.md §3; open-decisions
+ * report §Item-3; UI wireframes screen 1).
  *
  * These mirror the agents `/api/dashboard` wire contract 1:1 (snake_case, matching the existing
  * `AgentsStatus` contract in `lib/agents-client.ts`) so there is no mapping layer. The queue is a
@@ -72,14 +72,14 @@ export interface QueueItem {
   lessons_proposed: number;
   spike_assigned: boolean;
 
-  // Staleness triage (cmw-staleness-timestamps): `updated_at` is the last write of ANY kind
+  // Staleness triage: `updated_at` is the last write of ANY kind
   // (including a batch job completing with no human involved); `last_human_touch_at` is the
   // narrower "a person actually acted on this" signal — never set by a machine-only write. `null`
   // for a spike card (human-touch tracking only exists for pieces so far).
   updated_at: string | null;
   last_human_touch_at: string | null;
 
-  // Provenance (cmw-brain-pieces-visibility): true when this card's Piece was registered from a
+  // Provenance: true when this card's Piece was registered from a
   // brain-authored drafts/ folder by the brain-draft sync rather than created through the
   // pipeline. Optional because client-side fixtures predate it; the live wire always sends it
   // (backend default false). Never set on a spike card.

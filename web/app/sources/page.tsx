@@ -5,7 +5,7 @@ import type { SourceListResponse } from "@/lib/sources/types";
 import { requireUser } from "@/lib/session";
 
 /**
- * The source registry: manage what the Oracle reads (Item 6 / D8; cmw-ui-wireframes screen 7).
+ * The source registry: manage what the Oracle reads (Item 6 / D8).
  * Mounts into the existing app shell/routing exactly like the dashboard. Work-state is read
  * through the data layer via the BFF client (`fetchSources`, server-only) — if the agents service
  * is unreachable we still render the shell with an empty registry rather than erroring the whole
@@ -17,7 +17,7 @@ import { requireUser } from "@/lib/session";
  * invalidate a cached render of this page (that's only automatic for Server Actions). Paired with
  * `SourceRegistry`'s own `router.refresh()` calls after each mutation, which invalidate the
  * client-side Router Cache too — without both, a source added here could appear to vanish after
- * navigating away and back (cmw-source-registry-ux item 1: reproduced live via a real browser
+ * navigating away and back (source-registry-ux item 1: reproduced live via a real browser
  * hitting the back button, not just reasoned about — see that PR description).
  */
 export const dynamic = "force-dynamic";

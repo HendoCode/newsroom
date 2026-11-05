@@ -9,15 +9,14 @@ silent drops applies to collection too):
   verbatim (a resolved thread is still collected; ``resolved`` is a Docs-UI affordance, not this
   system's own routing status).
 - **Inline edits** — a structural HTML diff of the Doc body against the frozen revision it was
-  minted from (cmw-reviewer-can-edit-doc / decision-structure-intake.md: headings, paragraph
+  minted from (reviewer-can-edit-doc / decision-structure-intake.md: headings, paragraph
   breaks, and bold/italic/underline must survive into the description, not just changed text — see
   :mod:`app.review.structure` for why that needs HTML, not plain text, and what was verified
   empirically about the round trip). Best-effort: a diff that can't be computed (export failure,
   transient network) drops only the edit-detection half, never the comments, and never fails the
   caller — see :func:`gather_raw_items`.
 
-The diff base must match what actually got minted, not what a caller assumes got minted
-(cmw-internal-round-editorial-diff-asymmetry): an internal round's Doc genuinely keeps the trailing
+The diff base must match what actually got minted, not what a caller assumes got minted: an internal round's Doc genuinely keeps the trailing
 editorial block (its wrapping ``<section>`` doesn't survive the round trip, but its child
 heading/paragraph elements do — :mod:`app.review.structure`), while an external round's Doc never
 had it at all (:mod:`app.review.mint` strips it before upload, D11). ``diff_edits``/``diff_blocks``
@@ -26,7 +25,7 @@ reconstructs the correct original side via :func:`app.review.mint.render_for_sha
 same transform ``ReviewMintService.mint`` applied — so the two can never drift out of sync again the
 way they did before this fix (unconditional stripping on the Git side, none on the Doc side).
 
-The same reconstruction is not enough for the DRAFT banner (cmw-phantom-edits-from-doc-roundtrip):
+The same reconstruction is not enough for the DRAFT banner:
 it is authored as a non-block ``<div>`` (see :mod:`app.review.mint`), so it never becomes a
 :class:`~app.review.structure.Block` on our own reconstructed side at all — yet Drive's HTML-to-
 Docs conversion turns it into a real ``<p>`` on the exported Doc (confirmed live), which *does*
@@ -85,7 +84,7 @@ def _label_and_text(block: Block) -> str:
 
 def _describe_block_pair(old: Block, new: Block) -> str | None:
     """One old block became one new block — describe every dimension that changed (kind, text,
-    emphasis), not just the text: "the model can only act on what the item tells it" (Hendo).
+    emphasis), not just the text: "the model can only act on what the item tells it".
     Returns ``None`` if nothing actually differs (the ``equal``-opcode pairwise recheck in
     :func:`diff_edits` calls this speculatively, since matching by text alone can't rule out a
     same-text kind/emphasis change)."""
@@ -125,7 +124,7 @@ def _describe_span(old_blocks: list[Block], new_blocks: list[Block]) -> str | No
     one-to-one span gets the full structural treatment above; anything else (a split, a merge, a
     multi-block replace) is described as a kind-tagged list on each side — e.g. "reviewer changed
     [paragraph] 'X Y' to [Heading 2] 'X'; [paragraph] 'Y'" already says a new heading was added and
-    body text follows it, which is exactly the signal Hendo asked for, without a bespoke
+    body text follows it, which is exactly the signal the product owner asked for, without a bespoke
     split/merge detector."""
     if len(old_blocks) == 1 and len(new_blocks) == 1:
         return _describe_block_pair(old_blocks[0], new_blocks[0])
@@ -139,7 +138,7 @@ def _describe_span(old_blocks: list[Block], new_blocks: list[Block]) -> str | No
 
 
 def diff_edits(original_html: str, current_html: str) -> list[RawFeedbackItem]:
-    """Block-level structural diff (cmw-reviewer-can-edit-doc / decision-structure-intake.md):
+    """Block-level structural diff:
     diffs HTML against HTML — via :mod:`app.review.structure` — so a heading, a paragraph split,
     or a bold/italic/underline emphasis survives into the description handed to the model. A
     flattened plain-text diff (the previous implementation) destroyed all three before the diff
@@ -229,6 +228,6 @@ async def gather_raw_items(
 def _drop_draft_banner(blocks: list[Block]) -> list[Block]:
     """Drop the DRAFT banner block, if present — it is Google's own conversion artifact (a non-
     block ``<div>`` becoming a real ``<p>`` on export), never real draft content, so it is excluded
-    from both sides rather than read as a reviewer addition/removal (cmw-phantom-edits-from-doc-
+    from both sides rather than read as a reviewer addition/removal (phantom-edits-from-doc-
     roundtrip)."""
     return [b for b in blocks if b.text != DRAFT_BANNER_TEXT]

@@ -476,7 +476,7 @@ async def test_inspect_reflects_the_research_gate() -> None:
     assert commands2[CommandKind.declare_input_sufficient].enabled is True
 
 
-# --- authority model (cmw-authority-model-impl) -------------------------------------------
+# --- authority model -------------------------------------------
 
 OTHER_ACTOR = ActorRef(subject_id="other@example.com", email="other@example.com")
 

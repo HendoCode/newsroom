@@ -1,4 +1,4 @@
-"""Derivative lineage (cmw-lesson-lineage-impl).
+"""Derivative lineage.
 
 Child artifacts of an anchor by default; promoted to a top-level Piece only when they need
 their own owner/review/publish state. Native generation is out of scope here.

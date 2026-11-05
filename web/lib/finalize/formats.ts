@@ -1,5 +1,5 @@
 /**
- * Pure format-selection helpers for the finalize/outputs screen (cmw-ui-wireframes screen 10).
+ * Pure format-selection helpers for the finalize/outputs screen.
  * Kept free of React/fetch so they're trivially unit-tested, mirroring `lib/sources/format.ts`.
  */
 

@@ -1,4 +1,4 @@
-"""Tests for the piece-detail read-model (cmw-ui-wireframes screen 2).
+"""Tests for the piece-detail read-model.
 
 Covers the join logic (``find_piece_collections`` filtering the shared ``WorkStateCollections``
 down to one piece, against both the seed and a real store), the assembly (``build_piece_detail``:
@@ -315,7 +315,7 @@ def test_build_piece_detail_archived_at_none_by_default() -> None:
 
 
 def test_build_piece_detail_surfaces_staleness_timestamps() -> None:
-    """cmw-staleness-timestamps: created_at/updated_at/last_human_touch_at all pass through, and
+    """staleness-timestamps: created_at/updated_at/last_human_touch_at all pass through, and
     a piece with no recorded human touch yet reports it as `None` rather than a machine
     timestamp — the whole point being that the two must never be conflated."""
     created = utcnow() - timedelta(days=10)
@@ -435,7 +435,7 @@ def test_piece_detail_endpoint_seeds_and_reads_real_draft(
     body = resp.json()
     assert body["slug"] == "the-board-on-the-wall"
     # The seed fallback is honest about provenance — the piece-detail screen renders its
-    # "seeded data" badge off this flag (cmw-boss-facing-presentation).
+    # "seeded data" badge off this flag.
     assert body["seeded"] is True
     assert body["stage"] == "review"
     assert body["council"]["aggregate"] == 9.2

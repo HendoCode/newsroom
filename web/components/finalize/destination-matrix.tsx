@@ -6,7 +6,7 @@ import type { PieceDetail } from "@/lib/pieces/types";
 import { cn } from "@/lib/utils";
 
 /**
- * The finalize output chooser as a destination-by-format matrix (cmw-drive-piece-folders,
+ * The finalize output chooser as a destination-by-format matrix (drive-piece-folders,
  * replacing the old FormatSelection + OutputsList pair on this screen): rows are formats
  * (Branded HTML / PDF / Clean Google Doc), columns are destinations (Drive / S3).
  *
@@ -15,7 +15,7 @@ import { cn } from "@/lib/utils";
  * S3 is populated only by the separate, later "Publish" HITL action (piece-detail, not this
  * screen) — its two cells are status/links only, never independently triggerable from here, since
  * finalize has no mechanism to write to S3 on its own. There is no S3×Doc cell: a Doc is a Drive
- * object (Hendo's call).
+ * object.
  *
  * Each produced cell also links straight to the artifact once one exists, folding in what
  * OutputsList/a slice of PublishedOutputs used to show separately — one grid instead of three

@@ -86,7 +86,7 @@ class PublishService:
         self.docs_client = docs_client
         self.machine = machine
         self.pdf_renderer = pdf_renderer
-        # cmw-drive-named-folder-scoping: unconfigured by default — the published Doc keeps
+        # drive-named-folder-scoping: unconfigured by default — the published Doc keeps
         # landing at the Drive root and no Drive copies of html/pdf are made, exactly as before
         # this ticket.
         self.drive_folders = PieceDriveFolders(store, drive_client, root_folder_name)
@@ -208,9 +208,9 @@ class PublishService:
             f"newsroom publish · piece {piece.slug} · revision {piece.latest_revision} · "
             f"release {release}"
         )
-        # cmw-drive-piece-folders: publish's own re-rendered copies go in the piece folder's
+        # drive-piece-folders: publish's own re-rendered copies go in the piece folder's
         # `Published/` subfolder — never the finalize originals living alongside it in the piece
-        # folder, moved or re-parented (Hendo's call: the folder should honestly show both what
+        # folder, moved or re-parented (the product owner's call: the folder should honestly show both what
         # was finalized and what actually shipped, which can differ). A no-op unless
         # GOOGLE_DRIVE_ROOT_FOLDER_NAME is configured — the Doc then lands at the Drive root exactly as
         # before this ticket, and no Drive copies of html/pdf are made.
@@ -222,7 +222,7 @@ class PublishService:
             parent_id=published_folder.file_id if published_folder else None,
         )
         # The same `share_file` call ShareMode.external goes through in app.review.mint — anyone
-        # with the link may read, matching the bucket's own generally-public decision (Hendo, v1).
+        # with the link may read, matching the bucket's own generally-public decision.
         await self.docs_client.share_file(doc.doc_id, emails=None, role="reader")
 
         drive_html_ref = None

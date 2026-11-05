@@ -14,7 +14,7 @@ import { requireUser } from "@/lib/session";
 import { originNarrativeId } from "@/lib/spikes/origin";
 
 /**
- * Piece detail (cmw-ui-wireframes screen 2): one piece across its whole lifecycle, mounted from
+ * Piece detail: one piece across its whole lifecycle, mounted from
  * the dashboard's stage-contextual card actions. Auth-gated like every screen (middleware +
  * `requireUser()`); reads real piece work-state through the data layer via the BFF client
  * (`fetchPieceDetail`, server-only — the same pattern the dashboard's landing page uses).

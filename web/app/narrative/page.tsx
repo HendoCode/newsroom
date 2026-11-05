@@ -4,7 +4,7 @@ import { fetchVoices } from "@/lib/agents-client";
 import { requireUser } from "@/lib/session";
 
 /**
- * Narrative → Oracle entry (use case B; cmw-ui-wireframes screen 8): speak a narrative or run an
+ * Narrative → Oracle entry (use case B): speak a narrative or run an
  * open scan, then run the on-demand Oracle (D7). Reached from the Spikes & Vault browser's "Run
  * Oracle" link and the dashboard — not a top-level nav item, same convention as `/pieces/[id]` and
  * `/spikes/[id]`.

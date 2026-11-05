@@ -154,7 +154,7 @@ You can also drive compose directly with explicit env vars — remember `AUTH_UR
 `WEB_PORT` manually here, since only `scripts/instance.sh` does it for you:
 
 ```bash
-COMPOSE_PROJECT_NAME=cmw-carol WEB_PORT=3300 AGENTS_PORT=3301 MONGO_PORT=3302 \
+COMPOSE_PROJECT_NAME=newsroom-carol WEB_PORT=3300 AGENTS_PORT=3301 MONGO_PORT=3302 \
   AUTH_URL=https://localhost:3300 \
   docker compose up -d
 ```

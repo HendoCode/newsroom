@@ -1,6 +1,6 @@
 /**
  * The desk layout model — the dashboard redesigned as **Inbox + Machine strip + Library**
- * (Concept A "operator desk", cmw-evolution-ux-audit report §6/§7, captain-approved 2026-08-31).
+ * (Concept A "operator desk"; captain-approved 2026-08-31).
  *
  * One shared queue in, three honest sections out:
  *

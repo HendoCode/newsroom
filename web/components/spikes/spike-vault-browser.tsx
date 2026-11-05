@@ -24,7 +24,7 @@ import type { SpikeListResponse } from "@/lib/spikes/types";
 import { cn } from "@/lib/utils";
 
 /**
- * The Spikes & Vault browser (cmw-ui-wireframes screen 5): status tabs over the one shared pool,
+ * The Spikes & Vault browser: status tabs over the one shared pool,
  * the D15 filter bar + convergence sort, the spike table, and a selected-spike detail panel.
  * Ownership is attribution, not a lock (D15) — every row's hand-off action is offered to anyone.
  */

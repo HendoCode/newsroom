@@ -1,4 +1,4 @@
-"""Lessons-call context assembly (cmw-context-assembly report §9; engine/4-lessons-loop.md).
+"""Lessons-call context assembly (engine/4-lessons-loop.md).
 
 Follows the report's recipe exactly:
 

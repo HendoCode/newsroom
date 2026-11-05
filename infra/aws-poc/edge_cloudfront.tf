@@ -74,14 +74,14 @@ data "aws_cloudfront_origin_request_policy" "all_viewer" {
 resource "aws_cloudfront_distribution" "app" {
   enabled         = true
   is_ipv6_enabled = true
-  comment         = "cmw-poc: WAF + ACM-TLS edge in front of the origin instance (see infra/aws-poc/README.md)"
+  comment         = "newsroom-poc: WAF + ACM-TLS edge in front of the origin instance (see infra/aws-poc/README.md)"
   price_class     = var.cloudfront_price_class
   aliases         = [var.edge_domain]
   web_acl_id      = aws_wafv2_web_acl.cloudfront.arn
 
   origin {
     domain_name = local.cloudfront_origin_domain
-    origin_id   = "cmw-poc-app"
+    origin_id   = "newsroom-poc-app"
 
     # http-only, not match-viewer/https-only: this is the "CloudFront -> origin over plain HTTP"
     # decision (README "TLS / origin-protocol approach") — Caddy no longer needs (or has) a public
@@ -103,7 +103,7 @@ resource "aws_cloudfront_distribution" "app" {
   default_cache_behavior {
     allowed_methods  = ["GET", "HEAD", "OPTIONS", "PUT", "POST", "PATCH", "DELETE"]
     cached_methods   = ["GET", "HEAD"]
-    target_origin_id = "cmw-poc-app"
+    target_origin_id = "newsroom-poc-app"
 
     viewer_protocol_policy = "redirect-to-https"
     compress               = true
@@ -128,6 +128,6 @@ resource "aws_cloudfront_distribution" "app" {
   }
 
   tags = {
-    Name = "cmw-poc"
+    Name = "newsroom-poc"
   }
 }

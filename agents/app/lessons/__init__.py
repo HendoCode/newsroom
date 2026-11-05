@@ -1,4 +1,4 @@
-"""The lessons loop (domain model §1.18; D12; cmw-context-assembly report §9).
+"""The lessons loop (domain model §1.18; D12).
 
 Runs in a piece's ``lessons`` stage: diff the machine's final draft against the author's
 actually-published/edited version (structurally, via Git), propose generalizable per-voice lessons

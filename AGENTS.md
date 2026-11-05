@@ -41,8 +41,8 @@ The webapp is published as a single clean init commit into a fresh public repo; 
 
 ## Infra posture
 
-- **No integration/test host currently exists.** The old cmw-test LXC was destroyed on 2026-10-22 (removed from `proxmox-infra` in its #9); don't follow older notes or tickets that redeploy to it.
-- `infra/aws-poc/` is a **sanitized historical artifact** with fake AWS account / Route53 zone placeholders. The live DNS posture is Cloudflare + OpenTofu on `hendocode.com`, maintained in the separate `dns-infra` project. Do not attempt a real `tofu apply` from these files as written.
+- **No integration/test host currently exists.** Don't follow older notes or tickets that redeploy to a retired test host.
+- `infra/aws-poc/` is a **sanitized historical artifact** with fake AWS account / Route53 zone placeholders. The live DNS posture is Cloudflare + OpenTofu on `hendocode.com`, maintained outside this repo. Do not attempt a real `tofu apply` from these files as written.
 - `deploy/security-gate.sh` is a Trivy scan gate for the historical AWS POC; the ECR registry and account ID are placeholders.
 
 ## Maintaining this file

@@ -19,7 +19,7 @@ async function readErrorMessage(res: Response, fallback: string): Promise<string
 
 /**
  * The form behind "Start another round of interviews" (review's secondary action,
- * `lib/pieces/actions.ts`) — Hendo's settled entry point for D16a's info-gap re-interview edge
+ * `lib/pieces/actions.ts`) — the product owner's settled entry point for D16a's info-gap re-interview edge
  * (`route_to_interview`, legal only from council/review). Two real calls, in this order:
  *
  * 1. `POST /api/pieces/{id}/interviews` — opens a NEW Interview session (this round's own

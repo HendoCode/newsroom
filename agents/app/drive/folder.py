@@ -1,4 +1,4 @@
-"""Per-piece Google Drive folder scoped under one named My-Drive root (cmw-drive-named-folder-scoping).
+"""Per-piece Google Drive folder scoped under one named My-Drive root.
 
 Every Google artifact a piece produces — each review-round Doc (`app.review.mint`), the finalized
 clean Doc + branded HTML/PDF (`app.render.step`), and publish's own re-rendered copies
@@ -69,7 +69,7 @@ class DriveFolderClient(Protocol):
         self, name: str, content: bytes, mime_type: str, *, parent_id: str
     ) -> DriveFileRef:
         """Upload ``content`` as an ordinary Drive file (never converted to a Google format —
-        Hendo's call) named ``name`` under ``parent_id``, and return its id/link."""
+        the product owner's call) named ``name`` under ``parent_id``, and return its id/link."""
 
 
 class PieceDriveFolders:

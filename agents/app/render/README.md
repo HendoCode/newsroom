@@ -35,7 +35,7 @@ pack supplies when a brain carries it.
 
 Outputs are written to the piece's `drafts/<slug>/finalized/` folder (branded.html /branded.pdf /
 google-doc.json) — **git-ignored**, never committed, since the render is disposable (§1.19). This
-local copy is instance-local and was, until cmw-drive-piece-folders, the *only* copy — genuinely
+local copy is instance-local and was, until drive-piece-folders, the *only* copy — genuinely
 unreachable outside the container. That ticket also uploads real, unconverted `branded.html`/
 `branded.pdf` copies (and parents the clean Doc) into the piece's named My-Drive-root folder, gated behind
 `GOOGLE_DRIVE_ROOT_FOLDER_NAME` — see `app/drive/README.md` for the folder design (the app

@@ -12,7 +12,7 @@ import type { MintReviewResult, ShareMode } from "@/lib/review-round/types";
 import { cn } from "@/lib/utils";
 
 /**
- * Mint panel (cmw-ui-wireframes screen 04; D4/D11): freeze the current revision into an
+ * Mint panel (D4/D11): freeze the current revision into an
  * internal/external Google Doc, opening a new review round. External sharing HARD-BLOCKS
  * on open clearances (disclosure/clearance risk — engine/feedback-intake.md); ordinary
  * information gaps warn only (D11 v1). The banner below is shown as soon as external is

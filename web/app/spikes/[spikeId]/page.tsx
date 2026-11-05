@@ -6,7 +6,7 @@ import { AgentsRequestError, fetchPersonas, fetchSpike, fetchVoices } from "@/li
 import { requireUser } from "@/lib/session";
 
 /**
- * Spike → kickoff (use case C; cmw-ui-wireframes screen 6): pick a spike, create its Piece, assign
+ * Spike → kickoff (use case C): pick a spike, create its Piece, assign
  * an internal expert, hand it the agent's pre-selected interviewer personas, and generate a
  * shareable interview link. The dashboard's "Assign expert & kick off" action on a spike card
  * routes here. Auth-gated exactly like every screen (middleware + `requireUser()`).

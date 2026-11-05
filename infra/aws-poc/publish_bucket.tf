@@ -1,6 +1,6 @@
 # Durable public storage for a piece's PUBLISHED outputs (finalized → published HITL button —
 # see agents/app/publish/README.md and docs/design.md's D13 note). A SEPARATE bucket from
-# `cmw-aws-poc-tofu-state-${account_id}` (infra/aws-poc-state-backend/state_bucket.tf) — never
+# `newsroom-aws-poc-tofu-state-${account_id}` (infra/aws-poc-state-backend/state_bucket.tf) — never
 # conflate OpenTofu's own state with application data.
 #
 # Unconditional, NOT count-conditional on any variable — an explicit captain requirement. This is
@@ -12,7 +12,7 @@
 # `prevent_destroy = true` mirrors the existing durable-storage idiom in this stack
 # (infra/aws-poc-state-backend/state_bucket.tf's `aws_s3_bucket.tofu_state`,
 # compute.tf's `aws_ebs_volume.mongo_data`) — a plain `tofu destroy` refuses to touch it. Unlike
-# those two, this bucket is also deliberately GENERALLY PUBLIC by policy (Hendo, v1 — "happy with
+# those two, this bucket is also deliberately GENERALLY PUBLIC by policy (the product owner, v1 — "happy with
 # them landing in an s3 bucket... let's treat the published assets... as generally public. We can
 # iterate that decision later, and easily"): no signed URLs, no unguessable keys, no per-object
 # ACL layer. Tightening this later is cheap; it just can't un-share a URL already circulating —
@@ -21,7 +21,7 @@
 # NEW immutable key per publish (never overwritten in place), so an already-shared link survives a
 # later re-render, re-publish, template-version bump, or Git history rewrite.
 resource "aws_s3_bucket" "published_assets" {
-  bucket = "cmw-poc-published-assets-${data.aws_caller_identity.current.account_id}"
+  bucket = "newsroom-poc-published-assets-${data.aws_caller_identity.current.account_id}"
 
   lifecycle {
     prevent_destroy = true
@@ -75,7 +75,7 @@ resource "aws_s3_bucket_server_side_encryption_configuration" "published_assets"
   }
 }
 
-# Public GetObject only — deliberately NEVER s3:ListBucket. "Bucket listing off" (Hendo) isn't an
+# Public GetObject only — deliberately NEVER s3:ListBucket. "Bucket listing off" isn't an
 # access-control ask (the objects are public either way); it just stops the bucket becoming a
 # browsable index of every piece ever published. A caller who doesn't already have a specific key
 # (from the Piece's own recorded `published_html_url`/`published_pdf_url`/`published_doc`, or a

@@ -195,7 +195,7 @@ async def test_incorporate_happy_path_applies_fixes_routes_others_and_archives(
     assert any("committed revision" in n for n in result.notes)
 
 
-# --- cmw-internal-round-editorial-diff-asymmetry: the editorial block must never read as reviewer
+# --- internal-round-editorial-diff-asymmetry: the editorial block must never read as reviewer
 # feedback on an internal round, and external rounds must stay unaffected -------------------------
 
 
@@ -361,7 +361,7 @@ async def test_incorporate_failed_rewrite_leaves_no_partial_routing(store, git_b
     assert updated.latest_revision is None
 
 
-# --- review-edit-sourced lesson proposals (cmw-reviewer-can-edit-doc) ------------------------
+# --- review-edit-sourced lesson proposals ------------------------
 
 EDITED_PHRASE_OLD = (
     "A schedule is not a list of sailings. It is an argument about who is where, and the board was\n"
@@ -509,12 +509,12 @@ async def test_incorporate_failure_flags_piece_back_to_review(store, git_brain, 
 async def test_incorporate_brain_authored_piece_without_transcript_completes_reviews_done(
     store, git_brain, content_store
 ):
-    """cmw-lessons-loop Ship 1 regression — the live F1 permanent failure: every brain-authored
+    """lessons-loop Ship 1 regression — the live F1 permanent failure: every brain-authored
     (brain_synced) piece reaches `review` with draft prose but NO transcript.md by design, and the
-    rewrite's missing-transcript guard (added by cmw-incorporate-missing-transcript when the
+    rewrite's missing-transcript guard (added by incorporate-missing-transcript when the
     state looked impossible) turned every reviews-done on such a piece into a permanent
     `retryable=False` failure — verified live on `auditing-the-wrong-line-item` (scout report
-    cmw-lessons-loop). The rewrite must now ground in the existing revision + sources.md with the
+    lessons-loop). The rewrite must now ground in the existing revision + sources.md with the
     shared invent-nothing block and complete the round normally."""
     content_store.commit_revision(
         "seeded-no-transcript",

@@ -26,7 +26,7 @@ const CONFIG_LIST_LABEL: Partial<Record<SourceKind, string>> = {
 
 // Kind-specific placeholder — the old shared "Folder IDs, channel names, or feed URLs" text gave
 // no indication that a pasted Google Drive folder LINK (what a normal business user actually has,
-// not the bare id inside it) was even the right thing to paste (cmw-first-run-ux-batch item 3).
+// not the bare id inside it) was even the right thing to paste.
 const CONFIG_LIST_PLACEHOLDER: Partial<Record<SourceKind, string>> = {
   gdrive: "Paste the folder's link, e.g. https://drive.google.com/drive/folders/1AbCdEf… — one per line",
   slack: "Channel names, e.g. #partner-eng — one per line",
@@ -50,7 +50,7 @@ export interface SourceFormValues {
 }
 
 /**
- * Add / edit a Green connector, or the LinkedIn/X clip-in source (cmw-ui-wireframes screen 7). This
+ * Add / edit a Green connector, or the LinkedIn/X clip-in source. This
  * form sets WHAT to read — kind, watched folders/channels/feeds, classification, lookback window —
  * never secrets; credentials are provisioned server-side by an admin (D14). `kind` is locked once a
  * source exists (the backend treats it as immutable — retire and re-add to change it).

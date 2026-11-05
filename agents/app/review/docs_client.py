@@ -2,7 +2,7 @@
 
 Item 7 / feedback-intake.md's round-trip is four Drive/Docs calls: push (``createDocFromHTML``) →
 share (``shareFile``, role="writer" — reviewers edit the Doc directly, not just comment;
-cmw-reviewer-can-edit-doc) → collect (``listComments``) → close
+reviewer-can-edit-doc) → collect (``listComments``) → close
 (``replyToComment``). The finalize render (D13, Item 5) already built the create-with-conversion
 push (:class:`app.render.docs_export.HttpGoogleDocsClient`) over the same server-side incremental
 OAuth grant as the Drive connector; :class:`HttpReviewDocsClient` reuses that exact push (no second
@@ -14,7 +14,7 @@ carrying real structure (headings/paragraph breaks/emphasis — decision-structu
 just flattened text: an earlier version of this method exported ``mimeType=text/plain`` instead,
 which destroyed that structure before the diff ever ran (see :mod:`app.review.structure`).
 
-Note (cmw-reviewer-can-edit-doc, Hendo): a diff-detected edit is rewritten in voice rather than
+Note: a diff-detected edit is rewritten in voice rather than
 applied verbatim, and has no comment thread to reply to (``comment_id=None`` — see
 :mod:`app.review.collect`), so the reviewer gets no acknowledgement that their edit was seen. This
 is a deliberate, accepted trade-off ("the lack of reviewer edits and comments [being acknowledged]
@@ -108,7 +108,7 @@ class HttpReviewDocsClient(HttpGoogleDocsClient):
             )
             for body in grants:
                 # supportsAllDrives=true is required to grant permissions on a file living in a
-                # Shared Drive (cmw-drive-piece-folders — review Docs may now be parented into the
+                # Shared Drive (drive-piece-folders — review Docs may now be parented into the
                 # piece's Drive folder); harmless/no-op for a plain My Drive file, so always sent.
                 resp = await client.post(
                     url, params={"supportsAllDrives": "true"}, headers=headers, json=body

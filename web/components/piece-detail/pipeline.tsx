@@ -25,7 +25,7 @@ import type { PieceDetail, PieceStage } from "@/lib/pieces/types";
 import { cn } from "@/lib/utils";
 
 /**
- * The unified Pipeline block (cmw-pipeline-depiction-design): the one place a piece's lifecycle,
+ * The unified Pipeline block: the one place a piece's lifecycle,
  * its stage-contextual call to action, and any failure/decision state are drawn — replacing the
  * separate Lifecycle rail, Next-action card, top-of-page failure banner, and Stage→action
  * reference card that used to each render `Piece.stage` independently with no cross-reference
@@ -264,7 +264,7 @@ function PipelineCta({
 }) {
   const [pending, setPending] = React.useState<string | null>(null);
   const [error, setError] = React.useState<string | null>(null);
-  // Explicit success readout (cmw-boss-facing-presentation, MEDIUM): the batch-chain POSTs block
+  // Explicit success readout: the batch-chain POSTs block
   // until the job(s) finish and the piece is refetched — the status line names that outcome
   // instead of leaving the user to infer it from the rail alone. Cleared on the next fire.
   const [success, setSuccess] = React.useState<string | null>(null);

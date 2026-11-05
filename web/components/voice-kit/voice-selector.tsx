@@ -2,7 +2,7 @@
 
 import { Button } from "@/components/ui/button";
 
-/** The voice selector (cmw-ui-wireframes screen 11): demo-mira / demo-dana / demo-dana, and any other
+/** The voice selector: demo-mira / demo-dana / demo-dana, and any other
  * voice pack the brain holds. Flat — any employee may select and edit any voice (D12). */
 export function VoiceSelector({
   voices,

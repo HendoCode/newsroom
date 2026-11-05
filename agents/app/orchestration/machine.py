@@ -25,7 +25,7 @@ Illegal transitions are rejected two ways: a human trigger fired from the wrong 
 :class:`IllegalTrigger`, and the underlying stage write is guarded by the repository's
 ``can_transition`` check.
 
-**Staleness triage** (cmw-staleness-timestamps): every one of the 10 human-facing methods below
+**Staleness triage**: every one of the 10 human-facing methods below
 (the three batch triggers via :meth:`_trigger`, :meth:`retry_finalize`, plus
 :meth:`capture_lessons`/:meth:`finish_lessons`/:meth:`publish`/:meth:`resume` via :meth:`_advance`,
 plus :meth:`route_to_interview`/:meth:`pause` directly) stamps ``Piece.last_human_touch_at`` on

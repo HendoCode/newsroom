@@ -18,7 +18,7 @@ The round-trip, end to end, per round:
 4. **Apply** — the ``editorial-fix`` items go to the Opus rewrite (:mod:`app.review.rewrite`); a new
    Revision commits to Git **only on success** (D4/D16b), and the open-GAP count mirrors onto the
    Piece the same way the draft step does.
-4a. **Propose lessons from applied edits** (cmw-reviewer-can-edit-doc; reviewers can now edit the
+4a. **Propose lessons from applied edits** (reviewer-can-edit-doc; reviewers can now edit the
    Doc directly, not just comment on it — :mod:`app.review.mint`): among the applied fixes, the
    diff-detected ones (``channel="google-docs-edit"``, a demonstrated rewrite, not a plain
    instruction) go to :meth:`~app.lessons.service.LessonsService.propose_from_review_edits`.
@@ -29,8 +29,8 @@ The round-trip, end to end, per round:
 6. **Close the loop** — ``replyToComment`` on every Doc-anchored item, best-effort (a Docs hiccup
    here never fails the whole job — mirrors Item 4's "one editor's failure completes-with-gap").
    A diff-detected edit has no comment thread to reply to (``comment_id=None``) and gets no
-   individual or summary acknowledgement at all — a deliberate, accepted trade-off (Hendo,
-   cmw-reviewer-can-edit-doc: "the lack of reviewer edits and comments [being acknowledged] is OK
+   individual or summary acknowledgement at all — a deliberate, accepted trade-off (the product owner,
+   reviewer-can-edit-doc: "the lack of reviewer edits and comments [being acknowledged] is OK
    for the org I work for"), not an oversight.
 7. **Archive the round** — the Doc stops being authoritative; the routing log is appended to
    :class:`~app.models.ReviewRound.routing_log` for the piece-detail activity log to read back.
@@ -235,7 +235,7 @@ class IncorporateStep(BatchStep):
         notes: list[str],
     ) -> None:
         """Point 4a of the module docstring: propose lessons from this round's diff-detected,
-        applied edits (Hendo, cmw-reviewer-can-edit-doc — "the edit is described to the model,
+        applied edits (the product owner, reviewer-can-edit-doc — "the edit is described to the model,
         which rewrites it in voice, and proposes a lesson"). Best-effort, like
         :meth:`_close_the_loop`'s ``reply_to_comment`` — this runs strictly *after* the round's
         revision/FeedbackItems already committed above, so a raise here (including a

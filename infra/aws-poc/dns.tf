@@ -1,14 +1,14 @@
 # DNS placeholder for the legacy AWS POC infra.
 #
-# The live Content Machine DNS posture is Cloudflare-managed OpenTofu in the separate
-# `dns-infra` project (`hendocode.com`). This stack previously looked up a Route53 zone
+# The live Newsroom DNS posture is Cloudflare-managed OpenTofu, maintained outside this repo
+# (`hendocode.com`). This stack previously looked up a Route53 zone
 # for ACM validation; the zone ID below is replaced with a clearly-fake placeholder.
 # Only this app's own record sets were written into the looked-up zone.
 #
-# See the `dns-infra` project for the real-world design: Cloudflare zone + GitHub Pages
-# apex records, with `tofu plan` gating and no secrets in code.
+# The real-world design is a Cloudflare zone + GitHub Pages apex records, with `tofu plan`
+# gating and no secrets in code.
 data "aws_route53_zone" "app" {
-  zone_id = "<ROUTE53_ZONE_ID>" # placeholder; live DNS lives in dns-infra (hendocode.com)
+  zone_id = "<ROUTE53_ZONE_ID>" # placeholder; live DNS is managed outside this repo (hendocode.com)
 }
 
 # var.edge_domain is the FULL hostname of ONE environment — prod is the apex "example.com" (this

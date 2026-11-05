@@ -131,7 +131,7 @@ export interface CommandReceipt {
  * per that enum's `str, Enum` values), not the Python member name.
  *
  * This union was hand-written in PR #120 against a guessed contract never checked against the
- * real backend enum (built in PR #117) — see `cmw-fix-workflow-contract-drift`'s launch brief for
+ * real backend enum (built in PR #117) — see `fix-workflow-contract-drift`'s launch brief for
  * the full diagnosis. Fixed here to the real 14-member backend set for every value with an
  * unambiguous backend counterpart: `answer_interview` / `close_review_round` / `resolve_lesson`
  * were guessed names for what are really `answer-question` / `close-review` / `decide-lesson`
@@ -144,7 +144,7 @@ export interface CommandReceipt {
  * 14-value backend enum matches either by name or by intent) and are pure frontend inventions.
  * Per this ticket's launch brief, a value with no real backend counterpart is a genuine product
  * decision (build the backend kind for real, or drop the frontend concept), not a pure bug fix —
- * flagged via this ticket's `needs-decision` status line and left untouched pending Hendo's call.
+ * flagged via this ticket's `needs-decision` status line and left untouched pending the product owner's call.
  * Neither is currently compared/branched on anywhere. User-facing copy goes through
  * `lib/content-workflow/labels.ts` (`obligationKindLabel`) so a raw kind never greets a teammate.
  */
@@ -201,15 +201,15 @@ export interface HumanObligation {
 /**
  * Mirrors `agents/app/content_workflow/models.py`'s `CommandKind` 1:1 — same discipline as
  * `HumanObligationKind` above: every literal is the real backend wire VALUE (hyphenated), not a
- * guessed name/format. Reconciled in `cmw-fix-workflow-contract-drift` (PR #136):
+ * guessed name/format. Reconciled in `fix-workflow-contract-drift` (PR #136):
  * `"commit_idea"` -> `"commit-idea"` (pure format fix — same intent, wrong separator);
  * `"declare_sufficiency"` -> `"declare-input-sufficient"` and `"accept_final"` ->
  * `"accept-final-revision"` (pure renames — different name, unambiguous same intent);
  * `"authorize_release"` already matched the backend NAME and now also matches its real
  * hyphenated VALUE.
  *
- * The remaining orphans were reconciled in `cmw-reconcile-command-gaps` so this union is a
- * 1:1 mirror of the backend enum (seven members after `cmw-release-semantics-impl` added
+ * The remaining orphans were reconciled in `reconcile-command-gaps` so this union is a
+ * 1:1 mirror of the backend enum (seven members after `release-semantics-impl` added
  * `record-trivial-edit-waiver`):
  *   - `"record-experiential-waiver"` and `"commission-derivative"` are real backend commands
  *     (both are genuinely sent over the wire in `inspect()`'s `available_commands`) that had no
@@ -392,7 +392,7 @@ export interface PublicationReleaseView {
   doc_url?: string | null;
 }
 
-/** The AuthorizeRelease gate for one piece (cmw-release-semantics-impl). */
+/** The AuthorizeRelease gate for one piece. */
 export interface ReleaseGateView {
   piece_id: string;
   accepted_revision?: string | null;

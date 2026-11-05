@@ -4,7 +4,7 @@ import { AgentsRequestError, mintSpikeFromNarrative } from "@/lib/agents-client"
 import { getCurrentUser } from "@/lib/session";
 
 /**
- * BFF route for the "new piece from my own idea" fast path (cmw-narrative-first-entry-point):
+ * BFF route for the "new piece from my own idea" fast path:
  * mint a Spike straight from a Narrative, no Oracle ranking run. `creator` is attribution,
  * defaulted server-side to the signed-in user — same convention as `/api/narratives`'s `author`
  * and `/api/spikes/{id}/pick`'s `owner`.

@@ -1,5 +1,5 @@
 /**
- * Stage-contextual primary action for a queue card (cmw-ui-wireframes §6.2 — "what do I do next"
+ * Stage-contextual primary action for a queue card (UI wireframes §6.2 — "what do I do next"
  * must be unambiguous per stage) plus human-readable stage/status labels.
  *
  * The dashboard is the only screen built in this ticket; every other destination is a later ticket.
@@ -31,7 +31,7 @@ export function primaryAction(
   email: string | null | undefined,
 ): PrimaryAction {
   if (item.kind === "spike") {
-    // A picked spike already has its piece (and, per cmw-piece-interviewing-without-interview, its
+    // A picked spike already has its piece (and, per piece-interviewing-without-interview, its
     // Interview) — "Assign expert & kick off" is the wrong label for it: it reads as an
     // assignment step still to do, when the assignment already happened. Reserve that label for a
     // spike nobody has picked yet.

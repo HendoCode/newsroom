@@ -1,4 +1,4 @@
-"""Piece-detail read-model (cmw-ui-wireframes §4 screen 2): one piece, its whole lifecycle.
+"""Piece-detail read-model: one piece, its whole lifecycle.
 
 Assembles a single :class:`~app.schemas.PieceDetailResponse` by joining the piece's work-state
 (Mongo) against the structured Council/ReviewRound/Interview/Lesson/Job records that belong to it,
@@ -176,7 +176,7 @@ def _lesson_out(lesson: Lesson) -> LessonOut:
 
 # --- activity/routing log ------------------------------------------------------------------
 #
-# There is no stored "activity" entity in the domain model (cmw-domain-model report §1) — the
+# There is no stored "activity" entity in the domain model — the
 # wireframe's log is a narrative view over records that already exist. We synthesize it from the
 # same joined collections rather than inventing a new store: one entry per finished job, per
 # council pass, per review-round open/close, per completed interview.

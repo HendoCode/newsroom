@@ -5,7 +5,7 @@ three-container stack (`web` / `agents` / `mongo`) as local dev, plus a Caddy co
 that's the ONLY thing on that instance able to talk to `web` — reached exclusively through a
 CloudFront + AWS WAF edge in front of it (see "Edge: CloudFront + AWS WAF" below), never directly
 from the internet. The app's own sign-in (`docs/auth.md`) remains the innermost access gate; an
-edge basic-auth password used to sit in front of that too until `cmw-remove-edge-basic-auth`
+edge basic-auth password used to sit in front of that too until `remove-edge-basic-auth`
 removed it as redundant. Built from `the internal deploy-scope report`
 (architecture/cost/decisions), the actual secrets-shim contract landing in the sibling PR "Add
 provider-agnostic, just-in-time secrets shim" (`agents/app/secrets/`, `web/lib/secrets/`), and
@@ -17,12 +17,12 @@ CloudFront/WAF, origin SG open to `0.0.0.0/0`) was applied and later compromised
 on that open origin — see "Edge: CloudFront + AWS WAF" below. The CloudFront/WAF/origin-lock changes
 in this Terraform (`waf.tf`, `edge_cloudfront.tf`, the
 `security.tf`/`secrets.tf`/`templates/` edits alongside them), plus the subsequent move to
-Cloudflare-managed DNS on `hendocode.com` (managed in the separate `dns-infra` project). The AWS
+Cloudflare-managed DNS on `hendocode.com` (managed outside this repo). The AWS
 POC code here is retained as a sanitized reference with fake placeholders; see
 "DNS posture: Cloudflare + OpenTofu on `hendocode.com`" below.
 
 **This directory is now a historical / portfolio artifact.** The live edge and DNS posture has
-moved to Cloudflare + GitHub Pages (`hendocode.com`, via the `dns-infra` project). The Route53
+moved to Cloudflare + GitHub Pages (`hendocode.com`, managed outside this repo). The Route53
 zone ID and AWS account identifiers in this tree have been replaced with placeholders; do not
 attempt a real `tofu apply` from these files as written.
 
@@ -37,7 +37,7 @@ attempt a real `tofu apply` from these files as written.
 - CloudFront distribution + AWS WAF v2 web ACL in front of the instance, with ACM TLS — see "Edge:
   CloudFront + AWS WAF" below for the full design.
 - Legacy Route53 records (`dns.tf`) are retained as a sanitized reference only. The live DNS
-  posture is Cloudflare-managed OpenTofu on `hendocode.com`; see the `dns-infra` project and
+  posture is Cloudflare-managed OpenTofu on `hendocode.com`; see
   "DNS posture: Cloudflare + OpenTofu on `hendocode.com`" below.
 - 1× separate, persistent `aws_ebs_volume` for Mongo's data directory (NOT the root volume) +
   `aws_volume_attachment`, so work-state survives an instance replacement — `prevent_destroy`
@@ -54,7 +54,7 @@ attempt a real `tofu apply` from these files as written.
   default blank leaves the parameter absent entirely, which the app's secrets shim treats the same
   as a blank value: a fully-degraded no-op, same as local dev with no brain configured. Set the var
   or `put-parameter` out-of-band, then re-apply, to enable the `HendoCode/masthead`
-  clone-on-boot `cmw-brain-split` added). `BRAIN_DEPLOY_KEY` holds an SSH deploy-key private key,
+  clone-on-boot `brain-split` added). `BRAIN_DEPLOY_KEY` holds an SSH deploy-key private key,
   not a PAT — see "Brain push credential" below for generate/install/store steps.
   `GOOGLE_OAUTH_CLIENT_ID`/`GOOGLE_OAUTH_CLIENT_SECRET`/`GOOGLE_OAUTH_REFRESH_TOKEN` (the Drive
   connector + Google Docs export grant `agents` resolves live via the secrets shim, same
@@ -64,13 +64,13 @@ attempt a real `tofu apply` from these files as written.
   / `GOOGLE_CLIENT_SECRET` are **not created by this Terraform at all** — they're populated
   out-of-band (like the Anthropic key) and merely read by `user-data`; see "Auth: Google OAuth
   restricted to a single domain" below.
-- 2× `aws_ecr_repository` (`cmw-poc-web`, `cmw-poc-agents`, `force_delete = true`).
+- 2× `aws_ecr_repository` (`newsroom-poc-web`, `newsroom-poc-agents`, `force_delete = true`).
 - 1× `aws_s3_bucket.published_assets` (`publish_bucket.tf`) for the `finalized → published` HITL
   button's durable outputs (see `agents/app/publish/README.md`) — versioned, `prevent_destroy`
   (same durable-storage idiom as `aws_ebs_volume.mongo_data` below), **unconditional** (not
   `count`-gated on any variable, unlike the five optional SSM secrets below — a captain
   requirement). Deliberately **generally public by bucket policy**: `s3:GetObject` for anyone,
-  bucket listing (`s3:ListBucket`) never granted, no signed URLs/unguessable keys (Hendo's
+  bucket listing (`s3:ListBucket`) never granted, no signed URLs/unguessable keys (the product owner's
   explicit v1 call — see "Sharp edges" below for why that's harder to walk back than it looks).
   The instance role gets a matching `s3:PutObject`-only inline policy (`iam.tf`) — reads never go
   through the role, only through the public policy.
@@ -120,10 +120,9 @@ edits alongside them):
 
 ### DNS posture: Cloudflare + OpenTofu on `hendocode.com` (live); Route53 placeholder here
 
-The **current** Content Machine DNS story lives in the separate **`dns-infra`** project:
+The **current** Newsroom DNS setup is maintained outside this repo:
 Cloudflare-managed records for `hendocode.com`, driven by OpenTofu, with plan-only gating
-and credentials kept out of code. See `dns-infra/README.md` for the zone inventory,
-record types, import strategy, and exact `tofu plan`/`apply` commands.
+and credentials kept out of code.
 
 This AWS POC stack retains the historical Route53 resources in `dns.tf` as an
 illustrative artifact, but the real zone ID and account identifiers have been replaced
@@ -132,7 +131,7 @@ path is no longer the live posture; do not copy these identifiers into a real de
 
 The original design in `dns.tf` looked up an `aws_route53_zone` by zone ID and wrote
 ACM-validation CNAMEs, a public CloudFront ALIAS, and an origin A record. That flow has
-been superseded by the Cloudflare/GitHub Pages setup in `dns-infra`; what remains here is
+been superseded by the Cloudflare/GitHub Pages setup; what remains here is
 a sanitized snapshot for reference only.
 
 ### TLS / origin-protocol approach (resolved)
@@ -178,7 +177,7 @@ resolves to the old, now-dead IP before resolvers catch up.
 
 ### Follow-up not done here (documented, not built — see task brief's "optional stretch")
 
-Moving `cmw-poc-published-assets` (`publish_bucket.tf`) behind a second CloudFront distribution +
+Moving `newsroom-poc-published-assets` (`publish_bucket.tf`) behind a second CloudFront distribution +
 Origin Access Control (private bucket, no public bucket policy) would let the account-level S3
 Block-Public-Access be fully locked — closing the one caveat `publish_bucket.tf`'s own comments
 already flag ("a one-way door in practice"). Left as a follow-up rather than folded into this PR:
@@ -217,7 +216,7 @@ separate manual DNS step folded into this sequence.
     docker buildx build --platform linux/amd64 --build-arg BUILD_COMMIT=$(git rev-parse HEAD) -t "$WEB_REPO:latest" --push ./web
     docker buildx build --platform linux/amd64 --build-arg BUILD_COMMIT=$(git rev-parse HEAD) -t "$AGENTS_REPO:latest" --push ./agents
     ```
-The `BUILD_COMMIT` arg bakes only the non-sensitive commit SHA (plus short form and UTC build time) into static metadata files inside each image (`web/public/.well-known/cmw-build.json` and `agents/cmw-build.json`). After deploy the public unauthenticated endpoints `https://<edge-domain>/.well-known/cmw-build.json` (web only) and `https://<edge-domain>/api/build` (aggregated web+agents) expose exactly those fields. See AGENTS.md for the safety note.
+The `BUILD_COMMIT` arg bakes only the non-sensitive commit SHA (plus short form and UTC build time) into static metadata files inside each image (`web/public/.well-known/newsroom-build.json` and `agents/newsroom-build.json`). After deploy the public unauthenticated endpoints `https://<edge-domain>/.well-known/newsroom-build.json` (web only) and `https://<edge-domain>/api/build` (aggregated web+agents) expose exactly those fields. See AGENTS.md for the safety note.
 3. **Full apply** (everything else — instance, SG, IAM, secrets, the persistent
    volume, the WAF web ACL, the CloudFront distribution, and — since DNS/ACM are now fully
    Terraform-managed via the account's `example.com` zone (see "DNS + ACM: fully automated via
@@ -321,24 +320,24 @@ file for the lifetime of the container.
 1. **Generate a dedicated ed25519 keypair** (do this once, not on the instance — a laptop or CI
    runner is fine; nothing here needs the instance to have generated it):
    ```
-   ssh-keygen -t ed25519 -C "cmw-brain-deploy-key" -f ./cmw-brain-deploy-key -N ""
+   ssh-keygen -t ed25519 -C "newsroom-brain-deploy-key" -f ./newsroom-brain-deploy-key -N ""
    ```
-   This writes `cmw-brain-deploy-key` (private) and `cmw-brain-deploy-key.pub` (public).
+   This writes `newsroom-brain-deploy-key` (private) and `newsroom-brain-deploy-key.pub` (public).
 2. **Install the public key on the brain repo** — `HendoCode/masthead` → Settings →
-   Deploy keys → Add deploy key → paste `cmw-brain-deploy-key.pub` → check **Allow write access**
+   Deploy keys → Add deploy key → paste `newsroom-brain-deploy-key.pub` → check **Allow write access**
    (unchecked defaults to read-only, which breaks `GitRepo.commit()`'s auto-push) → Add key.
 3. **Store the private key in SSM** (never in a committed file, never as a `tofu` variable/CLI
    argument):
    ```
    aws ssm put-parameter --name /newsroom/BRAIN_DEPLOY_KEY \
-     --type SecureString --overwrite --value "$(cat ./cmw-brain-deploy-key)"
+     --type SecureString --overwrite --value "$(cat ./newsroom-brain-deploy-key)"
    ```
    Also populate `BRAIN_REPO_URL` with the **SSH** clone URL (not HTTPS):
    ```
    aws ssm put-parameter --name /newsroom/BRAIN_REPO_URL \
      --type SecureString --overwrite --value "git@github.com:HendoCode/masthead.git"
    ```
-   Then delete the local private key file (`rm ./cmw-brain-deploy-key*`) — SSM is its only home
+   Then delete the local private key file (`rm ./newsroom-brain-deploy-key*`) — SSM is its only home
    from here on.
 4. Restart/replace the `agents` container (or wait for the next boot) to pick up the new
    credential — `ensure_brain_available` clones/pulls over SSH using
@@ -524,7 +523,7 @@ report) and instead pulls prebuilt `web`/`agents` images from ECR, so
 `infra/aws-poc/templates/` carries its own self-contained compose file + Caddyfile that doesn't
 depend on a checkout being present. Both converge on `admin off` and neither adds a gate beyond
 the app's own sign-in (`docs/auth.md`) — an edge basic-auth password used to sit in front of both
-until `cmw-remove-edge-basic-auth` removed it as redundant. They now also converge on `auto_https
+until `remove-edge-basic-auth` removed it as redundant. They now also converge on `auto_https
 off`, though for different reasons: the root overlay serves a bare IP with no domain, so ACME was
 never viable there in the first place; this deploy has a real domain but, since the CloudFront edge
 lock ("Edge: CloudFront + AWS WAF" above), Caddy here no longer has a public port to serve ACME
@@ -553,7 +552,7 @@ aws ssm start-session --target "$(tofu output -raw instance_id)" --region us-eas
   --parameters '{"portNumber":["3000"],"localPortNumber":["3000"]}'
 ```
 
-User-data's own log is at `/var/log/cmw-poc-user-data.log` on the instance.
+User-data's own log is at `/var/log/newsroom-poc-user-data.log` on the instance.
 
 ## Sharp edges
 
@@ -639,7 +638,7 @@ User-data's own log is at `/var/log/cmw-poc-user-data.log` on the instance.
   can be fully locked) — see "Edge: CloudFront + AWS WAF" → "Follow-up not done here" above for why
   it's deliberately not bundled into the CloudFront/WAF PR that added this section.
 - **The agent-brain-mount hold resolved differently than the scoping report's §5 recommendation
-  predicted** — not "bake into the image at build," but `cmw-brain-split`'s brain-as-its-own-repo
+  predicted** — not "bake into the image at build," but `brain-split`'s brain-as-its-own-repo
   clone-on-boot (`HendoCode/masthead`, `app.git.ensure_brain_available`). This
   Terraform provisions exactly what that mechanism needs (`BRAIN_REPO_URL`/`BRAIN_DEPLOY_KEY` in
   SSM, `BRAIN_ROOT=/brain` on the `agents` container) — see "Brain push credential" above for

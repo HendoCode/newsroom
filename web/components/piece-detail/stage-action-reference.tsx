@@ -6,7 +6,7 @@ import { cn } from "@/lib/utils";
 
 const ORDER: readonly PieceStage[] = [...RAIL_STAGES, "paused"];
 
-/** The stage → primary-action reference table (cmw-ui-wireframes screen 2 right panel) — the full
+/** The stage → primary-action reference table — the full
  * mapping, so the "one action per stage" rule stays legible even though only the current stage's
  * action renders as the actionable "Next action" card above. */
 export function StageActionReference({ current }: { current: PieceStage }) {

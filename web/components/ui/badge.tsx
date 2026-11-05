@@ -15,7 +15,7 @@ const badgeVariants = cva(
         muted: "border-transparent bg-muted text-muted-foreground",
         warning: "border-transparent bg-warning/15 text-warning",
         // Solid fill, not the translucent warning/muted pattern above — `accent`/`accent-foreground`
-        // is only measured-safe (cmw-interactive-state-affordance) as a solid-on-solid pairing, not
+        // is only measured-safe as a solid-on-solid pairing, not
         // text-on-tinted-panel (unlike warning/success/info, which were darkened specifically for
         // that pairing). Reserve for emphasis that needs equal visual weight to a primary button
         // (the Pipeline redesign's loop-round chip and pending-lessons chip).

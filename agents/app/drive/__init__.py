@@ -1,4 +1,4 @@
-"""Per-piece Google Shared Drive folder (cmw-drive-piece-folders). See folder.py for the design."""
+"""Per-piece Google Shared Drive folder. See folder.py for the design."""
 
 from __future__ import annotations
 

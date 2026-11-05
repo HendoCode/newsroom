@@ -1,7 +1,7 @@
 import type { Interview } from "@/lib/interviews/types";
 
 /**
- * Pure persona-menu logic for the interview surface (cmw-ui-wireframes screen 3): the ~10-persona
+ * Pure persona-menu logic for the interview surface: the ~10-persona
  * roster with done/active/suggested/off state. No permission gate here — add/drop is a D6
  * meta-command anyone can invoke; "off" just means "not on this interview's pre-selected set yet".
  */

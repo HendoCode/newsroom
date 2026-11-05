@@ -5,7 +5,7 @@
 # created here.
 
 resource "aws_s3_bucket" "tofu_state" {
-  bucket = "cmw-aws-poc-tofu-state-${data.aws_caller_identity.current.account_id}"
+  bucket = "newsroom-aws-poc-tofu-state-${data.aws_caller_identity.current.account_id}"
 
   lifecycle {
     prevent_destroy = true

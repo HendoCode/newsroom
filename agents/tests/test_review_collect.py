@@ -85,7 +85,7 @@ def test_diff_edits_detects_insert_and_delete():
 
 
 def test_diff_edits_detects_a_new_heading_with_unchanged_text():
-    """The signal Hendo actually asked for: marking a line as a heading, with no text change at
+    """The signal the product owner actually asked for: marking a line as a heading, with no text change at
     all, must still be detected — a pure-text diff would see nothing here."""
     original = "<article><p>Line one.</p><p>Section title.</p></article>"
     current = "<article><p>Line one.</p><h2>Section title.</h2></article>"
@@ -110,7 +110,7 @@ def test_diff_edits_detects_new_emphasis_with_unchanged_text():
 
 
 def test_diff_edits_detects_a_split_that_adds_a_heading():
-    """"stating that a new paragraph is a header and then some body text follows it" — Hendo's
+    """"stating that a new paragraph is a header and then some body text follows it" — the product owner's
     own example. A single old paragraph splits into a new Heading 2 followed by a paragraph."""
     original = "<article><p>Intro line. Body text follows.</p></article>"
     current = "<article><h2>Intro line.</h2><p>Body text follows.</p></article>"
@@ -145,7 +145,7 @@ def test_diff_edits_ignores_nbsp_round_trip_noise():
 
 
 def test_diff_edits_is_purely_mechanical_with_no_editorial_block_awareness():
-    """diff_edits itself no longer strips anything (cmw-internal-round-editorial-diff-asymmetry) —
+    """diff_edits itself no longer strips anything —
     it diffs exactly what it's given. Handing it an editorial block present on only one side reads
     as a real removal, same as any other content; reconstructing the correct comparison sides is
     gather_raw_items'/render_for_share_mode's job, not this function's — see the tests below."""
@@ -196,7 +196,7 @@ async def test_gather_raw_items_degrades_gracefully_when_diff_fails():
     assert items[0].comment_id == "c1"
 
 
-# --- cmw-internal-round-editorial-diff-asymmetry: the diff base must match what actually got
+# --- internal-round-editorial-diff-asymmetry: the diff base must match what actually got
 # minted for THIS round's share mode, not assume a strip that only ever happens externally --------
 
 
@@ -246,7 +246,7 @@ async def test_gather_raw_items_external_round_still_strips_editorial_block_from
     assert items == []  # no phantom "reviewer deleted the editorial block" item either
 
 
-# --- cmw-phantom-edits-from-doc-roundtrip: the DRAFT banner is authored as a non-block <div> (so
+# --- phantom-edits-from-doc-roundtrip: the DRAFT banner is authored as a non-block <div> (so
 # it never becomes a Block on our own reconstructed side), but Drive's HTML-to-Docs conversion
 # turns it into a real <p> on the exported side (confirmed live) — that phantom "reviewer added
 # the banner" item must never surface, on external rounds specifically (the only ones that get a

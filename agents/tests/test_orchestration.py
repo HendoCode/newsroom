@@ -251,7 +251,7 @@ async def test_route_information_gap_to_interview(store: WorkStateStore) -> None
         await machine.route_to_interview((await _piece(store, PieceStage.finalized, slug="f")).id)
 
 
-# --- staleness triage (cmw-staleness-timestamps): last_human_touch_at ----------------------
+# --- staleness triage: last_human_touch_at ----------------------
 
 
 @pytest.mark.asyncio

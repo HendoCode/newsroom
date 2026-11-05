@@ -1,4 +1,4 @@
-"""HTTP surface for derivative lineage (cmw-lesson-lineage-impl).
+"""HTTP surface for derivative lineage.
 
 Child artifacts of an anchor by default; promote mints a top-level Piece. Native generation is
 out of scope — creating a child records the destination, it does not draft the native.

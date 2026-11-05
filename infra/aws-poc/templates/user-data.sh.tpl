@@ -1,11 +1,11 @@
 #!/bin/bash
 # Rendered by compute.tf (aws_instance.app.user_data) — runs once on first boot (Amazon Linux
-# 2023 / cloud-init). Logs to /var/log/cmw-poc-user-data.log; tail that over an SSM session if
+# 2023 / cloud-init). Logs to /var/log/newsroom-poc-user-data.log; tail that over an SSM session if
 # something looks wrong (see README "Sharp edges" for the two known first-boot failure modes:
 # image-not-pushed-yet, and IAM propagation delay).
 set -euo pipefail
-exec > >(tee -a /var/log/cmw-poc-user-data.log) 2>&1
-echo "cmw-poc: user-data starting $(date -u +%FT%TZ)"
+exec > >(tee -a /var/log/newsroom-poc-user-data.log) 2>&1
+echo "newsroom-poc: user-data starting $(date -u +%FT%TZ)"
 
 REGION="${aws_region}"
 SSM_PREFIX="${ssm_prefix}"
@@ -47,13 +47,13 @@ for _ in $(seq 1 30); do
   sleep 2
 done
 if [ -z "$DEVICE" ]; then
-  echo "cmw-poc: FATAL - mongo EBS volume $MONGO_VOLUME_ID never appeared as a block device" >&2
+  echo "newsroom-poc: FATAL - mongo EBS volume $MONGO_VOLUME_ID never appeared as a block device" >&2
   exit 1
 fi
-echo "cmw-poc: mongo data volume resolved to $DEVICE"
+echo "newsroom-poc: mongo data volume resolved to $DEVICE"
 
 if ! blkid "$DEVICE" >/dev/null 2>&1; then
-  echo "cmw-poc: no filesystem on $DEVICE yet - formatting as xfs (first boot only)"
+  echo "newsroom-poc: no filesystem on $DEVICE yet - formatting as xfs (first boot only)"
   mkfs -t xfs "$DEVICE"
 fi
 
@@ -147,4 +147,4 @@ chmod 600 "$APP_DIR/.env"
 cd "$APP_DIR"
 docker compose --env-file .env up -d
 
-echo "cmw-poc: user-data complete $(date -u +%FT%TZ)"
+echo "newsroom-poc: user-data complete $(date -u +%FT%TZ)"

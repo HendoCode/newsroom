@@ -51,8 +51,8 @@ Google creds are present, per [`docs/local-dev.md`](local-dev.md).
 
 **Production has no outer gate — this sign-in is the whole access control.** A deployed build on
 a public IP/domain used to sit behind a shared HTTP basic-auth password (a reverse proxy in front
-of `web`) as well; that outer gate was removed 2026-08-08 (`cmw-remove-edge-basic-auth`) once
-Hendo judged it redundant with the app's own login. That makes `AUTH_ALLOWED_EMAIL_DOMAIN`
+of `web`) as well; that outer gate was removed 2026-08-08 once
+The product owner judged it redundant with the app's own login. That makes `AUTH_ALLOWED_EMAIL_DOMAIN`
 load-bearing for the first time in a way it never was while basic-auth was also in front — see
 `web/AGENTS.md`'s "Auth" section for why that check is currently verified only by
 `auth.test.ts`, not by any live sign-in (Google's own org-level gate blocks a non-org account

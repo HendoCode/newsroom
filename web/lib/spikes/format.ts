@@ -1,5 +1,5 @@
 /**
- * Pure display helpers for the Spikes & Vault browser (cmw-ui-wireframes screen 5). Kept free of
+ * Pure display helpers for the Spikes & Vault browser. Kept free of
  * React/fetch so they're trivially unit-tested, mirroring `lib/sources/format.ts`.
  */
 

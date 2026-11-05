@@ -56,7 +56,7 @@ describe("DraftView", () => {
     // block targets; re-skinning :root/.dark cannot reach in here.
     expect(preview).toHaveClass("piece-content-preview");
     // The chrome-token utility classes this replaced must never come back on this element —
-    // that was exactly the boundary leak (cmw-app-chrome-reskin-fix). Checked as exact class-list
+    // that was exactly the boundary leak. Checked as exact class-list
     // tokens (not substring matches) since the frozen preview's own font-variable class names
     // legitimately contain the substring "font-serif" (e.g. "mock-var--preview-font-serif").
     expect(preview).not.toHaveClass("font-serif");

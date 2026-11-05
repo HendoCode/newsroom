@@ -6,7 +6,7 @@ import { Button } from "@/components/ui/button";
 import { DiffView } from "@/components/voice-kit/diff-view";
 import type { VoiceCommit } from "@/lib/voice-kit/types";
 
-/** Git version history + rollback (cmw-ui-wireframes screen 11). Newest first; the head entry is
+/** Git version history + rollback. Newest first; the head entry is
  * "now" and has no rollback/compare of its own. Rollback is a Git revert — a new, attributable
  * forward commit, never a history rewrite. */
 export function VersionHistory({

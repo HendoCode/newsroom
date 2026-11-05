@@ -1,5 +1,5 @@
 /**
- * Narrative domain types (domain model §1.5) — Oracle Entry B's seed (cmw-ui-wireframes screen 8).
+ * Narrative domain types (domain model §1.5) — Oracle Entry B's seed.
  *
  * Mirror the agents `/api/narratives` wire contract 1:1 (snake_case) — no mapping layer.
  */

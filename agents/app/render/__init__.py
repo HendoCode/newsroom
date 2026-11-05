@@ -79,7 +79,7 @@ def build_finalize_step(settings: object | None = None) -> FinalizeStep:
     pdf_renderer = ChromiumPdfRenderer()
     # One client covers both roles (create-Doc and folder/upload) — `HttpDriveFolderClient`
     # extends `HttpGoogleDocsClient`, so it satisfies both constructor params without a second,
-    # redundant OAuth-credentialed object (cmw-drive-piece-folders).
+    # redundant OAuth-credentialed object.
     docs_client = HttpDriveFolderClient(
         resolved.google_oauth_client_id,
         resolved.google_oauth_client_secret,

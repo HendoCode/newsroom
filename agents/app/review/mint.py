@@ -36,12 +36,12 @@ _BODY_OPEN_RE = re.compile(r"(<body\b[^>]*>)", re.IGNORECASE)
 # recognize and drop the banner block from a diff base. Needed because the banner is authored as a
 # non-block <div> (so it never becomes a Block on our own reconstructed "original" side), but
 # Drive's HTML-to-Docs conversion turns it into a real <p> on the exported "current" side
-# (confirmed live, cmw-phantom-edits-from-doc-roundtrip) — a structural mismatch a class/tag match
-# can't paper over, since the "cmw-draft-banner" class itself does not survive the round trip
+# (confirmed live) — a structural mismatch a class/tag match
+# can't paper over, since the "newsroom-draft-banner" class itself does not survive the round trip
 # either. Matching on this exact, never-organically-occurring text is the only stable handle left.
 DRAFT_BANNER_TEXT = "DRAFT — not for external distribution"
 _DRAFT_BANNER = (
-    '<div class="cmw-draft-banner" '
+    '<div class="newsroom-draft-banner" '
     'style="background:#fef3c7;color:#78350f;padding:12px 16px;font-weight:600;'
     'border-bottom:2px solid #f59e0b;">'
     f"{DRAFT_BANNER_TEXT}"
@@ -60,7 +60,7 @@ def render_for_share_mode(html: str, share_mode: ShareMode) -> str:
     internal keeps the editorial block verbatim; external strips it and adds the DRAFT banner
     (D11). This is the single source of truth for "what actually got uploaded" — :mod:`app.review.
     collect` reuses it to reconstruct a round's diff base, instead of assuming a strip that in
-    reality only ever happens on an external round (cmw-internal-round-editorial-diff-asymmetry:
+    reality only ever happens on an external round (internal-round-editorial-diff-asymmetry:
     the two used to disagree, since ``diff_edits`` stripped the Git side unconditionally while an
     internal Doc genuinely keeps the block, so every internal round read its own editorial notes as
     reviewer-added content)."""
@@ -90,7 +90,7 @@ class ReviewMintService:
         self.store = store
         self.content = content
         self.docs_client = docs_client
-        # cmw-drive-named-folder-scoping: unconfigured by default (no-op — every round Doc lands
+        # drive-named-folder-scoping: unconfigured by default (no-op — every round Doc lands
         # loose at the Drive root exactly as before this ticket).
         self.drive_folders = PieceDriveFolders(store, drive_client, root_folder_name)
 
@@ -153,7 +153,7 @@ class ReviewMintService:
             doc = await self.docs_client.create_doc_from_html(
                 title, ensure_doc_html(html), description=description, parent_id=folder.file_id if folder else None
             )
-            # "writer", not "commenter" (Hendo, cmw-reviewer-can-edit-doc): reviewers must be able to
+            # "writer", not "commenter": reviewers must be able to
             # edit the Doc directly, not just comment — voice stays authoritative for the prose either
             # way (see app.review.step._propose_edit_lessons), so widening this is safe. Uniform across
             # both share modes, matching the one-line ask; never touches app.publish.service's separate

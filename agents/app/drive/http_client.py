@@ -1,4 +1,4 @@
-"""Real :class:`~app.drive.folder.DriveFolderClient` over Drive v3 (cmw-drive-piece-folders).
+"""Real :class:`~app.drive.folder.DriveFolderClient` over Drive v3.
 
 Extends :class:`~app.render.docs_export.HttpGoogleDocsClient` to reuse its OAuth token dance
 (same server-side `GOOGLE_OAUTH_CLIENT_ID`/`_SECRET`/`_REFRESH_TOKEN` grant — no new credential,
@@ -75,7 +75,7 @@ class HttpDriveFolderClient(HttpGoogleDocsClient):
         import httpx
 
         metadata = {"name": name, "parents": [parent_id]}
-        boundary = "cmw-drive-folder-boundary"
+        boundary = "newsroom-drive-folder-boundary"
         body = (
             f"--{boundary}\r\n"
             "Content-Type: application/json; charset=UTF-8\r\n\r\n"

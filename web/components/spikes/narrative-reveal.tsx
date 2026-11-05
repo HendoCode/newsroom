@@ -7,7 +7,7 @@ import { Button } from "@/components/ui/button";
 import type { Narrative } from "@/lib/narratives/types";
 
 /**
- * "Where did my narrative go?" (cmw-first-run-ux-batch item 6) — a spike whose `origin.kind` is
+ * "Where did my narrative go?" — a spike whose `origin.kind` is
  * `"narrative"` was seeded from a full spoken narrative (the Radar's "Your narrative" textarea),
  * but nothing downstream of that page ever showed the text again; only the distilled headline
  * survives onto the spike. The full `seed_text` was always retained server-side

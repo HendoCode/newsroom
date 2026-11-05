@@ -1,5 +1,5 @@
 """Unit tests for ``app.piece_md`` — read-time interpretation of brain-authored ``piece.md``
-files (cmw-brain-pieces-visibility): metadata parsing, the direct-content section rule, and the
+files: metadata parsing, the direct-content section rule, and the
 small dependency-free markdown renderer.
 """
 
@@ -24,7 +24,7 @@ Metadata + status for this content target.
 - Slug:        sample-brief
 - Voice:       demo-dana (partner enablement register)
 - Title:       Sample Brief: A Title With Colons
-- Origin:      Firstmate autonomous task, 2026-08-30
+- Origin:      Authored directly, 2026-08-30
                (direct-authored; no interview transcript)
 - Target:      seller enablement brief (2-page guide)
 - Partners:    AWS (touches a partner → partner-advocate in scoping, partner-brand-steward)

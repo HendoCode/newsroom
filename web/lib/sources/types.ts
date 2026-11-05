@@ -1,6 +1,6 @@
 /**
- * Source registry domain types (docs/design.md D7/D8/D14; cmw-open-decisions §Item-6;
- * cmw-ui-wireframes screen 7).
+ * Source registry domain types (docs/design.md D7/D8/D14; open-decisions §Item-6;
+ * UI wireframes screen 7).
  *
  * Mirror the agents `/api/sources` + `/api/connectors/*` wire contracts 1:1 (snake_case, matching
  * the dashboard convention in `lib/dashboard/types.ts`) so there is no mapping layer. Credentials

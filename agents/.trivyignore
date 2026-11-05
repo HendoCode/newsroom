@@ -1,4 +1,4 @@
-# agents/ image — accepted vulnerability residuals (P0 security review, cmw-security-p0, 2026-08-12)
+# agents/ image — accepted vulnerability residuals (P0 security review)
 #
 # Every CVE below is a Debian 12 (bookworm) base-OS package with NO fix available upstream. They
 # cannot be cleared in place: the base is pinned to python:3.12-slim-bookworm because Playwright

@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# Security-scan deploy gate for the CMW AWS POC deploy. See deploy/README.md for the full design.
+# Security-scan deploy gate for the Newsroom AWS POC deploy. See deploy/README.md for the full design.
 #
 # Runs three Trivy scans — image CVEs, IaC misconfig, and secrets — and exits nonzero if ANY of
 # them fail. deploy/deploy.sh treats this script as a hard precondition before `tofu apply`.
@@ -25,8 +25,8 @@ REPO_ROOT="$(cd "${SCRIPT_DIR}/.." && pwd)"
 
 IMAGE_REF="${1:-latest}"
 ECR_REGISTRY="<AWS_ACCOUNT_ID>.dkr.ecr.us-east-1.amazonaws.com"
-WEB_REPO="${ECR_REGISTRY}/cmw-poc-web"
-AGENTS_REPO="${ECR_REGISTRY}/cmw-poc-agents"
+WEB_REPO="${ECR_REGISTRY}/newsroom-poc-web"
+AGENTS_REPO="${ECR_REGISTRY}/newsroom-poc-agents"
 IMAGE_IGNOREFILE="${REPO_ROOT}/agents/.trivyignore"
 SECRET_CONFIG="${SCRIPT_DIR}/trivy-secret.yaml"
 SEVERITY="CRITICAL"
@@ -103,11 +103,11 @@ image_ref_for() {
 # chain is populated — e.g. `aws configure export-credentials` in the operator's shell first. An
 # expired/missing credential or an unreachable registry makes trivy exit nonzero, which this gate
 # treats as a FAIL, same as a real vulnerability finding (fail closed).
-run_step "image: cmw-poc-web:${IMAGE_REF}" \
+run_step "image: newsroom-poc-web:${IMAGE_REF}" \
   trivy image --severity "$SEVERITY" --exit-code 1 --ignorefile "$IMAGE_IGNOREFILE" --format table \
   "$(image_ref_for "$WEB_REPO")"
 
-run_step "image: cmw-poc-agents:${IMAGE_REF}" \
+run_step "image: newsroom-poc-agents:${IMAGE_REF}" \
   trivy image --severity "$SEVERITY" --exit-code 1 --ignorefile "$IMAGE_IGNOREFILE" --format table \
   "$(image_ref_for "$AGENTS_REPO")"
 

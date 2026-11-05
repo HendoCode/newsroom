@@ -41,7 +41,7 @@ RUN mkdir -p public/.well-known && \
       "$BUILD_COMMIT" \
       "$(echo "$BUILD_COMMIT" | cut -c1-7)" \
       "$(date -u +%Y-%m-%dT%H:%M:%SZ)" \
-    > public/.well-known/cmw-build.json
+    > public/.well-known/newsroom-build.json
 
 # Non-root runtime user.
 RUN addgroup --system --gid 1001 nodejs \
@@ -67,7 +67,7 @@ RUN mkdir -p public/.well-known && \
       "$BUILD_COMMIT" \
       "$(echo "$BUILD_COMMIT" | cut -c1-7)" \
       "$(date -u +%Y-%m-%dT%H:%M:%SZ)" \
-    > public/.well-known/cmw-build.json && \
+    > public/.well-known/newsroom-build.json && \
     chown -R nextjs:nodejs public/.well-known
 
 USER nextjs

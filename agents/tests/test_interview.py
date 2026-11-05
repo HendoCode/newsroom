@@ -242,7 +242,7 @@ async def test_go_back_returns_to_the_previous_persona(store, content_store, git
 
 
 # --- advance_persona: skip/go-back with no classifier call and no pending-question gate ------
-# The real complaint this closes (Hendo, 2026-08-10): skipping to the next persona used to force
+# The real complaint this closes: skipping to the next persona used to force
 # generating a throwaway question first, because `respond()` requires one pending before any
 # meta-command — including skip/go-back, which are pure index arithmetic and never needed it.
 
@@ -254,7 +254,7 @@ async def test_advance_persona_skip_with_no_pending_question_and_no_classifier_c
     engine = _engine(store, content_store, git_brain, provider)
     piece = await _piece(store, slug="p-advance-skip-no-question")
     interview = await engine.open_interview(piece.id, interviewer_personas=["tactician", "skeptic"])
-    assert interview.current_question is None  # never asked — the exact scenario Hendo hit
+    assert interview.current_question is None  # never asked — the exact scenario the product owner hit
 
     result = await engine.advance_persona(interview.id, MetaCommand.skip)
     assert isinstance(result, MetaCommandResult)
@@ -412,7 +412,7 @@ async def test_research_folds_in_content_lake_candidates(store, content_store, g
 async def test_research_sidecar_degrades_when_anthropic_key_is_missing(
     content_store, git_brain, monkeypatch
 ):
-    """F5 (cmw-local-stack-gap-audit): a blank/misconfigured ANTHROPIC_API_KEY for the research
+    """F5: a blank/misconfigured ANTHROPIC_API_KEY for the research
     sidecar's own direct-Anthropic carve-out (research.py:51-52) must degrade to a clear,
     user-facing message — never raise a RuntimeError that would otherwise fall through
     InterviewEngine._route_research / respond() / the /respond route as a raw 500."""
@@ -693,7 +693,7 @@ async def test_edit_answer_splices_verbatim_and_recap_can_regenerate(store, cont
 
 
 async def test_edit_answer_refused_once_its_interview_is_complete(store, content_store, git_brain):
-    """Once *this* interview is complete, its transcript surface is read-only (Hendo, 2026-08-08) —
+    """Once *this* interview is complete, its transcript surface is read-only —
     even though the underlying transcript file is piece-scoped, not interview-scoped."""
     provider = FakeInterviewProvider()
     engine = _engine(store, content_store, git_brain, provider)
@@ -1037,7 +1037,7 @@ async def test_http_edit_answer_409_once_complete_but_200_while_open(store, cont
         assert unknown.status_code == 404
 
 
-# --- staleness triage (cmw-staleness-timestamps): answering/editing counts as a human touch ---
+# --- staleness triage: answering/editing counts as a human touch ---
 #
 # Deliberately narrow: only a real transcript write (`respond`'s "answer" op, or `edit_answer`)
 # stamps `Piece.last_human_touch_at`. Session-management ops on the SAME interview (asking the

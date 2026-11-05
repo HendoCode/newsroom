@@ -71,7 +71,7 @@ describe("creatorOf / statusOf — the derived facets", () => {
     expect(statusOf(piece({ stage: "finalized" }))).toBe("done");
     expect(statusOf(piece({ stage: "lessons" }))).toBe("done");
     // The actual regression this stage exists to fix: a published piece must never count as
-    // in-flight work on the dashboard (Hendo's "everything looks perpetually in-flight" complaint).
+    // in-flight work on the dashboard.
     expect(statusOf(piece({ stage: "published" }))).toBe("done");
     expect(
       statusOf(

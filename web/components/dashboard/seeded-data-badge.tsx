@@ -7,7 +7,7 @@ import { Badge } from "@/components/ui/badge";
 
 /**
  * The one "seeded data" badge every list/detail surface shares (dashboard, Spikes & Vault,
- * Sources, and — since cmw-boss-facing-presentation — the piece-detail header). Before the
+ * Sources, and — since presentation-polish — the piece-detail header). Before the
  * piece-detail addition, clicking through from a seeded-data-labelled list lost the placeholder
  * context entirely. When the data IS seeded the badge doubles as the "How do I make this real?"
  * entry point: it links to `/how-it-works`, the page that names exactly what turns the

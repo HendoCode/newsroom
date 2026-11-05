@@ -6,7 +6,7 @@ import type { Config } from "tailwindcss";
  * Every color/radius/font here maps to a CSS variable defined in app/globals.css, NOT to a
  * literal brand value. Components reference these semantic tokens (bg-background, text-primary,
  * …) so the whole app can be re-skinned by editing the token sets in globals.css without
- * touching a single component. The initial values are seeded from the Hendo identity (the brain's
+ * touching a single component. The initial values are seeded from the the product owner identity (the brain's
  * voice/demo-dana/visual-identity.md, HendoCode/masthead) but remain swappable.
  */
 const config: Config = {

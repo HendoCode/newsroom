@@ -3,7 +3,7 @@ import { NextResponse } from "next/server";
 import { AgentsRequestError, mintReviewRound } from "@/lib/agents-client";
 
 /**
- * BFF route for the review-round screen's Mint action (cmw-ui-wireframes screen 04; D4/D11). Gets
+ * BFF route for the review-round screen's Mint action (D4/D11). Gets
  * its own route rather than the generic `/api/pieces/[pieceId]/trigger` route because it carries a
  * real body (`share_mode` + `reviewer_emails`) and isn't an orchestration-state trigger at all — it
  * mints a Doc without moving the piece's stage. Mirrors the finalize BFF route's validate-then-

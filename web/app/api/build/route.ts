@@ -7,7 +7,7 @@ import path from "path";
 export const dynamic = "force-dynamic";
 
 export async function GET() {
-  const webBuildPath = path.join(process.cwd(), "public", ".well-known", "cmw-build.json");
+  const webBuildPath = path.join(process.cwd(), "public", ".well-known", "newsroom-build.json");
   let web: Record<string, unknown> = { component: "web", commit: "unknown", shortCommit: "unknown", builtAt: null };
   try {
     const raw = readFileSync(webBuildPath, "utf8");

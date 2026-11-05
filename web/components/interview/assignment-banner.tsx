@@ -10,7 +10,7 @@ interface AssignmentPiece {
 }
 
 /**
- * The assignment banner + orchestrator state banner (cmw-ui-wireframes screen 3): who's assigned,
+ * The assignment banner + orchestrator state banner: who's assigned,
  * what it's about, which voice, and the "your words are the source" promise (D16b) — then the
  * one-line VOICE/PIECE/STEP/persona/turn state strip lifted straight from `PROJECT-INSTRUCTIONS.md`.
  */

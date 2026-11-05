@@ -1,5 +1,4 @@
-"""Brain-draft visibility: register brain-authored ``drafts/<slug>/`` folders as Pieces
-(cmw-brain-pieces-visibility).
+"""Brain-draft visibility: register brain-authored ``drafts/<slug>/`` folders as Pieces.
 
 A Piece is a composite (domain model §1.9): content in Git (``drafts/<slug>/``) + work-state in
 Mongo. The brain side can author draft folders ON ITS OWN — hand-nurtured or via brain-side agent

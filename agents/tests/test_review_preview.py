@@ -55,7 +55,7 @@ async def test_preview_counts_comments_and_edits(content_store):
 async def test_preview_no_changes_when_nothing_collected(content_store):
     # No comments, and the Doc's HTML matches the frozen revision. An internal round's Doc
     # genuinely keeps the editorial block, so "unchanged" means the raw revision, unstripped
-    # (cmw-internal-round-editorial-diff-asymmetry) — see app.review.mint.render_for_share_mode.
+    # — see app.review.mint.render_for_share_mode.
     unchanged_html = content_store.read_draft("the-board-on-the-wall")
     docs = FakeDocsClient(comments=[], document_html=unchanged_html)
     round_ = _round(content_store, share_mode=ShareMode.internal)

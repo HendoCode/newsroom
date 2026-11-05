@@ -1,6 +1,6 @@
 /**
  * A minimal line-oriented diff for the voice-kit editor pane's "Diff vs current" / version
- * "Compare" affordances (cmw-ui-wireframes screen 11). Voice-pack files are short markdown docs,
+ * "Compare" affordances. Voice-pack files are short markdown docs,
  * so a plain LCS diff is fast enough and needs no dependency.
  */
 

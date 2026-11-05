@@ -27,7 +27,7 @@ async function readErrorMessage(res: Response, fallback: string): Promise<string
 }
 
 /**
- * Spike → kickoff (use case C; cmw-ui-wireframes screen 6): a 5-step stepper — spike picked,
+ * Spike → kickoff (use case C): a 5-step stepper — spike picked,
  * create the piece, assign the expert, the agent's pre-selected interviewer personas (editable),
  * and a shareable interview link (Slack/copy — a plain link into the assigned interview under the
  * simple identity login, not an OAuth-specific deep link). Ownership is attribution, not a lock
@@ -43,14 +43,14 @@ export function SpikeKickoff({
   voices: string[];
   personas: string[];
   /** The Voice already chosen on the Run-the-Radar form that produced this spike, if any —
-   * carried over as the default here instead of silently resetting to `voices[0]` (cmw-first-run-ux-batch item 7). */
+   * carried over as the default here instead of silently resetting to `voices[0]`. */
   radarVoice?: string | null;
 }) {
   const [spike, setSpike] = React.useState(initialSpike);
   const [pieceId, setPieceId] = React.useState<string | null>(initialSpike.piece_id);
   // Whether `pieceId` names a piece that already existed when this screen loaded (a revisit) or
   // one this screen just created itself — distinguishes "resuming an already-open interview" from
-  // "the interview we just opened atomically with the piece" (cmw-piece-interviewing-without-interview).
+  // "the interview we just opened atomically with the piece".
   const initialPieceIdRef = React.useRef(initialSpike.piece_id);
   const [slug, setSlug] = React.useState(slugifyHeadline(initialSpike.headline));
   const [voice, setVoice] = React.useState(
@@ -85,7 +85,7 @@ export function SpikeKickoff({
 
   // Once a piece exists — whether from a prior visit (e.g. pressing the dashboard's kickoff
   // action a second time) or from `handleCreatePiece` just below, which now opens the Interview
-  // atomically with the Piece (cmw-piece-interviewing-without-interview) — pick it up here rather
+  // atomically with the Piece — pick it up here rather
   // than ever offering a fresh "Generate link" before checking. That check is what used to be
   // missing, and pressing it twice forked the interview history instead of resuming it (see
   // AGENTS.md). `isRevisit` only affects the "resuming" copy below, not the fetch itself: a piece
@@ -156,7 +156,7 @@ export function SpikeKickoff({
           voice,
           slug: slug || undefined,
           target: target || undefined,
-          // Opens the first Interview atomically with the Piece (cmw-piece-interviewing-without-interview)
+          // Opens the first Interview atomically with the Piece
           // — whatever expert/personas are set below at the moment of creation. There is no longer
           // a separate "generate link" step for a freshly created piece: that gap between piece
           // creation and interview creation is exactly what left pieces stuck at `interviewing`
@@ -297,7 +297,7 @@ export function SpikeKickoff({
                   <div className="grid gap-3 sm:grid-cols-2">
                     {voices.length === 0 ? (
                       // Unified root-cause banner instead of an isolated "no voices available"
-                      // option (cmw-boss-facing-presentation, CRITICAL).
+                      // option.
                       <div className="sm:col-span-2">
                         <BrainUnavailableBanner subject="The voice list" />
                       </div>

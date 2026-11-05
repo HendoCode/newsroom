@@ -1,4 +1,4 @@
-"""Structural final-vs-published diff (cmw-context-assembly report §9(c)/(d)2).
+"""Structural final-vs-published diff (context-assembly report §9(c)/(d)2).
 
 The lessons call should reason about *what changed*, not re-derive it from two whole documents —
 "the pre-computed diff, not two full documents... cheaper and sharper" (context report §9-d-2). We

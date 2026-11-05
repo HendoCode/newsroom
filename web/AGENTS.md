@@ -63,7 +63,7 @@ This file is the project's committed home for project-intrinsic agent knowledge:
 ## Shared UI kit
 
 - **`components/brain/brain-unavailable-banner.tsx`'s `BrainUnavailableBanner` is the ONE
-  "Brain unavailable" message every brain-dependent surface shows** (`cmw-boss-facing-presentation`,
+  "Brain unavailable" message every brain-dependent surface shows** (`presentation-polish`,
   2026-09-01 — the scout report's CRITICAL: the Git brain being down used to cascade into isolated,
   root-cause-free copy: "no voices available" on the kickoff + Radar + new-piece voice selects,
   "no personas available" on the kickoff persona picker, a bare 404 on `/interviews/[id]`). The
@@ -78,7 +78,7 @@ This file is the project's committed home for project-intrinsic agent knowledge:
   turns the placeholder experience real (brain clone, Mongo, LLM creds, Google grant).
 
 - **`components/ui/alert.tsx`'s `Alert` is the one error/warning/success/info banner every
-  screen should use** (cmw-first-run-ux-batch item 1, 2026-08-10). Before this, ~16 call sites
+  screen should use**. Before this, ~16 call sites
   across `app/signin/`, `components/{spikes,interview,review-round,piece-detail,finalize,
   sources}/*` hand-rolled their own `<p role="alert" ...>`/`<div role="alert" ...>`, several with
   no border/background treatment at all — the site had no single answer to "what does an error
@@ -89,8 +89,7 @@ This file is the project's committed home for project-intrinsic agent knowledge:
   (`alert` for destructive/warning, `status` for success/info) so callers don't have to think
   about it.
 - **`components/ui/expand-toggle.tsx`'s `ExpandToggle` is the one collapsed-row/expand-on-click
-  affordance for list surfaces** (`cmw-list-density-and-source-forms`, 2026-08-10 — Hendo:
-  dashboard queue and source registry rows were "very tall," which doesn't scale once real usage
+  affordance for list surfaces** (`list-density-and-source-forms`, 2026-08-10 —   dashboard queue and source registry rows were "very tall," which doesn't scale once real usage
   piles in dozens of rows; the dashboard/spikes queue is "the only list of these kinds of things
   anywhere," so it has to stay scannable, not just look fine with a handful). A plain button + a
   chevron icon + local `expanded` state in the caller — no new dependency, no accordion library.
@@ -99,8 +98,8 @@ This file is the project's committed home for project-intrinsic agent knowledge:
   strip) and hide secondary detail (piece: "why here" reasoning + the full failed-job explanation;
   source: config/credential/last-refreshed) behind this toggle — never behind a second, divergent
   pattern. Any new list surface should reuse this component rather than inventing another one.
-- **Interactive-state legibility was measured, not eyeballed** (`cmw-interactive-state-affordance`,
-  2026-08-10 — Hendo: the palette made it "subtle to detect what elements... are active,
+- **Interactive-state legibility was measured, not eyeballed** (`interactive-state-affordance`,
+  2026-08-10 — the palette made it "subtle to detect what elements... are active,
   preferred, clickable, not clickable"). A real WCAG contrast pass over every token pair
   (default/hover/active/focus/disabled × light/dark) found several genuine AA failures, all fixed
   at the token level in `globals.css` — `--muted-foreground`, `--accent`, `--destructive`,
@@ -128,7 +127,7 @@ This file is the project's committed home for project-intrinsic agent knowledge:
   token edit. Any future token change should re-run that same check before merging, the same way
   PR #88 verified it with computed styles rather than eyeballing a screenshot.
 - **`components/ui/collapsible-section.tsx`'s `CollapsibleSection` generalizes `ExpandToggle` from
-  a list row to a whole page section** (`cmw-piece-detail-collapsible`, 2026-08-10 — piece detail
+  a list row to a whole page section** (`piece-detail-collapsible`, 2026-08-10 — piece detail
   is the first caller: a page with many Cards, each serving a different task, needs most of them
   collapsed on landing so the ones that answer "what stage is this at, what do I do next" aren't
   buried). Same shared icon/click affordance as `ExpandToggle`, plus a `summary` (always-visible
@@ -138,12 +137,12 @@ This file is the project's committed home for project-intrinsic agent knowledge:
   rule, generalized). Reuse for any future page that accumulates several Cards a user shouldn't
   have to scroll past.
 - **`components/ui/modal.tsx`'s `Modal` is the one dialog primitive for long-form content across
-  the app** (`cmw-piece-detail-collapsible` — Hendo asked for this explicitly, not scoped to one
+  the app** (`piece-detail-collapsible` — the product owner asked for this explicitly, not scoped to one
   screen: "modals for long text should apply across the UI"). A thin, token-driven wrapper over
   `@radix-ui/react-dialog` (same org-sanctioned headless-primitive pattern as
   `dropdown-menu.tsx` — real focus-trap/Escape/scroll-lock, not hand-rolled). Piece detail's
   `DraftView` is the first caller (clamps a long draft body to a fixed height with a fade, then
-  "Read full draft" opens the full text in this modal). **`cmw-modal-long-text-elsewhere` judged
+  "Read full draft" opens the full text in this modal). **`modal-long-text-elsewhere` judged
   the three places PR #91 flagged next, applying the same clamp-then-modal pattern to two of
   them and deliberately leaving the third alone**: an interview turn's answer, in both
   `transcript-record.tsx` (piece-detail, read-only) and `transcript-panel.tsx` (the interactive
@@ -189,7 +188,7 @@ This file is the project's committed home for project-intrinsic agent knowledge:
 
 - The dashboard was redesigned from the five saved-filter tabs (Needs my action / My pieces /
   All in flight / Spikes / Sources) to THREE sections over the one shared queue
-  (cmw-evolution-ux-audit report §6/§7, captain-approved Concept A):
+  (captain-approved Concept A):
   **Inbox** (only real human decisions, grouped by decision type), **Machine strip** (ambient,
   non-clickable visibility of pieces running a batch job), and **Library** (every piece across
   every stage — published/finalized included — filterable, nothing hidden, with honest
@@ -228,7 +227,7 @@ This file is the project's committed home for project-intrinsic agent knowledge:
   later piece-detail / spikes screens reuse. Stage-contextual actions and non-dashboard destinations
   are clean SEAMS routing to placeholder pages (`/pieces/[id]`, `/spikes/[id]`) — the repo's
   established `/interviews/[id]` seam convention.
-- **Archiving a piece (`cmw-archive-piece`) hides it from this queue entirely server-side** —
+- **Archiving a piece hides it from this queue entirely server-side** —
   `agents/app/dashboard.py`'s `build_queue` excludes any `Piece.archived_at`-set piece before
   building `QueueItem`s at all, so `DashboardResponse.items` never contains one. **Found and
   rejected**: a client-side equivalent (an `archived: boolean` on `QueueItem`) was considered and
@@ -245,17 +244,17 @@ This file is the project's committed home for project-intrinsic agent knowledge:
   success rather than a full `/api/dashboard` refetch — since all three sections derive from that
   one state, the card leaves Inbox, strip, and Library at once.
 - **`PieceCard` is collapsed by default; the "why here" reasoning and the full failed-job
-  explanation are behind the shared `ExpandToggle`** (`cmw-list-density-and-source-forms`,
+  explanation are behind the shared `ExpandToggle`** (`list-density-and-source-forms`,
   2026-08-10 — see the Shared UI kit entry above). Title/badges + a compact voice/owner/assigned/
   council/gaps/cost strip stay always visible (still a line or two) so a row is identifiable at a
   glance without a click; the toggle itself only renders when there's actually something to
   expand (a "needs my action" card, or a failed job) — a card with neither renders no toggle at
   all. Archive + the primary action stay in the collapsed header, never behind the toggle.
-- **`components/dashboard/pipeline-mini-rail.tsx`'s `PipelineMiniRail`** (`cmw-pipeline-depiction-
+- **`components/dashboard/pipeline-mini-rail.tsx`'s `PipelineMiniRail`** (`pipeline-depiction-
   design`, 2026-08-11) is a card-density echo of piece-detail's `Pipeline` rail, not a second
   design — three short segments for the same intake/loop/ship clusters
   (`lib/pieces/stage.ts`'s `STAGE_CLUSTER`) joined by connector lines, rendered next to `StageBadge`
-  in the badge row. Hendo refined this live from an initial plain-dot-strip proposal ("dots
+  in the badge row. The product owner refined this live from an initial plain-dot-strip proposal ("dots
   connected by horizontal lines would help") — always aria-hidden (the badge text is the real
   accessible state) and renders nothing for a spike item or `paused` (off-rail, same as the main
   rail's own paused chip). The current segment reads accent instead of primary once
@@ -269,13 +268,13 @@ This file is the project's committed home for project-intrinsic agent knowledge:
   per-group heading + count + one-line decision description (`DECISION_GROUPS` in
   `lib/dashboard/desk.ts`), the strip says `idle` vs `N pieces in motion`, and the Library prints
   its honest `{total} pieces · {inFlight} in flight · {done} done · {failed} failed` summary.
-  This carries forward Hendo's 2026-08-10 point that these are genuinely different semantic
+  This carries forward the product owner's 2026-08-10 point that these are genuinely different semantic
   lists, not filtered views of one uniform table — now expressed as sections instead of tabs.
 
 ## Source registry (manage what the Oracle reads)
 
 - Route `/sources` (mounted like the dashboard: `AppShell` + `requireUser()`) is the source
-  registry (cmw-open-decisions §Item-6, cmw-ui-wireframes screen 7). Client state/orchestration
+  registry. Client state/orchestration
   lives in [`components/sources/source-registry.tsx`](components/sources/source-registry.tsx);
   the table, add/edit form, and clip-in form are separate components in the same directory so the
   screen stays self-contained (it was built to run in parallel with the piece-detail ticket).
@@ -299,7 +298,7 @@ This file is the project's committed home for project-intrinsic agent knowledge:
   buried inside it) used to silently fail** — `folder_ids` goes straight into the connector's
   Drive API query (`'<folder_id>' in parents`), so a full URL there matches nothing, and the old
   shared placeholder ("Folder IDs, channel names, or feed URLs") never said which one the field
-  actually wanted (cmw-first-run-ux-batch item 3, reproduced live 2026-08-10). Fixed two ways:
+  actually wanted (reproduced live 2026-08-10). Fixed two ways:
   `lib/sources/format.ts`'s `extractDriveFolderId` parses `.../drive/folders/<id>`,
   `.../drive/u/0/folders/<id>`, and `.../open?id=<id>` out of a pasted link — `parseConfigList`
   runs it for `kind === "gdrive"` only, so either a link or a bare id saves as the same clean id;
@@ -313,12 +312,12 @@ This file is the project's committed home for project-intrinsic agent knowledge:
 - **Per-source refresh failures are warn-not-block by design (§5) but were completely
   invisible** — `agents/app/connectors/refresh.py`'s `SourceRefreshService` always reported a bad
   source's error in its response, but `source-registry.tsx`/`sources-table.tsx` only ever showed
-  an aggregate "(N warned)" count with no way to see which source or why (cmw-first-run-ux-batch
+  an aggregate "(N warned)" count with no way to see which source or why (first-run-ux-batch
   item 2, reproduced live against a real Drive source with no OAuth configured). Fixed by keeping
   the last refresh's per-source errors in `SourceRegistry` state (`refreshErrors: Record<sourceId,
   message>`) and having `SourcesTable` render an `Alert` row directly under the failed source —
   never a tooltip/hover-only affordance.
-- **Fixed 2026-08-10 (`cmw-source-registry-ux`), three first-real-use gaps on this screen, live
+- **Fixed 2026-08-10, three first-real-use gaps on this screen, live
   hardened by driving a real browser against an isolated instance:**
   (1) **A source added here could appear to vanish on navigating away and back** — not data loss;
   `refetchSources()`'s "Refresh sources now" always revealed it was there all along. Root cause,
@@ -352,8 +351,8 @@ This file is the project's committed home for project-intrinsic agent knowledge:
   target), and even when it *did* change something (leaving an edit), it never scrolled the
   off-screen form into view. Fixed by routing it through the same `resetForm` + an explicit
   `scrollIntoView` on the form section, so the button now visibly does something on every click.
-- **Fixed 2026-08-10 (`cmw-list-density-and-source-forms`): the add-source form (`SourceForm`) and
-  the clip-in form (`ClipInForm`) used to render side by side, always, unconditionally** — Hendo's
+- **Fixed 2026-08-10: the add-source form (`SourceForm`) and
+  the clip-in form (`ClipInForm`) used to render side by side, always, unconditionally** — the product owner's
   third distinct complaint about this screen: "having both 'green' and 'clip in' input forms
   visible at once implies I might use either or both in the same movement regardless of how the
   two forms might be related or not." Fixed with an `activePanel: "source" | "clip"` switch in
@@ -369,7 +368,7 @@ This file is the project's committed home for project-intrinsic agent knowledge:
   gained a "Set up a clip-in source" button that jumps to the add-source panel with that kind
   preselected (`SourceForm`'s new `defaultKind` prop) — the one guided path between the two rather
   than expecting a person to find the right dropdown option unassisted. Same pass also fixed
-  **`cmw-source-edit-button-scroll`**: the row-level Edit button only ever called `setFormTarget`
+  **`source-edit-button-scroll`**: the row-level Edit button only ever called `setFormTarget`
   with no `scrollIntoView`, unlike "+ Add source" (fixed in the entry above) — `handleEdit` now
   scrolls the form into view too, and also switches `activePanel` back to `"source"` in case the
   clip-in panel was showing. **Sharp edge hit while wiring this up**: `resetForm` gained an
@@ -383,26 +382,26 @@ This file is the project's committed home for project-intrinsic agent knowledge:
 ## Narrative → Radar → spike kickoff hand-off
 
 - **The angle-intent field on `/narrative` (`components/narrative/narrative-oracle.tsx`) is a
-  `TextArea`, not a single-line `TextInput`** (cmw-first-run-ux-batch item 4) — it carries the
+  `TextArea`, not a single-line `TextInput`** — it carries the
   same kind of free-text intent as the adjacent narrative textarea and audience field, so it
   needs the same affordance to actually write in.
 - **A spoken narrative's full `seed_text` used to be genuinely unrecoverable once the Radar page
   moved on** — the Narrative model always retained it server-side
   (`agents/app/narratives.py`'s `GET /api/narratives/{id}`, pre-existing), but nothing in `web/`
   ever called that route, and only the Oracle's distilled spike `headline` survives onto anything
-  downstream (cmw-first-run-ux-batch item 6). Fixed with the missing BFF half
+  downstream. Fixed with the missing BFF half
   (`fetchNarrative` in [`lib/agents-client.ts`](lib/agents-client.ts),
   `app/api/narratives/[narrativeId]/route.ts`) and
   [`components/spikes/narrative-reveal.tsx`](components/spikes/narrative-reveal.tsx) — a
   load-on-demand (never on mount) "View the narrative that produced this spike" toggle rendered
   on `spike-kickoff.tsx`'s step 1 whenever `spike.origin.kind === "narrative"`. Any other place
   that surfaces a narrative-originated spike/piece should reuse this component rather than
-  re-deriving the fetch. **Done for piece-detail itself in `cmw-archive-piece`** — see root
+  re-deriving the fetch. **Done for piece-detail itself in `archive-piece`** — see root
   `AGENTS.md`'s dedicated bullet; the `origin.kind === "narrative" && origin.ref` check this
   bullet describes is now the shared pure `lib/spikes/origin.ts` `originNarrativeId()`, used here
   and there, rather than inlined twice.
 - **The Voice chosen on the Radar form didn't carry onto the spike-kickoff page — it silently
-  reset to `voices[0]`** (cmw-first-run-ux-batch item 7): `spike-kickoff.tsx`'s `voice` state
+  reset to `voices[0]`**: `spike-kickoff.tsx`'s `voice` state
   always initialized from `voices[0] ?? ""` with no way to know what the Radar run actually used.
   Fixed by threading it through the URL rather than any new backend field (the Spike/Narrative
   models have no "which voice ran this" concept, and adding one would be a bigger change than the
@@ -414,10 +413,10 @@ This file is the project's committed home for project-intrinsic agent knowledge:
   else the old `voices[0]` fallback stands.
 - **Creating the piece (spike-kickoff step 2) gave no acknowledgement and no next-step
   invitation** — a muted one-line paragraph replaced the form with no visual signal anything had
-  happened (cmw-first-run-ux-batch item 8). Fixed with a `variant="success"` `Alert` (green,
+  happened. Fixed with a `variant="success"` `Alert` (green,
   checkmark) that names the created piece/voice, keeping the "Open piece" link as a secondary
   option rather than the only one. **Superseded in shape, not intent, by
-  `cmw-piece-interviewing-without-interview` (2026-08-10)**: steps 3-4 (assign expert, interviewer
+  `piece-interviewing-without-interview` (2026-08-10)**: steps 3-4 (assign expert, interviewer
   set) now execute *before* pressing "Create piece," not after — `pick_spike` opens the Piece's
   first Interview atomically with the Piece itself, so there is no longer a "steps 3-5 below"
   gap for a fresh pick to invite the user into; the success `Alert`'s copy is now conditional on
@@ -425,8 +424,8 @@ This file is the project's committed home for project-intrinsic agent knowledge:
   (the one remaining case the old manual "Generate link" flow serves — see root `AGENTS.md`'s
   dedicated bullet for the full story and why atomicity, not a bigger stage-model change, was the
   chosen fix).
-- **Resolved 2026-08-10 (`cmw-narrative-first-entry-point`, Hendo's Option B):** the whole-shape
-  objection `cmw-first-run-ux-batch` left open above ("that whole run the radar page as the way to
+- **Resolved 2026-08-10:** the whole-shape
+  objection `first-run-ux-batch` left open above ("that whole run the radar page as the way to
   kickstart a purely narrative-based piece feels incorrect") is fixed by giving "I already know
   what I want to write" its own front door, `app/pieces/new/` — separate from `/narrative`, which
   stays purely discovery (both its entry modes still land on the ranked-spikes table). The new
@@ -480,7 +479,7 @@ This file is the project's committed home for project-intrinsic agent knowledge:
   `PieceStage` type, `stageLabel`) and the shared `StageBadge`, never edits them, to stay
   conflict-free with sibling `web/` screens.
 - **The unified `Pipeline` block** (`components/piece-detail/pipeline.tsx`,
-  `cmw-pipeline-depiction-design`, 2026-08-11) is the page's single answer to "what stage is this
+  `pipeline-depiction-design`, 2026-08-11) is the page's single answer to "what stage is this
   at, what do I do next" — it replaced seven independent renderings of `Piece.stage` that used to
   exist across this app (the old `StageRail` Card, `NextActionCard` Card, the top-of-page failure
   banner, and the separate "Stage → primary action" `CollapsibleSection`, all deleted) with one
@@ -503,7 +502,7 @@ This file is the project's committed home for project-intrinsic agent knowledge:
   field rendered as a solid `bg-accent`/`text-accent-foreground` pill sized like the button next to
   it (`EqualWeightChip`) — deliberately NOT the design artifact's translucent `bg-accent/18`
   badge, since that pairing was never contrast-verified for text the way
-  `warning`/`success`/`info` were (cmw-interactive-state-affordance only fixed the
+  `warning`/`success`/`info` were (interactive-state-affordance only fixed the
   solid-fill `accent`/`accent-foreground` pairing) — any future accent-tinted-panel-plus-text
   affordance should verify contrast first rather than assume this token generalizes. Decision D
   (archived dimming) is a single `opacity-60` on the block's outer `Card` — every control inside
@@ -512,7 +511,7 @@ This file is the project's committed home for project-intrinsic agent knowledge:
   below (next action not visible without scrolling under `lg`) no longer reproduces — not
   re-verified with a dedicated ticket, just a side effect of where the block now lives.
 - **The page's many Cards default collapsed except the ones the page exists to answer**
-  (`cmw-piece-detail-collapsible`, 2026-08-10 — Hendo: "collapsable elements that start that way"
+  (`piece-detail-collapsible`, 2026-08-10 — "collapsable elements that start that way"
   + "modal pop-ups for long form content"; the page had accumulated a Card per ticket — draft,
   council, transcript, at-a-glance, two audit logs, a static reference table — fine one at a time,
   unscannable stacked). The rule applied: **the Pipeline block never gets a collapse control on
@@ -528,8 +527,7 @@ This file is the project's committed home for project-intrinsic agent knowledge:
   counts, latest activity). The transcript section's `pinned` slot keeps a "Resume interview"
   button visible even collapsed whenever an interview is genuinely open — the one actionable
   control on that Card. `DraftView` (`components/piece-detail/draft-view.tsx`) is **always
-  expanded on landing when content exists** (`cmw-piece-draft-visibility`, 2026-08-31 — Hendo:
-  users landing on in-progress pieces, especially the 11 brain-synced `drafts/` briefs, could
+  expanded on landing when content exists** (`piece-draft-visibility`, 2026-08-31 —   users landing on in-progress pieces, especially the 11 brain-synced `drafts/` briefs, could
   not tell whether a draft existed because the card collapsed to a git SHA). Length still
   decides clamp-vs-full inside the body: a tweet/LinkedIn-post-sized draft (under
   `LONG_CONTENT_CHARS`, currently 2000 plain-text chars via `lib/pieces/draft-html.ts`'s
@@ -555,14 +553,14 @@ This file is the project's committed home for project-intrinsic agent knowledge:
   browser, not by the unit tests (jsdom has no layout engine) — any future `cn()`-merged override
   of a component with its own base flex-direction needs the same explicit re-assertion, not just
   the properties that look new.
-- **Archive/unarchive (`cmw-archive-piece`) is deliberately NOT in `lib/pieces/actions.ts`** —
+- **Archive/unarchive is deliberately NOT in `lib/pieces/actions.ts`** —
   `components/piece-detail/archive-toggle.tsx` renders unconditionally in the header instead.
   Both `nextAction` (a total `switch (piece.stage)`) and `secondaryActions` in that file assume
   every action is stage-conditional; archiving must work from every stage (including `published`),
   so wedging it into either would mean either inventing a fake per-stage branch or breaking that
   file's exhaustiveness contract. See root `AGENTS.md`'s dedicated archive bullet for the backend
   half and the dashboard's own found-and-rejected filtering note above.
-- **The piece's originating narrative is now visible here too** (`cmw-archive-piece`) — an
+- **The piece's originating narrative is now visible here too** — an
   optional `originNarrativeId` prop, resolved server-side in `page.tsx` (`piece.origin_spike_id →
   fetchSpike → lib/spikes/origin.ts`'s `originNarrativeId()`), renders the shared
   `components/spikes/narrative-reveal.tsx` right under the header's existing origin-spike line
@@ -586,7 +584,7 @@ This file is the project's committed home for project-intrinsic agent knowledge:
   `lib/dashboard/needs-my-action.ts` needed no change — its `stage === "finalized"` branch-5 check
   already excludes `published` by construction, covered by a new regression test rather than a
   new code path.
-- **Derivatives tab (post-publish mode, `cmw-repurposing-derivatives-ia`)** — publish is no
+- **Derivatives tab (post-publish mode)** — publish is no
   longer the last beat in the IA. Once `stage === "published"` (or `published_release > 0`),
   `components/piece-detail/post-publish-workspace.tsx` renders a tablist (Outputs |
   Derivatives) between the Pipeline and the two-column body, defaulting to Derivatives so ship
@@ -594,7 +592,7 @@ This file is the project's committed home for project-intrinsic agent knowledge:
   `published-outputs.tsx` panel. Derivatives (`derivatives-section.tsx`) lists existing natives
   plus the creatable catalog in `lib/pieces/derivatives.ts` — LinkedIn post/carousel, X thread,
   newsletter, blog, executive brief, talk track, email. **Child artifacts of the anchor by
-  default** (`cmw-lesson-lineage-impl`): Commission records a child via
+  default**: Commission records a child via
   `POST /api/pieces/{id}/derivatives` (not the unimplemented content-workflow
   `commission-derivative` command). Promote (`POST .../derivatives/{id}/promote`) mints a real
   Piece with its own owner/review/publish state. Native generation is still not built — the child
@@ -628,14 +626,14 @@ This file is the project's committed home for project-intrinsic agent knowledge:
   passing `initialTurns` through) alongside `PieceDetail.interviews`. Deliberately, genuinely
   read-only — no edit/recap props exist on the component at all, unlike the interactive interview
   surface's `transcript-panel.tsx` — with a "Resume interview" link to `/interviews/{id}` shown
-  only for an interview whose `status === "open"` (Hendo's call, 2026-08-08): a still-open
+  only for an interview whose `status === "open"`: a still-open
   interview stays resumable there, a `complete` one never should be. `interviews` renders as its
   own list rather than one summary, and `turns` as a separate shared block, so a later
   multi-round change (turns keyed to a specific interview) can nest under its own list item
   without restructuring this component — today's wire shape has one piece-scoped, unattributed
   turn list, not turns split per round. **When `interviews` is empty** (a piece stuck at
   `interviewing` with zero Interviews — see root `AGENTS.md`'s
-  `cmw-piece-interviewing-without-interview` bullet), the optional `originSpikeId` prop (from
+  `piece-interviewing-without-interview` bullet), the optional `originSpikeId` prop (from
   `PieceDetail.origin_spike_id`) renders a link to `/spikes/{originSpikeId}` — that kickoff screen
   is the only place that can open the missing Interview; before this, the empty state was a dead
   end ("No interviews opened yet.") with nothing else on piece-detail able to reach one.
@@ -643,7 +641,7 @@ This file is the project's committed home for project-intrinsic agent knowledge:
   the wire type, `lib/pieces/types.ts`); `components/piece-detail/review-doc-link.tsx` renders the
   header's "Open review Doc" button from it when `stage === "review"`, falling back to a subtle
   note when the field is null. Mirrored by the dedicated review-round screen below
-  (`cmw-ui-wireframes/04-review-round.html`) so the two feel like one system.
+  so the two feel like one system.
 - Piece-detail's "Finalize" secondary action (`lib/pieces/actions.ts` `secondaryActions`) is a
   **link** (`kind: "link"`) to `/pieces/[pieceId]/finalize`, not a blind trigger-fire. Format
   selection and the warn-not-block pre-finalize checks must always be seen before a render is
@@ -671,7 +669,7 @@ This file is the project's committed home for project-intrinsic agent knowledge:
   carries its own `routing_log: string[]` — the one-line-per-item audit trail
   `agents/app/review/routing.py` already produced but never surfaced until this ticket
   (`agents/app/schemas.py` `ReviewRoundOut.routing_log` + `piece_detail.py`). Always visible on
-  piece-detail itself (a deliberate Hendo call, 2026-08-07) — not gated behind the review-round
+  piece-detail itself (a deliberate the product owner call, 2026-08-07) — not gated behind the review-round
   screen below, so the history stays in view after a piece moves past `review`.
 - **Status facets, not one flattened status** (v1 launch wave "ui-state-facets", 2026-08-31): the
   header's single `StageBadge` was replaced by `components/piece-detail/status-facets.tsx` — six
@@ -700,7 +698,7 @@ This file is the project's committed home for project-intrinsic agent knowledge:
 - Route `app/pieces/[pieceId]/review/page.tsx` mirrors the finalize page's fetch/auth pattern
   exactly, then hands off to `components/review-round/review-round-view.tsx`. Reachable ONLY from
   piece-detail's review-stage primary action (`nextAction`'s `kind: "link"` case, above) — never a
-  blind "reviews done" button. This was a deliberate Hendo decision (2026-08-07, needs-decision →
+  blind "reviews done" button. This was a deliberate the product owner decision (2026-08-07, needs-decision →
   resolved) over two alternatives: an inline panel bolted onto piece-detail, or a bare
   fetch-preview-then-`confirm()` click handler — both rejected because the preview's whole point is
   showing sample comment/edit TEXT, which neither alternative surfaces well.
@@ -736,7 +734,7 @@ This file is the project's committed home for project-intrinsic agent knowledge:
   `preFinalizeChecks` in `checks.ts`) and `components/finalize/` (`destination-matrix.tsx`,
   `pre-finalize-checks.tsx`, `finalize-panel.tsx`), following the piece-detail/source-registry
   convention of keeping sibling `web/` screens conflict-free.
-- **(cmw-drive-piece-folders) `destination-matrix.tsx` replaces the old `format-selection.tsx` +
+- ** `destination-matrix.tsx` replaces the old `format-selection.tsx` +
   `outputs-list.tsx` pair** with one destination-by-format grid: rows are Branded HTML/PDF/Clean
   Google Doc, columns are Drive/S3. Drive's three checkboxes are the real chooser (unchanged
   mechanism — still `Job.formats` via `lib/finalize/formats.ts`); every cell also links straight to
@@ -760,7 +758,7 @@ This file is the project's committed home for project-intrinsic agent knowledge:
   (`agents/app/orchestration/routes.py`). `PieceDetailResponse` (`agents/app/schemas.py` +
   `piece_detail.py`) now also surfaces `final_doc`/`final_template_version`/`final_rendered_at` —
   existing `Piece` fields (§1.19) that the read-model simply hadn't exposed yet.
-- **Superseded by cmw-drive-piece-folders**: this used to be the one place branded HTML/PDF were
+- **Superseded by drive-piece-folders**: this used to be the one place branded HTML/PDF were
   genuinely unreachable (no serving route for the disposable `drafts/<slug>/finalized/` files).
   That's now solved by uploading real copies into the piece's Drive folder instead of adding an
   agents download route — `destination-matrix.tsx`'s Drive cells link straight to them once
@@ -778,7 +776,7 @@ This file is the project's committed home for project-intrinsic agent knowledge:
   transcript turns via the BFF client, then hands off to the client component
   `components/interview/interview-surface-view.tsx`, which holds all of that as state so a turn
   updates the screen in place.
-- **Focused interview mode** (2026-08-31, `cmw-interview-focused-mode`): this route mounts into
+- **Focused interview mode**: this route mounts into
   `components/shell/interview-shell.tsx`, a slim sibling of `AppShell` with **no section nav**
   (Dashboard/Spikes/Sources/Voice-kits) — the interviewee is an external expert mid-question,
   usually on a phone, so the operator chrome is dropped entirely. The view itself is
@@ -800,8 +798,8 @@ This file is the project's committed home for project-intrinsic agent knowledge:
   engine constraint, not a UI choice: add/drop-interviewer and stop-for-the-day are D6
   meta-commands, and meta-commands (other than skip/go-back, below) only route through the same
   classifier as an answer.
-- **Skip/go-back are the one exception, and are NOT gated on a pending question** (Hendo,
-  2026-08-10, `cmw-interview-skip-and-nudge` — "I should be able to skip to the next persona
+- **Skip/go-back are the one exception, and are NOT gated on a pending question** (the product owner,
+  2026-08-10, `interview-skip-and-nudge` — "I should be able to skip to the next persona
   without having to force it to generate a question I'm not going to answer"). Unlike every other
   meta-command, roster navigation is pure index arithmetic with no classifier call
   (`InterviewEngine.advance_persona`, `agents/app/interview/engine.py`), so the composer's Skip

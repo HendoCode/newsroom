@@ -7,10 +7,10 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { requireUser } from "@/lib/session";
 
 /** The repo docs base the page's setup pointers link out to. */
-const DOCS_BASE = "https://github.com/HendoCode/content-machine/blob/main";
+const DOCS_BASE = "https://github.com/HendoCode/newsroom/blob/main";
 
 /**
- * How it works / how do I make this real (cmw-boss-facing-presentation, HIGH): the destination
+ * How it works / how do I make this real: the destination
  * the "seeded data" badge's link lands on. Explains what is placeholder vs. real in this v1 POC
  * and names, subsystem by subsystem, exactly what turns the walking-skeleton experience into the
  * real pipeline — the "try me" ask that used to have no home anywhere in the app.

@@ -3,7 +3,7 @@ import { NextResponse } from "next/server";
 import { AgentsRequestError, fetchInterviewerPersonas } from "@/lib/agents-client";
 
 /**
- * BFF route for the interview surface's persona menu (cmw-ui-wireframes screen 3) — the full
+ * BFF route for the interview surface's persona menu — the full
  * ~10-persona interviewer roster (§1.2), same store-nothing proxy pattern as `/api/dashboard`.
  */
 export const dynamic = "force-dynamic";

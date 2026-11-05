@@ -14,7 +14,7 @@ data "aws_iam_policy_document" "ec2_assume" {
 }
 
 resource "aws_iam_role" "instance" {
-  name_prefix        = "cmw-poc-"
+  name_prefix        = "newsroom-poc-"
   assume_role_policy = data.aws_iam_policy_document.ec2_assume.json
 }
 
@@ -38,7 +38,7 @@ resource "aws_iam_role_policy_attachment" "ecr_read" {
 # GOOGLE_OAUTH_* above needed no policy change, just this comment update.
 data "aws_iam_policy_document" "read_params" {
   statement {
-    sid       = "ReadCmwPocSsmParameters"
+    sid       = "ReadNewsroomPocSsmParameters"
     actions   = ["ssm:GetParameter"]
     resources = ["arn:aws:ssm:${data.aws_region.current.name}:${data.aws_caller_identity.current.account_id}:parameter${var.ssm_prefix}*"]
   }
@@ -51,13 +51,13 @@ data "aws_iam_policy_document" "read_params" {
 }
 
 resource "aws_iam_role_policy" "read_params" {
-  name   = "cmw-poc-read-ssm-params"
+  name   = "newsroom-poc-read-ssm-params"
   role   = aws_iam_role.instance.id
   policy = data.aws_iam_policy_document.read_params.json
 }
 
 resource "aws_iam_instance_profile" "instance" {
-  name_prefix = "cmw-poc-"
+  name_prefix = "newsroom-poc-"
   role        = aws_iam_role.instance.name
 }
 
@@ -75,7 +75,7 @@ data "aws_iam_policy_document" "publish_bucket_write" {
 }
 
 resource "aws_iam_role_policy" "publish_bucket_write" {
-  name   = "cmw-poc-write-published-assets"
+  name   = "newsroom-poc-write-published-assets"
   role   = aws_iam_role.instance.id
   policy = data.aws_iam_policy_document.publish_bucket_write.json
 }
@@ -104,30 +104,30 @@ data "aws_iam_policy_document" "bedrock_invoke" {
 }
 
 resource "aws_iam_role_policy" "bedrock_invoke" {
-  name   = "cmw-poc-bedrock-invoke-glm"
+  name   = "newsroom-poc-bedrock-invoke-glm"
   role   = aws_iam_role.instance.id
   policy = data.aws_iam_policy_document.bedrock_invoke.json
 }
 
-# cloudwatch:PutMetricData scoped to the CMW/Bedrock namespace only (via condition, not global
+# cloudwatch:PutMetricData scoped to the Newsroom/Bedrock namespace only (via condition, not global
 # grant). Used by BedrockGLMProvider to emit InferenceCostUSD per call (dimensioned by Step+Model)
 # for the non-technical cost dashboard. Emission is best-effort, offloaded to executor, and
 # swallowed on failure so telemetry never impacts inference. Controllable via settings flag.
 data "aws_iam_policy_document" "cloudwatch_put_metrics" {
   statement {
-    sid       = "PutCmwBedrockMetrics"
+    sid       = "PutNewsroomBedrockMetrics"
     actions   = ["cloudwatch:PutMetricData"]
     resources = ["*"]
     condition {
       test     = "StringEquals"
       variable = "cloudwatch:namespace"
-      values   = ["CMW/Bedrock"]
+      values   = ["Newsroom/Bedrock"]
     }
   }
 }
 
 resource "aws_iam_role_policy" "cloudwatch_put_metrics" {
-  name   = "cmw-poc-cloudwatch-put-bedrock-metrics"
+  name   = "newsroom-poc-cloudwatch-put-bedrock-metrics"
   role   = aws_iam_role.instance.id
   policy = data.aws_iam_policy_document.cloudwatch_put_metrics.json
 }

@@ -14,8 +14,8 @@
 #   scripts/instance.sh <instance-name> [base-port] [-- <docker compose args>]
 #
 # Examples:
-#   scripts/instance.sh alice                 # up (foreground), project cmw-alice, ports 3100-3102
-#   scripts/instance.sh bob 3200 -- --build -d # up --build -d, project cmw-bob, ports 3200-3202
+#   scripts/instance.sh alice                 # up (foreground), project newsroom-alice, ports 3100-3102
+#   scripts/instance.sh bob 3200 -- --build -d # up --build -d, project newsroom-bob, ports 3200-3202
 #   scripts/instance.sh bob 3200 -- down -v    # tear that instance down
 #   scripts/instance.sh bob 3200 -- ps         # inspect it
 #
@@ -39,7 +39,7 @@ if [[ $# -gt 0 && "$1" == "--" ]]; then
 fi
 
 # Derive a non-colliding port triple from the base.
-export COMPOSE_PROJECT_NAME="cmw-${INSTANCE}"
+export COMPOSE_PROJECT_NAME="newsroom-${INSTANCE}"
 export WEB_PORT="${BASE_PORT}"
 export AGENTS_PORT="$((BASE_PORT + 1))"
 export MONGO_PORT="$((BASE_PORT + 2))"

@@ -5,7 +5,7 @@ import { SourceRegistry } from "@/components/sources/source-registry";
 import type { Source, SourceListResponse } from "@/lib/sources/types";
 
 // SourceRegistry calls `router.refresh()` after every mutation to invalidate the client-side
-// Router Cache (cmw-source-registry-ux item 1) — no real Next.js router is mounted under plain
+// Router Cache — no real Next.js router is mounted under plain
 // Testing Library render(), so this seam needs a stub.
 const routerRefresh = vi.fn();
 vi.mock("next/navigation", () => ({
@@ -156,7 +156,7 @@ describe("SourceRegistry", () => {
     expect(routerRefresh).toHaveBeenCalled();
   });
 
-  describe("the add-source and clip-in panels are mutually exclusive (cmw-list-density-and-source-forms)", () => {
+  describe("the add-source and clip-in panels are mutually exclusive", () => {
     it("shows only the add-source form by default, never the clip-in form alongside it", () => {
       render(<SourceRegistry initial={INITIAL} />);
 
@@ -190,7 +190,7 @@ describe("SourceRegistry", () => {
       expect(screen.queryByLabelText("Paste text or URL")).not.toBeInTheDocument();
     });
 
-    it("clicking Edit scrolls the form into view (cmw-source-edit-button-scroll)", () => {
+    it("clicking Edit scrolls the form into view", () => {
       const scrollSpy = vi.mocked(Element.prototype.scrollIntoView);
       scrollSpy.mockClear();
       render(<SourceRegistry initial={INITIAL} />);

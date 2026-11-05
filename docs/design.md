@@ -29,7 +29,7 @@ cannot.
 **v1 gets a finished, on-brand piece all the way to a genuinely done, published state** — see
 D13's "Published is a terminal state with durable public outputs" note. This reverses an earlier
 v1 boundary (a piece used to stop at a final, reviewed artifact with no further state, "distribution
-is out of scope"); Hendo's call was that a piece needs a way to be *done*, not just finished, or
+is out of scope"); the product owner's call was that a piece needs a way to be *done*, not just finished, or
 every piece looks permanently in-flight on the dashboard. **Channel-specific distribution — picking
 where a piece goes (LinkedIn, a blog, a newsletter) and the payoff of the audience/angle intent
 captured along the way — is still explicitly out of scope for v1** (see §9): publishing mints
@@ -192,7 +192,7 @@ Voice kits (markdown packs) are **viewable, editable, rollback-able, and team-sh
 
 ### J. Final outputs / formats
 Final outputs are usually **Google Doc + HTML + PDF**. The Google Doc is best for
-editing but strips styling; Hendo branding only looks right as HTML/PDF. Formats are
+editing but strips styling; the product owner branding only looks right as HTML/PDF. Formats are
 **selectable at finalize**.
 
 ---
@@ -309,7 +309,7 @@ any signed-in employee can curate sources and act on pieces. External interviewe
 deferred; supporting them would add a scoped, expiring magic-link (§9).
 
 > **v1 POC interim:** ships with a simplified **identity-declaration login** instead (anyone
-> signs in by declaring an email, no password/OAuth) so the boss + wider team can kick the tires
+> signs in by declaring an email, no password/OAuth) so reviewers and the wider team can kick the tires
 > without provisioning Google credentials. Real Google Workspace SSO per this decision is deferred
 > until a company admin provisions it. Authorization stays flat either way. See
 > [`docs/auth.md`](auth.md).
@@ -347,7 +347,7 @@ publish.
 **Published is a terminal state with durable public outputs (v1 reversal, superseding the
 "distribution is out of scope" line this section used to carry).** A piece's original v1 state
 machine ended at `finalized` — a finished, reviewed artifact with no further state, since
-distribution was deferred. Hendo reversed that call: "it seems that all docs are always going to be
+distribution was deferred. The product owner reversed that call: "it seems that all docs are always going to be
 in-flight" — a piece needs a way to be genuinely *done*, not just finished. So the settled machine
 gained one more state, entered by an explicit **human button press, never automatic**:
 `finalized → published`, terminal (no edge back out — a published link, once shared, can't be

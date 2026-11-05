@@ -83,7 +83,7 @@ clean-Doc export (`GOOGLE_OAUTH_CLIENT_ID` / `_CLIENT_SECRET` / `_REFRESH_TOKEN`
 comment read/reply (`drive.file` already covers files it created; commenting on those files needs no
 broader scope).
 
-**(cmw-drive-named-folder-scoping)** `mint()` now parents each round's Doc inside the piece's Drive
+`mint()` now parents each round's Doc inside the piece's Drive
 folder (`app/drive/README.md`) when `GOOGLE_DRIVE_ROOT_FOLDER_NAME` is configured —
 `ReviewMintService`'s
 `share_file` call and everything else in this pipeline is unchanged; only the Doc's `parents` moves

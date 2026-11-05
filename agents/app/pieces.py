@@ -50,7 +50,7 @@ def _to_out(piece: Piece) -> PieceArchiveResponse:
 #
 # The Operator Desk needs the ~6 most recently created/active pieces, live from the work-state —
 # never a hardcoded/seed list (that is exactly the thing this projection replaces). Sorted by
-# `updated_at` (the machine signal — every write bumps it; see the cmw-staleness-timestamps
+# `updated_at` (the machine signal — every write bumps it; see the staleness-timestamps
 # entries), which covers "recently created" too since insert sets both timestamps. Archived pieces
 # are hidden here for the SAME reason `build_queue` hides them (triage-at-scale): a piece a human
 # archived out of the queue should not re-surface on the desk. Unlike `/api/dashboard` there is no

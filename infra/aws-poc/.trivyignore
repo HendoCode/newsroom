@@ -1,4 +1,4 @@
-# infra/aws-poc — accepted misconfiguration residuals (cmw-sec-deploy-scan-gate, 2026-08-12)
+# infra/aws-poc — accepted misconfiguration residuals
 #
 # Used by deploy/security-gate.sh's `trivy config --severity CRITICAL` step. Every entry below is
 # a deliberate, justified accept — not a blanket suppression. Re-evaluate whenever this security

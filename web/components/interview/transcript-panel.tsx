@@ -13,11 +13,11 @@ import type { TranscriptTurn } from "@/lib/interviews/types";
 import { cn } from "@/lib/utils";
 
 /**
- * "Review & edit my answers" (cmw-ui-wireframes screen 3): the sacred transcript (D16b) — every
+ * "Review & edit my answers": the sacred transcript (D16b) — every
  * answer is freely editable by the interviewee while this interview is `open`, and each can show
  * the machine's "here's what I heard" recap on demand as a read-only confirmation view (never
  * auto-written back over the stored answer). Once the interview is `complete`, `editable` is
- * false and the Edit control is omitted entirely (Hendo, 2026-08-08) — the transcript becomes
+ * false and the Edit control is omitted entirely — the transcript becomes
  * read-only, matching `piece-detail`'s own read-only transcript view. The agents-side edit route
  * enforces this independently (refuses the write once the named interview is complete), so this
  * is a courtesy — hiding the button, not the real gate.
@@ -27,7 +27,7 @@ import { cn } from "@/lib/utils";
  *
  * A long research-derived answer's *read* view clamps to 3 lines with a "Full answer" modal
  * (`lib/interviews/answer-length.ts`, the same threshold `transcript-record.tsx`'s read-only
- * piece-detail view uses) — Hendo's explicit ask for "a modal popup of the complete text." The
+ * piece-detail view uses) — the product owner's explicit ask for "a modal popup of the complete text." The
  * *edit* textarea is never clamped: it always holds the complete `turn.answer`, since editing
  * needs the full text regardless of how the read view displays it.
  */

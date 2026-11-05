@@ -7,9 +7,9 @@ import { X } from "lucide-react";
 import { cn } from "@/lib/utils";
 
 /**
- * The ONE modal/dialog primitive for long-form content across the app (Hendo: pop-ups for
+ * The ONE modal/dialog primitive for long-form content across the app (the product owner: pop-ups for
  * long-form text should apply across the UI, not just one screen) — piece-detail's draft preview
- * is the first caller (cmw-piece-detail-collapsible), but any future screen that needs to show a
+ * is the first caller, but any future screen that needs to show a
  * large block of text/HTML without it dominating the page should reuse this rather than a new
  * overlay. Thin, token-driven wrapper over Radix's Dialog (already the org's sanctioned headless
  * primitive here — see `dropdown-menu.tsx`), so focus-trap/Escape/scroll-lock/portal behavior is

@@ -70,7 +70,7 @@ them lives.
 cd infra/aws-poc-state-backend      # from the single durable operator checkout — see project AGENTS.md
 tofu init                            # local backend, starts from empty state
 
-BUCKET="cmw-aws-poc-tofu-state-<your-account-id>"   # aws sts get-caller-identity if unsure
+BUCKET="newsroom-aws-poc-tofu-state-<your-account-id>"   # aws sts get-caller-identity if unsure
 
 tofu import aws_s3_bucket.tofu_state "$BUCKET"
 tofu import aws_s3_bucket_policy.tofu_state_require_tls "$BUCKET"

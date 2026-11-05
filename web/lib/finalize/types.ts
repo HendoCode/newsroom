@@ -1,5 +1,5 @@
 /**
- * Finalize/outputs domain types (cmw-ui-wireframes screen 10; D13/open-decisions Item 5).
+ * Finalize/outputs domain types (D13/open-decisions Item 5).
  * Mirrors `Job.formats` (`agents/app/models/job.py`) 1:1 — `html`/`pdf`/`doc`.
  */
 

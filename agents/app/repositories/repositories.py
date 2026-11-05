@@ -220,7 +220,7 @@ class PieceRepository(BaseRepository[Piece]):
         return updated
 
     async def mark_human_touch(self, id: str, *, when: datetime | None = None) -> Piece:
-        """Stamp ``last_human_touch_at`` (cmw-staleness-timestamps) — the ONE place that field is
+        """Stamp ``last_human_touch_at`` — the ONE place that field is
         ever written. Callers are exactly the human-attributable actions the machine/interview
         engine have identified (see their own call sites for the reasoning on what counts);
         nothing else should call this directly. Raises ``KeyError`` if the piece is missing.

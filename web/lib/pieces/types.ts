@@ -1,5 +1,5 @@
 /**
- * Piece-detail domain types (cmw-ui-wireframes screen 2; domain model §1.9/§1.11/§1.13/§1.14).
+ * Piece-detail domain types (domain model §1.9/§1.11/§1.13/§1.14).
  *
  * Mirror the agents `GET /api/pieces/{id}` wire contract 1:1 (snake_case), matching the dashboard's
  * existing convention (`lib/dashboard/types.ts`) so there is no mapping layer.
@@ -47,7 +47,7 @@ export interface FinalDocRef {
   share_mode: ShareMode;
 }
 
-/** An ordinary Drive file (branded HTML/PDF, cmw-drive-piece-folders) — link/metadata only, no
+/** An ordinary Drive file (branded HTML/PDF) — link/metadata only, no
  * `share_mode` (unlike `FinalDocRef`): visibility comes from Shared Drive membership or the piece
  * folder, not a per-file share grant. */
 export interface FinalDriveFileRef {
@@ -135,7 +135,7 @@ export interface PieceDetail {
   open_clearances: number;
   latest_revision: string | null;
 
-  // Staleness triage (cmw-staleness-timestamps) — same two-timestamp distinction as the
+  // Staleness triage — same two-timestamp distinction as the
   // dashboard's `QueueItem`: `updated_at` is "when did anything last write this piece" (any
   // write path, including a machine-only batch job); `last_human_touch_at` is "when did a
   // person last act on it" (a stage trigger, or answering/editing an interview turn — never a
@@ -155,7 +155,7 @@ export interface PieceDetail {
 
   /** True when the response came from the agents service's built-in seed work-state (same
    * store-or-seed fallback as the dashboard's `source` field) rather than a real Mongo document
-   * — provenance for the piece-detail "seeded data" badge (cmw-boss-facing-presentation).
+   * — provenance for the piece-detail "seeded data" badge.
    * Optional so fixtures predating the field stay valid; absent means not seeded. */
   seeded?: boolean;
 
@@ -182,7 +182,7 @@ export interface PieceDetail {
   final_rendered_at: string | null;
 
   /** The piece's Drive folder under the app's named My-Drive root
-   * (cmw-drive-named-folder-scoping) — a convenience "open everything for this piece" link,
+   * — a convenience "open everything for this piece" link,
    * `null`/absent until GOOGLE_DRIVE_ROOT_FOLDER_NAME is configured server-side
    * and this piece has produced its first Google artifact. Optional (not just nullable, unlike
    * every field above) so existing test fixtures built before this field existed don't need
@@ -203,7 +203,7 @@ export interface PieceDetail {
   published_doc: FinalDocRef | null;
   published_at: string | null;
   /** The same release's Drive-side copies, in the piece folder's `Published/` subfolder
-   * (cmw-drive-piece-folders) — optional/absent for the same fixture-compatibility reason as
+   * — optional/absent for the same fixture-compatibility reason as
    * `drive_folder_url` above. */
   published_drive_html?: FinalDriveFileRef | null;
   published_drive_pdf?: FinalDriveFileRef | null;
@@ -224,7 +224,7 @@ export interface PieceDetail {
  * contract 1:1 (`agents/app/schemas.py`'s `RecentPiece`) — deliberately narrower than `QueueItem`:
  * identity + stage + recency, not the dashboard's full join. Timestamps are the agents service's
  * naive-UTC strings; render through `lib/format/timestamp.ts`'s `parseTimestampMs` (see the
- * cmw-dateparse sharp edge), never a bare `new Date(...)`. */
+ * dateparse sharp edge), never a bare `new Date(...)`. */
 export interface RecentPiece {
   id: string;
   title: string | null;

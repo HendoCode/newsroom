@@ -1,7 +1,7 @@
 /**
- * The dashboard filter model (docs/design.md D15; cmw-ui-wireframes screen 1).
+ * The dashboard filter model (docs/design.md D15).
  *
- * The desk redesign (Concept A, cmw-evolution-ux-audit) replaced the old five saved-filter TABS
+ * The desk redesign (Concept A) replaced the old five saved-filter TABS
  * with three sections (`lib/dashboard/desk.ts`: Inbox / Machine strip / Library); what survives
  * here is the one layer those sections still share — **the D15 filter bar** (voice · stage ·
  * creator · date · status), a single reusable {@link FilterState} the Library applies over the
@@ -46,7 +46,7 @@ export function creatorOf(item: QueueItem): string | null {
  *  - a piece with a failed/stuck job reports `failed` (Item 4);
  *  - a finalized/lessons/published piece reports `done`; anything else is `in-flight`.
  *
- * `published` is the actual point of this predicate for Hendo's "everything looks perpetually
+ * `published` is the actual point of this predicate for the product owner's "everything looks perpetually
  * in-flight" complaint: without it here, a published piece — genuinely finished, with durable
  * public links — would still count as in-flight work on the dashboard. Not caught by a compiler
  * exhaustiveness check (this function has a catch-all `"in-flight"` return, not a switch), so any

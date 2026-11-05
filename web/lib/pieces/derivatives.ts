@@ -1,5 +1,5 @@
 /**
- * Native derivative formats for an anchor piece (cmw-repurposing-derivatives-ia).
+ * Native derivative formats for an anchor piece.
  *
  * Lieberman / the evolution synthesis: one anchor → n natives, each a real Piece with its own
  * council bar — never a re-render of the same text (HTML/PDF/Doc stay render formats, not
@@ -95,7 +95,7 @@ export interface ExistingDerivative {
    * owner/review/publish state. Absent/undefined means child (the default). */
   lineage?: DerivativeLineage;
   promoted_piece_id?: string | null;
-  /** Council-quality bar for this derivative (cmw-derivative-quality-bar-impl). */
+  /** Council-quality bar for this derivative. */
   quality?: DerivativeQuality;
 }
 
@@ -197,7 +197,7 @@ export const COMMISSION_CHILD_REASON =
   "Adds a child artifact of this piece. Native generation is not built yet — promote it to its own piece when it needs its own owner, review, or publish.";
 
 /**
- * Derivative quality bar (cmw-derivative-quality-bar-impl). Every publishable native derivative
+ * Derivative quality bar. Every publishable native derivative
  * must clear ITS OWN council at DERIVATIVE_QUALITY_BAR with a destination-specific editor lineup
  * (a LinkedIn post and a whitepaper need different judgment), while UNIVERSAL_HARD_GATES apply to
  * every destination. This is the display mirror of `agents/app/derivatives/quality.py` — keep

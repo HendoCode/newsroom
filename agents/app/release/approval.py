@@ -1,4 +1,4 @@
-"""Approval validity for AuthorizeRelease (cmw-release-semantics-impl).
+"""Approval validity for AuthorizeRelease.
 
 An approval is tied to a specific Git revision (``Piece.approved_revision``, stamped when the
 piece enters ``finalized`` or when ``accept-final-revision`` fires). AuthorizeRelease may only

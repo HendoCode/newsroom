@@ -11,7 +11,7 @@ import {
   type VoicePack,
 } from "@/lib/voice-kit/types";
 
-/** The pack file list (cmw-ui-wireframes screen 11): voice-guide / style-guide / content-lessons
+/** The pack file list: voice-guide / style-guide / content-lessons
  * for every voice; visual-identity + brand-guidelines additionally for the team voice. The
  * content-lessons row carries a pending-lesson count pill. */
 export function FileList({

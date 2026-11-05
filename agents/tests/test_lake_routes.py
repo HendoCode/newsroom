@@ -18,7 +18,7 @@ from app.main import app
 @pytest.fixture
 def client_with_lake() -> TestClient:
     client = TestClient(app)
-    app.state.content_lake = build_content_lake(AsyncMongoMockClient()["cmw_routes"])
+    app.state.content_lake = build_content_lake(AsyncMongoMockClient()["newsroom_routes"])
     return client
 
 

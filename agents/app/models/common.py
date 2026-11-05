@@ -1,6 +1,6 @@
 """Shared building blocks for the Mongo work-state models.
 
-Every work-state entity in the domain model (§1, §3 of the cmw domain model report) is a Mongo
+Every work-state entity in the domain model (§1, §3 of docs/design.md) is a Mongo
 document. We keep the Python side driver-agnostic: `_id` is stored as a *string* (a hex ObjectId
 generated on insert) rather than a BSON ``ObjectId`` object, so the same models round-trip
 identically through the real motor driver and the in-memory test double, with no custom BSON

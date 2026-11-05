@@ -1,5 +1,5 @@
 /**
- * Interview-engine domain types (cmw-ui-wireframes screen 3; domain model §1.12; D5-context-
+ * Interview-engine domain types (UI wireframes screen 3; domain model §1.12; D5-context-
  * assembly §5; D6; D16a/D16b).
  *
  * Mirror the agents `agents/app/interview/routes.py` wire contract 1:1 (snake_case), the same

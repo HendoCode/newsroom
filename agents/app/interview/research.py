@@ -34,7 +34,7 @@ _THINKING_DISABLED: dict[str, object] = {"type": "disabled"}
 # Shown in place of a real answer when the direct-Anthropic carve-out below can't resolve a
 # provider (blank/misconfigured ANTHROPIC_API_KEY) — a clear, user-facing degrade rather than
 # letting AnthropicLLMProvider.from_settings()'s RuntimeError fall through unhandled to a raw 500
-# (F5, cmw-local-stack-gap-audit).
+# (F5).
 RESEARCH_UNAVAILABLE_MESSAGE = (
     "Research is unavailable right now \u2014 no Anthropic key is configured for the research "
     "sidecar (ANTHROPIC_API_KEY). Ask a coordinator to configure it, or continue without "

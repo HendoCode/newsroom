@@ -220,7 +220,7 @@ describe("InterviewSurfaceView — D6 op surfacing", () => {
   });
 });
 
-describe("InterviewSurfaceView — skip needs no pending question (Hendo, 2026-08-10)", () => {
+describe("InterviewSurfaceView — skip needs no pending question", () => {
   it("skips to the next persona with zero questions ever asked, via advance-persona (never respond)", async () => {
     const afterSkip = interview({ current_persona_index: 1, current_question: null });
     const fetchMock = mockFetch({
@@ -418,7 +418,7 @@ describe("InterviewSurfaceView — a complete interview's transcript is read-onl
   });
 });
 
-describe("InterviewSurfaceView — focused mode hides operator chrome & D6 prose (cmw-interview-focused-mode)", () => {
+describe("InterviewSurfaceView — focused mode hides operator chrome & D6 prose", () => {
   it("renders no D6 doctrine prose and no add/drop-interviewer roster panel", () => {
     render(
       <InterviewSurfaceView

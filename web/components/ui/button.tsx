@@ -7,7 +7,7 @@ import { cn } from "@/lib/utils";
 // shadcn/ui button — variants defined with class-variance-authority against SEMANTIC TOKENS
 // only (bg-primary, bg-destructive, …). No brand hex here; re-skin via the tokens in globals.css.
 // Disabled state is a flat, uniform "muted" look shared by every variant — deliberately not a
-// translucent version of that variant's own color (cmw-interactive-state-affordance: measured
+// translucent version of that variant's own color (interactive-state-affordance: measured
 // that a 50%-opacity fade of e.g. bg-destructive/text-destructive-foreground still renders as a
 // merely-paler destructive button, easy to mistake for an active, quieter variant, rather than an
 // unambiguous "not clickable" signal). Collapsing to the same muted/foreground pair every time —
@@ -24,7 +24,7 @@ const buttonVariants = cva(
           "bg-destructive text-destructive-foreground hover:bg-destructive/90 active:bg-destructive/80",
         outline:
           "border border-input bg-background hover:bg-accent hover:text-accent-foreground",
-        // Bordered like `outline` (cmw-interactive-state-affordance: bg-secondary alone measured
+        // Bordered like `outline` (interactive-state-affordance: bg-secondary alone measured
         // 1.15:1/1.43:1 against the page background in light/dark — far under the 3:1 WCAG 1.4.11
         // boundary floor, i.e. a secondary button had no visible edge at all). --secondary itself
         // is untouched (it's deliberately a quieter fill than --primary); the border is what makes

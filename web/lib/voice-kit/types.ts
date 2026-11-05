@@ -1,5 +1,5 @@
 /**
- * Voice kit domain types (cmw-ui-wireframes screen 11; domain model §1.1 Voice, §1.18 Lesson;
+ * Voice kit domain types (UI wireframes screen 11; domain model §1.1 Voice, §1.18 Lesson;
  * D12). Mirror the agents `/api/voices/*` + `/api/lessons/*` wire contracts 1:1 (snake_case,
  * matching the sources/dashboard convention in `lib/sources/types.ts`) so there is no mapping
  * layer.
@@ -90,7 +90,7 @@ export interface ProposeLessonsResult {
 }
 
 /** The `voice_guide` pack file is the "DNA the draft writes against"; the rest label the file
- * list (cmw-ui-wireframes screen 11). Order matches the wireframe's file list. */
+ * list. Order matches the wireframe's file list. */
 export const VOICE_FILE_LABELS: Record<VoiceFileKey, string> = {
   voice_guide: "voice-guide.md",
   style_guide: "style-guide.md",

@@ -106,7 +106,7 @@
 }
 
 /*
- * FROZEN BRAND PREVIEW (cmw-app-chrome-reskin-fix) — deliberately NOT a swappable design token.
+ * FROZEN BRAND PREVIEW — deliberately NOT a swappable design token.
  *
  * `.piece-content-preview` (components/piece-detail/draft-view.tsx) is the one place the app
  * shows a piece's raw draft.html ahead of the real branded render (agents/app/render/, driven by
@@ -159,7 +159,7 @@
 }
 
 /* Markdown constructs produced by app.piece_md.markdown_to_html for brain-authored direct-
- * content briefs (cmw-drafts-view). These are part of the frozen reader-facing face, so they
+ * content briefs. These are part of the frozen reader-facing face, so they
  * reference only the literals above, never app tokens. */
 .piece-content-preview h3,
 .piece-content-preview h4,

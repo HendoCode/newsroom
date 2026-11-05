@@ -1,5 +1,5 @@
 /**
- * Pure helpers for the spike → kickoff hand-off (cmw-ui-wireframes screen 6), kept free of
+ * Pure helpers for the spike → kickoff hand-off, kept free of
  * React/fetch so they're trivially unit-tested.
  */
 

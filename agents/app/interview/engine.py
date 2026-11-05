@@ -268,7 +268,7 @@ class InterviewEngine:
         neither a classifier call nor ``respond``'s pending-question gate: unlike every other
         meta-command (add/drop-interviewer, restart, stop-for-the-day), roster navigation never
         needed the classifier's context, so a human shouldn't have to force a throwaway question
-        into existence just to move past a persona they don't want to answer (Hendo, 2026-08-10).
+        into existence just to move past a persona they don't want to answer.
         """
         if direction not in (MetaCommand.skip, MetaCommand.go_back):
             raise ValueError(f"advance_persona only accepts skip/go-back, got {direction!r}")
@@ -330,7 +330,7 @@ class InterviewEngine:
         )
         await self.store.interviews.update(interview.id, {"current_question": None})
         # A real, human-authored answer landed in the sacred transcript (D16b) — this is a human
-        # touch on the piece (cmw-staleness-timestamps), independent of `_charge`'s cost-accounting
+        # touch on the piece, independent of `_charge`'s cost-accounting
         # write below, which fires on LLM spend, not on the human act of answering.
         await self.store.pieces.mark_human_touch(piece.id)
         recap_text = await recap_answer(
@@ -465,7 +465,7 @@ class InterviewEngine:
             turn = edit_answer(self.content, piece.slug, turn_id, new_answer)
         except KeyError as exc:
             raise UnknownTurn(turn_id) from exc
-        # The interviewee editing their own answer is a human touch (cmw-staleness-timestamps),
+        # The interviewee editing their own answer is a human touch,
         # same as answering fresh — see `_route_answer`'s identical stamp above.
         await self.store.pieces.mark_human_touch(piece_id)
         return turn

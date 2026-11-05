@@ -1,5 +1,5 @@
 /**
- * The stage rail (cmw-ui-wireframes screen 2): the 9-state machine (domain model §1.9), rendered
+ * The stage rail: the 9-state machine (domain model §1.9), rendered
  * as 8 inline steps in their settled canonical order plus `paused` as a distinct off-rail chip —
  * mirroring the wireframe's own note that "`paused` is an off-rail state reachable from any
  * interactive step (stop-for-the-day)", not a forward step in the pipeline.
@@ -23,7 +23,7 @@ export const RAIL_STAGES = [
 export type RailStage = (typeof RAIL_STAGES)[number];
 
 /** Batch stages run as background jobs that flip status (§1.9); everything else waits on a human.
- * Drives the rail's "double border" batch styling (cmw-ui-wireframes screen 2 legend). */
+ * Drives the rail's "double border" batch styling. */
 export const BATCH_STAGES: ReadonlySet<PieceStage> = new Set<PieceStage>([
   "drafting",
   "council",
@@ -37,7 +37,7 @@ export function isBatchStage(stage: PieceStage): boolean {
 
 /**
  * Which of the three visual groups a rail stage belongs to (Pipeline redesign,
- * cmw-pipeline-depiction-design report's "Evolving the pipeline" proposal): the rail draws the
+ * pipeline-depiction-design report's "Evolving the pipeline" proposal): the rail draws the
  * loop bracket/round chip from this declaration rather than hand-positioned SVG, so a future
  * stage inserted into (or removed from) the review loop only needs to say which cluster it's in.
  */

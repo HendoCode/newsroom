@@ -15,9 +15,9 @@ import { stageLabel } from "@/lib/dashboard/actions";
 import type { PieceDetail } from "@/lib/pieces/types";
 
 /**
- * The review-round screen (cmw-ui-wireframes screen 04; D4/D11; open-decisions Item 7).
+ * The review-round screen (D4/D11; open-decisions Item 7).
  *
- * ReviewRound is the primary UI object (cmw-review-round-ux-impl): the current round is the
+ * ReviewRound is the primary UI object: the current round is the
  * primary container at the top, the Google Doc is a child "Open Doc" link inside it, and the
  * mint / reviews-done panels are actions ON the round. The between-rounds log is always visible
  * here (not gated behind piece-detail's collapsed section) so the round history is scannable
@@ -69,7 +69,7 @@ export function ReviewRoundView({ initial }: { initial: PieceDetail }) {
         </div>
       ) : null}
 
-      {/* The current round is the primary container (cmw-review-round-ux-impl) */}
+      {/* The current round is the primary container */}
       {round ? (
         <Card>
           <CardHeader>
