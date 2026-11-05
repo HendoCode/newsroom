@@ -1,0 +1,13 @@
+# The local-dev Caddy edge — the ONLY way `web` is reached locally (docker-compose.yml's `edge`
+# service; docs/local-dev.md "Local HTTPS"). Not opt-in: plain `docker compose up` loads this.
+{
+	admin off
+}
+
+# `tls internal` is explicit rather than relied on implicitly: it tells Caddy to mint/serve a
+# certificate from its own local CA for this hostname instead of ever attempting public ACME
+# (which would fail for a non-public hostname like localhost anyway).
+localhost {
+	tls internal
+	reverse_proxy web:3000
+}

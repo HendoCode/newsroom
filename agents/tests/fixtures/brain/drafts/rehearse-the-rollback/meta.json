@@ -1,0 +1,66 @@
+{
+  "slug": "rehearse-the-rollback",
+  "title": "Rehearse the rollback",
+  "voice": "demo-dana",
+  "origin": "Oracle run 2026-09-14 · Spike #2 (see VAULT.md)",
+  "target": "design write-up / practice note, ~1100 words",
+  "target_formats": [
+    "long-form technical practice note",
+    "three-paragraph social summary plus duration figure"
+  ],
+  "partners": [],
+  "stage": "council",
+  "panel": {
+    "selected": ["operator", "architect", "skeptic"],
+    "completed": ["operator", "architect", "skeptic"],
+    "in_progress": null
+  },
+  "council": {
+    "rounds": 1,
+    "editors": [
+      "slop-allergist",
+      "voice-guardian",
+      "presentation-reviewer",
+      "technical-reviewer",
+      "specificity-auditor"
+    ],
+    "scores": {
+      "slop-allergist": 6,
+      "voice-guardian": 8,
+      "technical-reviewer": 9,
+      "specificity-auditor": 7,
+      "presentation-reviewer": 6
+    },
+    "aggregate_score": 7.2,
+    "bar": 9,
+    "hard_caps": [
+      {
+        "editor": "slop-allergist",
+        "cap": 6,
+        "reason": "presuppose-and-dismantle opener plus challenger-sale bravado",
+        "status": "fixed in v2"
+      },
+      {
+        "editor": "presentation-reviewer",
+        "cap": 6,
+        "reason": "h2 to h4 level skip and two decorative section markers",
+        "status": "fixed in v2"
+      }
+    ],
+    "editorial_fixes_applied": 5,
+    "information_gaps_routed": [
+      { "to": "skeptic", "question": "incident timeline artifact for the 2h40m rollback" },
+      { "to": "operator", "question": "verbatim drill log entries" }
+    ],
+    "next": "round 2 pending — re-run the five editors on v2 after the two gaps close"
+  },
+  "open_gaps": 2,
+  "has_draft": true,
+  "draft_revision": "v2",
+  "published_url": null,
+  "demo": {
+    "fictional": true,
+    "subjects": ["Harborline Freight"],
+    "note": "Invented subject, numbers, and quotes. No external citations by design."
+  }
+}

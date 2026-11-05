@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Rehearse the rollback</title>
+<!--
+  Machine DRAFT artifact for the piece — not the published file.
+  Convention: drafts/<piece>/draft.html (self-contained, browser-openable), started from
+  templates/draft-skeleton.html. The council edits this file in place.
+  Revision state: v2 — round 1 editorial fixes applied, awaiting round 2 re-score.
+  Editorial annotations ([GAP]/[NOTE]) live in the .editorial block after </article> and are
+  stripped before any external share (engine/feedback-intake.md). See piece.md for status.
+
+  FICTIONAL DEMO PIECE: Harborline Freight, its systems, and every figure below are invented.
+-->
+<style>
+  :root {
+    --background: #fdfdfc;
+    --card: #f5f5f3;
+    --foreground: #1c1c1a;
+    --muted: #5c5c56;
+    --accent: #4a5a6a;
+    --border: #dedcd7;
+    --radius: 0.5rem;
+  }
+  * { box-sizing: border-box; }
+  body {
+    max-width: 46rem;
+    margin: 0 auto;
+    padding: 4rem clamp(1.25rem, 4vw, 3rem) 5rem;
+    background: var(--background);
+    color: var(--foreground);
+    font: 17px/1.7 ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif;
+  }
+  h1, h2, h3 {
+    font-family: ui-serif, Georgia, "Times New Roman", serif;
+    letter-spacing: -0.015em;
+    line-height: 1.2;
+    text-wrap: balance;
+  }
+  h1 { margin: 0 0 1rem; font-size: clamp(2rem, 5vw, 2.75rem); font-weight: 600; }
+  h2 { margin: 2.75rem 0 0.75rem; padding-top: 1rem; border-top: 1px solid var(--border); font-size: 1.5rem; font-weight: 600; }
+  h3 { margin: 2rem 0 0.5rem; font-size: 1.15rem; font-weight: 600; color: var(--accent); }
+  p { margin: 0 0 1.15rem; }
+  .kicker { margin: 0 0 0.75rem; color: var(--accent); font-size: 0.75rem; font-weight: 700; letter-spacing: 0.09em; text-transform: uppercase; }
+  .dek { max-width: 60ch; margin: 0 0 2.25rem; color: var(--muted); font-size: 1.1rem; }
+  a { color: var(--accent); text-underline-offset: 0.18em; }
+  code { padding: 0.08em 0.32em; border-radius: 0.25rem; background: var(--card); font: 0.86em ui-monospace, SFMono-Regular, Menlo, monospace; }
+  ul, ol { margin: 0 0 1.25rem; padding-left: 1.4rem; }
+  li { margin: 0 0 0.5rem; }
+  blockquote { margin: 2rem 0; padding-left: 1.25rem; border-left: 3px solid var(--accent); color: var(--accent); font: 1.1rem/1.6 ui-serif, Georgia, serif; }
+  figure { margin: 2.5rem 0; }
+  figure svg { display: block; width: 100%; height: auto; border: 1px solid var(--border); border-radius: var(--radius); background: var(--card); }
+  figcaption { margin-top: 0.7rem; color: var(--muted); font-size: 0.82rem; text-align: left; }
+  table { width: 100%; margin: 1.75rem 0; border-collapse: collapse; font-size: 0.92rem; }
+  th { padding: 0.6rem 0.75rem; border-bottom: 2px solid var(--border); color: var(--muted); font-size: 0.72rem; letter-spacing: 0.05em; text-align: left; text-transform: uppercase; }
+  td { padding: 0.65rem 0.75rem; border-bottom: 1px solid var(--border); vertical-align: top; }
+  hr { border: none; border-top: 1px solid var(--border); margin: 2.5rem 0; }
+  section.editorial { margin-top: 3.5rem; padding: 1.25rem 1.5rem; border: 1px dashed var(--border); border-radius: var(--radius); background: var(--card); color: var(--muted); font-size: 0.9rem; }
+  section.editorial h2 { margin-top: 0; padding-top: 0; border-top: none; font-size: 1rem; }
+  section.editorial .tag { font: 700 0.78rem/1 ui-monospace, SFMono-Regular, Menlo, monospace; letter-spacing: 0.04em; text-transform: uppercase; color: var(--foreground); }
+  @media print { body { max-width: none; padding: 0 0.5in; } section.editorial { display: none; } }
+</style>
+</head>
+<body>
+<article>
+  <p class="kicker">Deployment practice · settlement path</p>
+  <h1>Rehearse the rollback</h1>
+  <p class="dek">A rollback plan nobody has run is a hypothesis. Forty-five minutes a month turns
+  it into a runbook with a known duration — and forces the schema decisions that make rolling
+  back safe in the first place.</p>
+
+  <h2>The problem is the schema, not the deploy</h2>
+  <p>Redeploying the previous image is a CI job. It takes two minutes and it does not require
+  judgment. The part that decides whether a bad release becomes an incident or a bad afternoon is
+  a different question: what did the version you are rolling back write while it was up, and can
+  the previous release read it?</p>
+  <p>On the settlement path at Harborline Freight, the last rollback before we started drilling
+  took two hours forty minutes and cost about six minutes of settlement events, which became a
+  reconciliation project. Fourteen months and eleven drills later, the next real rollback on that
+  path took eleven minutes and lost nothing.</p>
+  <p>That is a before and an after, and it is one data point. What follows is the mechanism, the
+  drill, and what the drill costs — because the mechanism is the part that generalizes and the
+  eleven minutes is not.</p>
+
+  <h2>The mechanism: expand-contract, never a down-migration</h2>
+  <p>Every schema change ships in two releases, and the old path stays readable the whole time.</p>
+  <ol>
+    <li><strong>Expand.</strong> Add the new column. Dual-write to both. Backfill. The previous
+    release still reads and writes the old path and does not know anything happened.</li>
+    <li><strong>Switch.</strong> Release two moves reads to the new column. Writes stay dual.</li>
+    <li><strong>Contract.</strong> Drop the old column in a third release — or never. Several of
+    ours are still dual-writing because the deletion was not worth the risk.</li>
+  </ol>
+  <p>The property this buys: at any moment the previous release can read the current schema.
+  Rolling back is therefore redeploying an image plus flipping a feature flag off, and both are
+  states the system has already run. No down-migrations, no schema surgery at 2am, no
+  "restore from snapshot and lose the last hour."</p>
+  <p>Feature flags default off and are flipped after the deploy is healthy. The flag state lives
+  in the config service while the image lives in the deploy pipeline, which is why a rollback is
+  two steps and not one: the two systems can disagree, and the runbook names which one is
+  authoritative.</p>
+
+  <h3>The part that breaks: backfills</h3>
+  <p>Dual-writes are safe. Backfilling forty million rows is not instant, and rolling back
+  mid-backfill leaves a column that is partially populated — harmless to the old code, which
+  ignores it, and harmful to the new code when it comes back. So backfills are batched by key
+  range with a checkpoint row, and the batch is resumable.</p>
+  <p>We know this because a drill found it. That is the argument for the drill in one sentence.</p>
+
+  <h2>The drill</h2>
+  <p>Forty-five minutes, first Tuesday of the month, same runbook, same path, staging with
+  production-shaped data. Three roles: two run it, one watches the clock and the error rate. The
+  person running it rotates monthly, and somebody who ran it last month does not run it this
+  month. The rotation is the point — if the same person always runs the drill you are rehearsing
+  that person, not the team.</p>
+  <p>The runbook is numbered, with an owner per step and an explicit decision point:</p>
+  <ol>
+    <li>Call it. One named person says go, and says what triggered it.</li>
+    <li>Flip the feature flag off. Confirm in the config service, not in the app logs.</li>
+    <li>Redeploy the previous image. Watch the error rate for three minutes.</li>
+    <li>Answer the data question out loud: what did the rolled-back version write, and can the
+    current schema be read by the code now running?</li>
+    <li>Close it with a duration and at least one finding.</li>
+  </ol>
+  <p>Every drill has to find something. Not something large. If a drill finds nothing, the
+  runbook is wrong, because a runbook that never surprises anyone is a runbook nobody is reading.
+  The log for the last four months includes: the flag service timing out at 400ms when we had
+  budgeted 50; a backfill checkpoint row that was not resumable; and a decision point where both
+  people running the drill looked at the same dashboard and read it differently.</p>
+
+  <figure>
+    <svg viewBox="0 0 760 220" role="img" aria-label="Timeline comparing the pre-drill rollback with the post-drill rollback">
+      <title>Rollback duration, before and after the drill</title>
+      <text x="12" y="28" font-family="ui-sans-serif, system-ui, sans-serif" font-size="13" fill="#5c5c56">before drills — 2h 40m, 6 minutes of settlement events lost</text>
+      <rect x="12" y="40" width="700" height="26" rx="4" fill="#4a5a6a" opacity="0.85"></rect>
+      <text x="24" y="58" font-family="ui-sans-serif, system-ui, sans-serif" font-size="13" fill="#fdfdfc">redeploy ok · schema incompatible · restore + reconcile</text>
+      <text x="12" y="112" font-family="ui-sans-serif, system-ui, sans-serif" font-size="13" fill="#5c5c56">after 11 drills — 11 minutes, no data loss</text>
+      <rect x="12" y="124" width="48" height="26" rx="4" fill="#4a5a6a"></rect>
+      <text x="72" y="142" font-family="ui-sans-serif, system-ui, sans-serif" font-size="13" fill="#1c1c1a">flag off → redeploy → data question answered from the runbook</text>
+      <line x1="12" y1="176" x2="712" y2="176" stroke="#dedcd7" stroke-width="1"></line>
+      <text x="12" y="196" font-family="ui-sans-serif, system-ui, sans-serif" font-size="12" fill="#5c5c56">Bar length is proportional to duration. Source: drill log and incident record (fictional demo data).</text>
+    </svg>
+    <figcaption>The gain is not faster tooling. It is that the previous release could read the
+    schema, and that the person running it had run the same four steps eleven times.</figcaption>
+  </figure>
+
+  <h2>What it costs</h2>
+  <table>
+    <thead>
+      <tr><th scope="col">Cost</th><th scope="col">Amount</th><th scope="col">Note</th></tr>
+    </thead>
+    <tbody>
+      <tr><td>Drill time</td><td>45 min × 3 people, monthly</td><td>~27 person-hours a year per path</td></tr>
+      <tr><td>Expand-contract tax</td><td>one extra release per schema change</td><td>the real cost; paid whether or not you drill</td></tr>
+      <tr><td>Staging data</td><td>production-shaped, refreshed monthly</td><td>a drill against toy data rehearses nothing</td></tr>
+      <tr><td>Social cost</td><td>two months of "this is theater"</td><td>one engineer said so in a retro, out loud; we kept it and added the must-find-something rule</td></tr>
+    </tbody>
+  </table>
+  <p>We ruled out automatic rollback on an error-budget breach, which is the obvious thing to
+  build and which several tools will sell you. On this path the decision is never only "is the
+  error rate up." It is "did we write money down in a way the previous version can read," and
+  that needs a human. A human who has run the drill takes about four minutes to make the call. A
+  human who has not takes twenty and asks someone else.</p>
+
+  <h2>Where this does not generalize</h2>
+  <p>We picked the path we were most afraid of and gave it a runbook, a rotation, and staging
+  data shaped like production. Those are resources most services do not get. The honest claim is
+  therefore narrow: a rehearsed rollback on a backward-compatible schema is fast, and the
+  rehearsal is affordable on a path someone cares about.</p>
+  <p>The open question is what the cheap version looks like for the other twelve services. We do
+  not have an answer yet. The current guess is a quarterly drill and a shared runbook template,
+  which is untested and should be read as a guess.</p>
+
+  <h2>Verdict</h2>
+  <p>Run the drill monthly on one path, rotate the operator, require a finding, and pay the
+  expand-contract tax that makes it safe. Stop when the schema stops changing — which on a
+  settlement path is never — or when six consecutive drills find nothing, which means the runbook
+  has gone stale and needs rewriting.</p>
+</article>
+
+<section class="editorial" aria-label="Editorial annotations, not for publication">
+  <h2>Editorial annotations</h2>
+  <p><span class="tag">[GAP: need the incident artifact]</span> The "two hours forty minutes /
+  six minutes of settlement events lost" figures come from the author's recollection in
+  transcript.md (skeptic Q1). sources.md has no record behind them. Attach the incident timeline
+  or downgrade the sentence to what is defensible from memory and label it as memory. Route to:
+  <code>skeptic</code>, one question.</p>
+  <p><span class="tag">[GAP: need the drill log]</span> "eleven drills" and the four findings
+  quoted in the drill section are asserted, not cited. Attach the drill log entries or reduce the
+  list to the two findings the author can produce verbatim. Route to: <code>operator</code>.</p>
+  <p><span class="tag">[NOTE: round 2 pending]</span> Round 1 aggregate was 7.2 with two hard
+  caps (slop-allergist 6, presentation-reviewer 6). Both capped findings are fixed in this v2 —
+  the presuppose-and-dismantle opener was replaced with the incident and the mechanism, and the
+  skipped heading level (<code>h2</code> → <code>h4</code>) was corrected to <code>h3</code>.
+  Round 2 has not been run; do not hand this to the human pass until the aggregate clears 9.</p>
+  <p><span class="tag">[NOTE: demo subject]</span> Harborline Freight is fictional. In a
+  production piece this line would carry client clearance status; here it records that the demo
+  has no real subject to clear.</p>
+</section>
+</body>
+</html>

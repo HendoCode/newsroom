@@ -1,0 +1,71 @@
+{
+  "slug": "the-board-on-the-wall",
+  "title": "The board on the wall",
+  "voice": "demo-mira",
+  "origin": "Oracle run 2026-09-16 · Spike #1 (see VAULT.md)",
+  "absorbed_spikes": ["Spike #3 — the magnet colors were a schema"],
+  "scoped_out_spikes": ["Spike #2 — the eleven worse days (kept to one paragraph)"],
+  "target": "field-notes essay, ~1500 words",
+  "target_formats": [
+    "long-form narrative essay",
+    "two excerpts plus one connective sentence for a social destination"
+  ],
+  "partners": [],
+  "stage": "ready-for-human-pass",
+  "panel": {
+    "selected": ["narrative-prober", "stakes-prober", "layperson"],
+    "completed": ["narrative-prober", "stakes-prober", "layperson"],
+    "in_progress": null
+  },
+  "council": {
+    "rounds": 2,
+    "editors": [
+      "slop-allergist",
+      "voice-guardian",
+      "presentation-reviewer",
+      "cold-reader",
+      "closer",
+      "idea-density",
+      "durability-reader"
+    ],
+    "round_1_scores": {
+      "voice-guardian": 7,
+      "slop-allergist": 8,
+      "presentation-reviewer": 9,
+      "cold-reader": 8,
+      "closer": 7,
+      "idea-density": 8
+    },
+    "round_1_aggregate": 7.8,
+    "round_2_scores": {
+      "voice-guardian": 9,
+      "slop-allergist": 9,
+      "presentation-reviewer": 9,
+      "cold-reader": 9,
+      "closer": 10,
+      "durability-reader": 9
+    },
+    "aggregate_score": 9.2,
+    "bar": 9,
+    "hard_caps": [],
+    "editorial_fixes_applied": 8,
+    "information_gaps_routed": [
+      { "to": "layperson", "question": "what was on the rail overnight, and who counted it", "status": "closed" },
+      { "to": "stakes-prober", "question": "did the superintendent say anything else about keeping the rail", "status": "closed — negative answer" }
+    ]
+  },
+  "open_gaps": 0,
+  "has_draft": true,
+  "draft_revision": "v4",
+  "clearances": {
+    "speakers_reviewed": 2,
+    "quoted_by_role": true,
+    "invented_details_disclosed": ["vessel name 'Cormorant'"]
+  },
+  "published_url": null,
+  "demo": {
+    "fictional": true,
+    "subjects": ["Kestrel Bay Ferry Authority"],
+    "note": "Invented place, people, quotes, and clearances. No external citations by design."
+  }
+}

@@ -1,0 +1,15 @@
+# Local state (see versions.tf) — never commit.
+*.tfstate
+*.tfstate.*
+.terraform.tfstate.lock.info
+
+# Provider plugin cache — reproducible from .terraform.lock.hcl (which IS committed).
+.terraform/
+
+*.tfplan
+crash.log
+crash.*.log
+override.tf
+override.tf.json
+*_override.tf
+*_override.tf.json

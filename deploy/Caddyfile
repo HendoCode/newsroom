@@ -1,0 +1,13 @@
+# Edge reverse proxy (POC exposure decision, docs/deploy.md). No longer basic-auth gated (removed
+# 2026-08-08 — the app's own sign-in, docs/auth.md, is the access gate). Only used by the
+# production compose overlay; local dev never loads this file.
+{
+	# No hostname here (public IP, not a domain) — never attempt ACME/automatic HTTPS.
+	auto_https off
+	# No need for the admin API in a reverse-proxy-only container.
+	admin off
+}
+
+:80 {
+	reverse_proxy web:3000
+}

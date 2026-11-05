@@ -1,0 +1,13 @@
+.DS_Store
+
+# Disposable render output: anything a render step produces from draft.html + a template is
+# regenerable and never a system of record — never commit it.
+drafts/*/finalized/
+
+# Local-only source inputs an author may drop into a piece folder before the interview
+# (recordings, exports, internal PDFs). Keep local, never commit.
+drafts/*/assets/*.pdf
+drafts/*/assets/*.m4a
+drafts/*/assets/*.wav
+
+.gitagent/
