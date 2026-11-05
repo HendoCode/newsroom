@@ -1,0 +1,32 @@
+# Optional shared BuildKit registry cache for the two app images, so machines (and fresh
+# builders) reuse each other's layers instead of rebuilding them. Opt in by listing this file
+# after the others, e.g. in your git-ignored .env:
+#
+#   BUILD_CACHE_PREFIX=<registry>/<path>        # e.g. registry.example.com/cache
+#   COMPOSE_FILE=docker-compose.yml:docker-compose.override.yml:docker-compose.cache.yml
+#
+# Layers are read from and written back to <prefix>/newsroom/<service>:<BUILD_CACHE_TAG, default
+# main> (mode=max, so intermediate stages are cached too). Import misses and push failures don't
+# fail the build (ignore-error), and when BUILD_CACHE_PREFIX is unset (e.g. a helper that removes
+# it while the registry is unreachable) the refs fall back to an address that can't answer
+# (localhost:1), which just logs two harmless errors, so this file can stay in COMPOSE_FILE
+# permanently. An empty ref would instead be a hard "invalid reference format" error.
+# Needs a builder that can export registry cache (a docker-container buildx builder, not the
+# plain `docker` driver). The LAN mirrors are BuildKit secrets (see agents/Dockerfile), so builds
+# with and without them share this cache.
+x-cache-web: &cache-web
+  cache_from:
+    - type=registry,ref=${BUILD_CACHE_PREFIX:-localhost:1/no-build-cache}/newsroom/web:${BUILD_CACHE_TAG:-main}
+  cache_to:
+    - type=registry,ref=${BUILD_CACHE_PREFIX:-localhost:1/no-build-cache}/newsroom/web:${BUILD_CACHE_TAG:-main},mode=max,compression=zstd,ignore-error=true
+x-cache-agents: &cache-agents
+  cache_from:
+    - type=registry,ref=${BUILD_CACHE_PREFIX:-localhost:1/no-build-cache}/newsroom/agents:${BUILD_CACHE_TAG:-main}
+  cache_to:
+    - type=registry,ref=${BUILD_CACHE_PREFIX:-localhost:1/no-build-cache}/newsroom/agents:${BUILD_CACHE_TAG:-main},mode=max,compression=zstd,ignore-error=true
+
+services:
+  web:
+    build: *cache-web
+  agents:
+    build: *cache-agents

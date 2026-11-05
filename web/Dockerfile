@@ -5,13 +5,15 @@
 FROM node:22-alpine AS deps
 WORKDIR /app
 COPY package.json package-lock.json ./
-# Optional npm registry mirror (e.g. a LAN package cache), passed from compose `build.args`.
-# Unset/empty (the default) means the public registry. npm rewrites the lockfile's
+# Optional npm registry mirror (e.g. a LAN package cache), passed as the BuildKit secret
+# npm_registry (compose `build.secrets`): unset/empty (the default) means the public registry. A
+# secret rather than a build arg because arg values are part of the layer cache key; secret
+# contents aren't, so builds with and without the mirror share cached layers. npm rewrites the lockfile's
 # registry.npmjs.org `resolved` URLs to the configured registry (replace-registry-host=npmjs).
 # The cache mount keeps npm's tarball cache in the builder (never in the image), so a lockfile
 # change only downloads the packages that actually changed (not used under `--no-cache`).
-ARG NPM_REGISTRY=
 RUN --mount=type=cache,target=/root/.npm \
+    --mount=type=secret,id=npm_registry,env=NPM_REGISTRY,required=false \
     npm ci --prefer-offline --no-audit --no-fund ${NPM_REGISTRY:+--registry="$NPM_REGISTRY"}
 
 FROM node:22-alpine AS builder
