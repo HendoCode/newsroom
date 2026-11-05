@@ -41,7 +41,7 @@ The webapp is published as a single clean init commit into a fresh public repo; 
 
 ## Infra posture
 
-- **cmw-test integration stack:** Debian LXC at `<test-host>`, serving <test URL>; code is a plain (non-git) copy at `/opt/cm/content-machine` that should track `main`. **No `rsync` on the container** — sync via tar-over-ssh (`tar --exclude=.git --exclude=node_modules --exclude=.env --exclude=data ... -cf - . | ssh <test-host> 'tar -xf - -C /opt/cm/content-machine'`); `.env` and the server-local `docker-compose.llm.yml` / `docker-compose.test-web.yml` live only there — never overwrite them. Redeploy: `docker compose -f docker-compose.yml -f docker-compose.override.yml -f docker-compose.test-web.yml -f docker-compose.llm.yml build --no-cache web agents` then `... up -d --no-deps web agents`; health = `/api/status` reporting `llm_configured`+`mongo_configured`. Drive stages need `GOOGLE_DRIVE_ROOT_FOLDER_NAME` set in that `.env` (app find-or-creates the named My-Drive root itself under `drive.file`).
+- **No integration/test host currently exists.** The old cmw-test LXC was destroyed on 2026-10-22 (removed from `proxmox-infra` in its #9); don't follow older notes or tickets that redeploy to it.
 - `infra/aws-poc/` is a **sanitized historical artifact** with fake AWS account / Route53 zone placeholders. The live DNS posture is Cloudflare + OpenTofu on `hendocode.com`, maintained in the separate `dns-infra` project. Do not attempt a real `tofu apply` from these files as written.
 - `deploy/security-gate.sh` is a Trivy scan gate for the historical AWS POC; the ECR registry and account ID are placeholders.
 
