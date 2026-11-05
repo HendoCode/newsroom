@@ -27,6 +27,9 @@ services:
   web:
     build:
       context: ./web
+      # Optional npm registry mirror for `npm ci` (NPM_REGISTRY in .env; unset = public). A
+      # BuildKit secret, not a build arg, so it never changes layer cache keys.
+      secrets: [npm_registry]
     environment:
       # Server-side-only address of the agents service. Uses the internal compose network +
       # fixed internal port, so it is identical across all isolated instances.
@@ -80,6 +83,10 @@ services:
   agents:
     build:
       context: ./agents
+      # Optional LAN mirrors (PIP_INDEX_URL, APT_MIRROR, PLAYWRIGHT_DOWNLOAD_MIRROR in .env; unset
+      # = public sources), as BuildKit secrets so they never change layer cache keys. See the
+      # MIRRORS note in agents/Dockerfile.
+      secrets: [pip_index_url, apt_mirror, playwright_download_mirror]
     environment:
       ENVIRONMENT: ${ENVIRONMENT:-development}
       # Provider keys are injected here SERVER-SIDE ONLY (never client-exposed). Empty by
@@ -171,3 +178,15 @@ services:
       retries: 5
       start_period: 15s
     restart: unless-stopped
+
+# Build-time secrets: optional LAN mirror URLs read from the environment / .env (see .env.example).
+# Unset or empty is fine and means the public sources.
+secrets:
+  npm_registry:
+    environment: NPM_REGISTRY
+  pip_index_url:
+    environment: PIP_INDEX_URL
+  apt_mirror:
+    environment: APT_MIRROR
+  playwright_download_mirror:
+    environment: PLAYWRIGHT_DOWNLOAD_MIRROR

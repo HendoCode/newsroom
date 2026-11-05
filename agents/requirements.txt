@@ -23,7 +23,9 @@ motor==3.6.0
 # environment without the downloaded browser binary still boots; HTML/Doc formats are unaffected.
 # One-time provisioning step (like the Slack-app/Drive-OAuth admin actions in Item 6):
 #   playwright install chromium
-playwright==1.49.0
+# The pin itself lives in requirements-playwright.txt so the Docker build can install Playwright and
+# its ~260 MB Chromium download in an early layer that other dependency changes don't invalidate.
+-r requirements-playwright.txt
 
 # Secrets shim (app/secrets/): SECRETS_BACKEND=aws|azure SDKs. Both imports are guarded/lazy
 # (app/secrets/{aws,azure}_provider.py), so the default SECRETS_BACKEND=env needs neither

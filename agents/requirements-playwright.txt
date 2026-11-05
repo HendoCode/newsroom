@@ -1,0 +1,4 @@
+# Playwright pin, split out of requirements.txt (which includes this file) so agents/Dockerfile can
+# install it — and download its Chromium build — in a layer that changing any other dependency
+# doesn't invalidate. Bump deliberately together with the bookworm base pin (see agents/Dockerfile).
+playwright==1.49.0

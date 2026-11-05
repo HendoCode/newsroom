@@ -59,7 +59,7 @@ serves (never crashes the service, per the guarded-import / warn-and-skip design
 
 ### PDF — headless Chromium via Playwright
 
-`playwright` is pinned in `requirements.txt`; the browser binary is a separate one-time step:
+`playwright` is pinned in `requirements-playwright.txt` (included by `requirements.txt`); the browser binary is a separate one-time step:
 
 ```
 playwright install chromium

@@ -1,7 +1,7 @@
 "use client";
 
 import * as React from "react";
-import { Josefin_Sans, JetBrains_Mono } from "next/font/google";
+import localFont from "next/font/local";
 
 import { SourcesDrawer } from "@/components/piece-detail/sources-drawer";
 import { Badge } from "@/components/ui/badge";
@@ -17,17 +17,19 @@ import { cn } from "@/lib/utils";
 // independently of app/layout.tsx's own chrome fonts, so swapping the chrome's --font-serif/
 // --font-sans (or the fonts layout.tsx imports for them) can never affect this preview. Paired
 // with the frozen, non-token `.piece-content-preview` CSS block in app/globals.css.
-const previewSerif = Josefin_Sans({
-  subsets: ["latin"],
+// Same vendored variable file as layout.tsx (app/fonts/, see the note there on why fonts are local
+// rather than next/font/google), but its own loader instances, so the CSS variables stay separate.
+const previewSerif = localFont({
+  src: "../../app/fonts/josefin-sans-latin-var.woff2",
+  weight: "100 700",
   variable: "--preview-font-serif",
   display: "swap",
-  weight: ["700"]
 });
-const previewSans = Josefin_Sans({
-  subsets: ["latin"],
+const previewSans = localFont({
+  src: "../../app/fonts/josefin-sans-latin-var.woff2",
+  weight: "100 700",
   variable: "--preview-font-sans",
   display: "swap",
-  weight: ["300", "400"]
 });
 
 const PREVIEW_CLASS = "piece-content-preview max-w-none rounded-lg border p-6 text-sm leading-relaxed";

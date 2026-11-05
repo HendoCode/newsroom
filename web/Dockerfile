@@ -5,14 +5,28 @@
 FROM node:22-alpine AS deps
 WORKDIR /app
 COPY package.json package-lock.json ./
-RUN npm ci
+# Optional npm registry mirror (e.g. a LAN package cache), passed as the BuildKit secret
+# npm_registry (compose `build.secrets`): unset/empty (the default) means the public registry. A
+# secret rather than a build arg because arg values are part of the layer cache key; secret
+# contents aren't, so builds with and without the mirror share cached layers. npm rewrites the lockfile's
+# registry.npmjs.org `resolved` URLs to the configured registry (replace-registry-host=npmjs).
+# The cache mount keeps npm's tarball cache in the builder (never in the image), so a lockfile
+# change only downloads the packages that actually changed (not used under `--no-cache`).
+RUN --mount=type=cache,target=/root/.npm \
+    --mount=type=secret,id=npm_registry,env=NPM_REGISTRY,required=false \
+    npm ci --prefer-offline --no-audit --no-fund ${NPM_REGISTRY:+--registry="$NPM_REGISTRY"}
 
 FROM node:22-alpine AS builder
 WORKDIR /app
 COPY --from=deps /app/node_modules ./node_modules
 COPY . .
 ENV NEXT_TELEMETRY_DISABLED=1
-RUN npm run build
+# Next's incremental build cache (webpack/SWC artifacts) on a cache mount: a rebuild after a small
+# source change reuses it instead of compiling from scratch. Only .next/standalone + .next/static
+# are copied into the runner, so nothing from the mount reaches the image. The id is scoped to
+# this project so other Next apps on the same builder don't share (and thrash) one cache.
+RUN --mount=type=cache,target=/app/.next/cache,id=newsroom-web-next-cache \
+    npm run build
 
 FROM node:22-alpine AS runner
 WORKDIR /app

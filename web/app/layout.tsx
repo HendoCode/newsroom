@@ -1,19 +1,24 @@
 import type { Metadata } from "next";
-import { Josefin_Sans, JetBrains_Mono } from "next/font/google";
+import localFont from "next/font/local";
 
 import { ThemeProvider } from "@/components/theme-provider";
 import "./globals.css";
 
 // Brand fonts (visual-identity.md §3), exposed as the CSS variables the Tailwind theme maps to.
-// Loaded via next/font so they are self-hosted and swappable alongside the color tokens.
-const josefin = Josefin_Sans({
-  subsets: ["latin"],
+// Vendored in app/fonts/ (Google Fonts' latin-subset variable files, SIL OFL — licenses alongside)
+// and loaded with next/font/local rather than next/font/google: the google loader fetches CSS from
+// fonts.googleapis.com at *build* time, which made `npm run build` fail offline and flake when
+// that fetch returned an unexpected response. Josefin Sans was previously loaded at weights
+// 300 and 700; the variable file covers both (and everything between).
+const josefin = localFont({
+  src: "./fonts/josefin-sans-latin-var.woff2",
+  weight: "100 700",
   variable: "--font-sans",
   display: "swap",
-  weight: ["300", "700"]
 });
-const jetbrainsMono = JetBrains_Mono({
-  subsets: ["latin"],
+const jetbrainsMono = localFont({
+  src: "./fonts/jetbrains-mono-latin-var.woff2",
+  weight: "100 800",
   variable: "--font-mono",
   display: "swap",
 });
